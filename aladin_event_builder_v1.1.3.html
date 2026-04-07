@@ -1,0 +1,3178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Aladin Monly Template Event Module Builder</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+  :root {
+    --primary: #EB217C;
+    --primary-light: #FFF5FA;
+    --primary-dark: #D41A6F;
+    --primary-ultra-light: #FFF5FA;
+    --secondary: #3B4A9F;
+    --accent: #EB217C;
+    --accent-pink: #EB217C;
+    --link: #276FF4;
+    --danger: #E81D30;
+    --success: #228738;
+    --warning: #F4BE1E;
+    --bg: #F5F5F5;
+    --bg-gradient: #F5F5F5;
+    --glass-bg: #ffffff;
+    --glass-border: #E8E8E8;
+    --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --border: #E8E8E8;
+    --text: #333333;
+    --text-secondary: #737373;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+  }
+
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+  }
+
+  /* ============================
+     왼쪽 컨트롤 패널
+     ============================ */
+  .control-panel {
+    width: 800px;
+    min-width: 500px;
+    max-width: 1200px;
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    position: relative;
+  }
+  .panel-resizer {
+    width: 8px;
+    cursor: col-resize;
+    background: var(--bg);
+    position: relative;
+    z-index: 20;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .panel-resizer:hover,
+  .panel-resizer.active {
+    background: #e0e0e0;
+  }
+  /* 드래그 핸들 점 3개 */
+  .panel-resizer::before {
+    content: '';
+    width: 4px;
+    height: 32px;
+    border-radius: 2px;
+    background: #ccc;
+    background-image: radial-gradient(circle, #999 1px, transparent 1px);
+    background-size: 4px 8px;
+    background-position: center;
+    transition: background 0.15s;
+  }
+  .panel-resizer:hover::before,
+  .panel-resizer.active::before {
+    background-color: #aaa;
+    background-image: radial-gradient(circle, #666 1px, transparent 1px);
+    background-size: 4px 8px;
+    background-position: center;
+  }
+  .panel-resizer::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 0;
+    width: 16px;
+    height: 100%;
+  }
+
+  /* 헤더 */
+  .cp-header {
+    padding: 24px 28px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+  }
+  .cp-header h1 {
+    margin: 0; font-size: 22px; font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .cp-header p {
+    margin: 6px 0 0; font-size: 13px; font-weight: 400;
+    line-height: 1.4;
+    color: var(--text-secondary);
+  }
+
+  /* 탭 메뉴 */
+  .tab-header {
+    display: flex;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    gap: 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 16px 0;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    transition: all 0.2s;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tab-btn:hover {
+    color: var(--text);
+    background: #f7f8fa;
+  }
+  .tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: transparent;
+  }
+
+  /* 메인 탭 (상단이미지 / 컨텐츠) */
+  .tab-btn.main-tab {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 0;
+    color: #b0b0b0;
+    border-bottom: 3px solid transparent;
+  }
+  .tab-btn.main-tab:hover {
+    color: var(--text);
+    background: transparent;
+  }
+  .tab-btn.main-tab.active {
+    color: var(--text);
+    border-bottom-color: var(--text);
+    background: transparent;
+  }
+
+  /* 바디 영역 */
+  .cp-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    background: transparent;
+  }
+  .cp-body::-webkit-scrollbar { width: 6px; }
+  .cp-body::-webkit-scrollbar-track { background: transparent; }
+  .cp-body::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 10px;
+  }
+  .cp-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.35);
+  }
+
+  .tab-content { display: none; padding: 28px; }
+  .tab-content.active { display: block; animation: fadeSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 섹션 라벨 */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 4px; height: 20px;
+    background: var(--primary);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* 메인 셀렉트 */
+  .main-select {
+    width: 100%;
+    padding: 13px 40px 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    color: var(--text);
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b95a1' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E") no-repeat right 16px center;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .main-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
+  }
+  .main-select:hover {
+    border-color: #c5cad0;
+  }
+
+  /* 입력 폼 컨테이너 */
+  .input-container {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .input-container.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-secondary);
+    border: 1px dashed #d1d5db;
+    background: #f9fafb;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* 입력 필드 */
+  .input-row { margin-bottom: 22px; }
+  .input-row:last-child { margin-bottom: 0; }
+  .input-row label {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .example-box {
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: #f7f8fa;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    margin-bottom: 0;
+    font-family: inherit;
+    line-height: 1.5;
+    font-weight: 400;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .input-row input, .input-row textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: all 0.25s;
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .input-row input:focus, .input-row textarea:focus {
+    border-color: var(--primary-light);
+    outline: none;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+  }
+  .input-row textarea {
+    height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* 하단 버튼 영역 */
+  .action-area {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    background: #ffffff;
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    flex: 1;
+    padding: 0 16px;
+    height: 48px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-reset {
+    background: #fff;
+    color: var(--text-secondary);
+    flex: 0 0 110px;
+    border: 1px solid var(--border);
+  }
+  .btn-reset:hover {
+    background: #f7f8fa;
+    color: var(--text);
+    box-shadow: none;
+  }
+  .btn-add {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-add:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(235, 33, 124, 0.2);
+  }
+
+  /* ============================
+     우측 에디터 패널
+     ============================ */
+  .editor-panel {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+  }
+  .ep-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ep-header h3 {
+    margin: 0; color: var(--text); font-size: 16px; font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .code-area {
+    flex: 1;
+    background: #1b1b1f;
+    border-radius: var(--radius);
+    padding: 20px;
+    color: #d4d4d8;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    resize: none;
+    border: 1px solid #2e2e33;
+    outline: none;
+  }
+  .code-area::selection {
+    background: rgba(124, 58, 237, 0.4);
+  }
+  .code-area::-webkit-scrollbar { width: 8px; }
+  .code-area::-webkit-scrollbar-track { background: transparent; }
+  .code-area::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+  }
+
+  .copy-btn {
+    padding: 0 16px;
+    height: 36px;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1;
+  }
+  .copy-btn:hover {
+    background: #f7f8fa;
+    box-shadow: none;
+  }
+
+  /* ============================
+     썸네일 동적 입력 폼
+     ============================ */
+  .thumb-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    padding: 12px;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-radius:0 0 var(--radius-sm) var(--radius-sm);
+    transition: all 0.2s;
+  }
+  .thumb-row:hover {
+    border-color: rgba(139, 92, 246, 0.2);
+    background: rgba(255, 255, 255, 0.75);
+  }
+  .thumb-row input {
+    margin-bottom: 0 !important;
+    font-size: 14px;
+  }
+  .thumb-url { flex: 2; }
+  .thumb-txt { flex: 1; }
+  .thumb-pop { flex: 1; }
+  .btn-del-thumb {
+    padding: 8px 14px;
+    background: rgba(248, 113, 113, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(248, 113, 113, 0.15);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-del-thumb:hover {
+    background: rgba(248, 113, 113, 0.18);
+  }
+  .btn-add-thumb {
+    width: 100%;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.04);
+    border: 2px dashed rgba(139, 92, 246, 0.2);
+    color: var(--primary);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+  .btn-add-thumb:hover {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.35);
+  }
+
+  /* ============================
+     입력창 스타일 통합
+     ============================ */
+  .input-row input,
+  .input-row textarea,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    font-size: 14px !important;
+    padding: 11px 14px !important;
+    line-height: 1.5 !important;
+    box-sizing: border-box;
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border) !important;
+    background: #fff !important;
+    transition: all 0.15s !important;
+  }
+
+  /* input만 height auto (textarea 제외) */
+  .input-row input,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    height: auto !important;
+  }
+
+  /* example-box 뒤 input/textarea: 상단 라운드 제거하여 한 묶음 처리 */
+  .example-box + input,
+  .example-box + textarea {
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
+    border-top: 1px solid rgba(139, 92, 246, 0.08) !important;
+  }
+
+  /* example-box 없이 단독인 input/textarea: 네 모서리 라운드 */
+  .input-row input,
+  .input-row textarea,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    border-radius: var(--radius-sm);
+  }
+
+  /* textarea 드래그로 높이 조절 가능 */
+  .input-row textarea {
+    resize: vertical !important;
+    min-height: 80px;
+    height: 120px;
+    overflow-y: auto;
+  }
+  .input-row input:focus,
+  .input-row textarea:focus,
+  .multi-tab-item input:focus,
+  .random-tab-item input:focus,
+  .thumb-row input:focus {
+    border-color: var(--primary) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08) !important;
+  }
+
+  .multi-tab-item label,
+  .random-tab-item label {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--text-secondary) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .multi-tab-item,
+  .random-tab-item {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.1) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.04);
+    transition: all 0.2s;
+  }
+  .multi-tab-item:hover,
+  .random-tab-item:hover {
+    border-color: rgba(139, 92, 246, 0.2) !important;
+  }
+
+  /* ============================
+     토스트 알림
+     ============================ */
+  /* ============================
+     우측 에디터 탭 전환
+     ============================ */
+  .ep-tab-group {
+    display: flex;
+    gap: 2px;
+    background: #f2f3f5;
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .ep-tab-btn {
+    padding: 7px 18px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .ep-tab-btn:hover { color: var(--text); }
+  .ep-tab-btn.active {
+    background: #fff;
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .preview-wrap {
+    flex: 1;
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  /* ============================
+     위자드 스타일
+     ============================ */
+  .wizard-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 28px 16px;
+    gap: 12px;
+  }
+  .wizard-step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wizard-step-item span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .wizard-step-item.active span { color: var(--text); }
+  .wizard-step-item.done span { color: var(--primary); }
+
+  .wizard-step-dot {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #E8E8E8;
+    color: #999;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .wizard-step-item.active .wizard-step-dot {
+    background: var(--primary);
+    color: #fff;
+  }
+  .wizard-step-item.done .wizard-step-dot {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .wizard-step-arrow {
+    font-size: 14px;
+    font-weight: 700;
+    color: #CCCCCC;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .wizard-step-arrow.done { color: var(--primary); }
+
+  .wizard-step {
+    animation: fadeSlideIn 0.3s ease;
+  }
+  .wizard-step .section-label {
+    margin-bottom: 20px;
+  }
+
+  .wizard-radio-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .wizard-radio-card:hover { border-color: #c5cad0; background: #f9fafb; }
+  .wizard-radio-card.active {
+    border-color: var(--primary);
+    background: var(--primary-ultra-light);
+  }
+  .wizard-radio-icon { font-size: 24px; flex-shrink: 0; }
+
+  .wizard-style-card {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .style-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .wizard-style-card:hover { border-color: #c5cad0; background: #f9fafb; }
+  .wizard-style-card.active {
+    border-color: var(--primary);
+    background: var(--primary-ultra-light);
+  }
+
+  /* 위자드 내 섹션 구분 컨테이너 */
+  .wiz-section {
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .wiz-section-label {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.02em;
+  }
+
+  /* 위자드 하단 버튼 영역 */
+  .wiz-nav {
+    display: flex;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid #e5e7eb;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    margin: 24px -28px 0;
+    padding: 16px 28px;
+    z-index: 5;
+  }
+  .wiz-nav .btn {
+    height: 42px !important;
+    font-size: 13px !important;
+    flex: 1;
+    border-radius: 8px !important;
+  }
+  .wiz-nav .btn-add {
+    padding: 0 20px !important;
+    background: var(--secondary) !important;
+    box-shadow: none !important;
+  }
+  .wiz-nav .btn-add:hover {
+    background: #2d3a7f !important;
+    box-shadow: 0 4px 12px rgba(59, 74, 159, 0.2) !important;
+  }
+  .wiz-nav .btn-reset {
+    padding: 0 16px !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: #6b7280 !important;
+    border: 1.5px solid #d1d5db !important;
+  }
+  .wiz-nav .btn-reset:hover {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    box-shadow: none !important;
+  }
+  /* 최종 코드 추가 버튼만 강조 */
+  .wiz-nav .btn-primary-lg {
+    flex: 2 !important;
+    height: 44px !important;
+    font-size: 14px !important;
+    background: var(--primary) !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+  }
+  .wiz-nav .btn-primary-lg:hover {
+    background: var(--primary-dark) !important;
+    box-shadow: 0 4px 12px rgba(235, 33, 124, 0.2) !important;
+  }
+
+  /* ============================
+     서브 탭 (컨텐츠 내부)
+     ============================ */
+  .sub-tab-header {
+    padding: 0 !important;
+    background: rgba(139, 92, 246, 0.03) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .sub-tab-header .tab-btn {
+    padding: 14px 0 !important;
+    font-size: 14px !important;
+  }
+  .tab-add-btn {
+    display: none !important;
+  }
+
+  /* ============================
+     페이지 설정 고정 영역
+     ============================ */
+  .page-setup {
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid var(--border);
+  }
+  .page-setup-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .page-setup-toggle h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+  }
+  .page-setup-toggle .arrow {
+    font-size: 12px;
+    color: var(--primary);
+    transition: transform 0.25s;
+  }
+  .page-setup-toggle .arrow.open { transform: rotate(180deg); }
+  .page-setup-body {
+    margin-top: 16px;
+    display: none;
+  }
+  .page-setup-body.open { display: block; animation: fadeSlideIn 0.25s ease; }
+  .page-setup-body .input-row { margin-bottom: 14px; }
+  .page-setup-body .input-row:last-child { margin-bottom: 0; }
+  .page-setup-body label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .page-setup-body input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.7);
+    transition: all 0.25s;
+  }
+  .page-setup-body input:focus {
+    border-color: var(--primary-light);
+    outline: none;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+  }
+
+  .preview-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  #toast {
+    visibility: hidden;
+    min-width: 280px;
+    background: var(--text);
+    color: #fff;
+    text-align: center;
+    border-radius: var(--radius-sm);
+    padding: 14px 24px;
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.25s, bottom 0.25s;
+  }
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+  }
+</style>
+</head>
+<body>
+
+<div class="control-panel">
+  <div class="cp-header">
+    <h1>Aladin Monly Template Event Module Builder</h1>
+    <p>작가 · 배너 · 증정품 · 쿠폰/적립금 · 도서리스트 · 댓글 통합</p>
+  </div>
+
+  <!-- 메인 탭 (2개) -->
+  <div class="tab-header">
+    <button class="tab-btn main-tab active" onclick="switchMainTab('topimage')">🖼️ 상단이미지</button>
+    <button class="tab-btn main-tab" onclick="switchMainTab('content')">📦 컨텐츠</button>
+  </div>
+
+  <div class="cp-body">
+
+    <!-- ======== 상단이미지 메인탭 (위자드) ======== -->
+    <div id="mainTab_topimage" class="main-tab-content" style="display:block;">
+
+      <!-- 스텝 인디케이터 -->
+      <div class="wizard-indicator">
+        <div class="wizard-step-item active" id="wizStep_1">
+          <div class="wizard-step-dot" id="wizDot1">1</div>
+          <span>방식 선택</span>
+        </div>
+        <div class="wizard-step-arrow" id="wizArrow1">></div>
+        <div class="wizard-step-item" id="wizStep_2">
+          <div class="wizard-step-dot" id="wizDot2">2</div>
+          <span>이미지 작업</span>
+        </div>
+        <div class="wizard-step-arrow" id="wizArrow2">></div>
+        <div class="wizard-step-item" id="wizStep_3">
+          <div class="wizard-step-dot" id="wizDot3">3</div>
+          <span>설정 완료</span>
+        </div>
+      </div>
+
+      <!-- ===== Step 1: 타이틀 방식 선택 ===== -->
+      <div id="wizStep1" class="wizard-step" style="padding:24px 28px;">
+        <div class="wiz-section">
+          <div class="wiz-section-label">상단 타이틀을 어떻게 만드시겠어요?</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <label class="wizard-radio-card active" onclick="selectTitleMode('text', this)">
+              <input type="radio" name="titleMode" value="text" checked style="display:none;">
+              <div class="wizard-radio-icon">✏️</div>
+              <div>
+                <div style="font-weight:800; font-size:15px; margin-bottom:4px;">텍스트로 직접 입력</div>
+                <div style="font-size:13px; color:var(--text-secondary);">배경 이미지 위에 h태그로 타이틀을 코드에 직접 입력합니다.</div>
+              </div>
+            </label>
+            <label class="wizard-radio-card" onclick="selectTitleMode('image_title', this)">
+              <input type="radio" name="titleMode" value="image_title" style="display:none;">
+              <div class="wizard-radio-icon">🖼️</div>
+              <div>
+                <div style="font-weight:800; font-size:15px; margin-bottom:4px;">이미지에 타이틀 포함</div>
+                <div style="font-size:13px; color:var(--text-secondary);">AI가 타이틀 글자까지 이미지로 생성합니다.</div>
+              </div>
+            </label>
+            <label class="wizard-radio-card" onclick="selectTitleMode('bg_only', this)">
+              <input type="radio" name="titleMode" value="bg_only" style="display:none;">
+              <div class="wizard-radio-icon">🌄</div>
+              <div>
+                <div style="font-weight:800; font-size:15px; margin-bottom:4px;">타이틀 없이 배경만</div>
+                <div style="font-size:13px; color:var(--text-secondary);">순수 배경 이미지만 사용합니다.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="wiz-nav" style="border-top:none; margin-top:0; padding-top:0;">
+          <div></div>
+          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
+        </div>
+      </div>
+
+      <!-- ===== Step 2: AI 프롬프트 생성기 ===== -->
+      <div id="wizStep2" class="wizard-step" style="display:none; padding:24px 28px;">
+
+        <!-- 이미지 타이틀 모드일 때만 보이는 섹션 -->
+        <div id="wizImgTitleSection" class="wiz-section" style="display:none;">
+          <div class="wiz-section-label">🖼️ 이미지에 넣을 타이틀</div>
+          <div class="input-row">
+            <label>타이틀 텍스트</label>
+            <div class="example-box"><span>💡</span> AI 프롬프트에 이 텍스트가 포함됩니다</div>
+            <input type="text" id="ps_img_title" value="" placeholder="예: 봄 외국어 학습전">
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <label>부제목 (선택)</label>
+            <input type="text" id="ps_img_subtitle" value="" placeholder="예: 3월 특별 선물">
+          </div>
+        </div>
+
+        <div class="wiz-section">
+          <div class="wiz-section-label">🎨 AI 이미지 프롬프트 생성기</div>
+          <div class="input-row">
+            <label>이벤트 주제 / 컨셉</label>
+            <input type="text" id="pg_theme" placeholder="예: 봄 외국어 학습, 추리소설 특집" value="봄 시즌 맞이 행복한 분위기의 도서 이벤트">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="input-row" style="margin-bottom:0;">
+              <label>분위기 / 톤</label>
+              <select id="pg_mood" class="main-select" style="margin-bottom:0;">
+                <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
+                <option value="시원하고 청량한">시원한 / 청량한</option>
+                <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
+                <option value="귀엽고 아기자기한">귀여운 / 아기자기한</option>
+                <option value="모던하고 깔끔한">모던 / 미니멀</option>
+                <option value="다크하고 몽환적인">다크 / 몽환적</option>
+                <option value="밝고 활기찬">밝은 / 활기찬</option>
+                <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
+              </select>
+            </div>
+            <div class="input-row" style="margin-bottom:0;">
+              <label>스타일</label>
+              <select id="pg_style" class="main-select" style="margin-bottom:0;">
+                <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
+                <option value="일러스트 스타일">일러스트</option>
+                <option value="3D 렌더링 스타일">3D 렌더링</option>
+                <option value="수채화 스타일">수채화</option>
+                <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
+                <option value="유화풍 / 회화적">유화풍 / 회화적</option>
+                <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-row" style="margin-top:12px;">
+            <label>메인 컬러 / 색감</label>
+            <input type="text" id="pg_color" placeholder="예: 파스텔 연두, 따뜻한 베이지" value="밝고 따뜻한 베이지, 연한 파스텔 톤">
+          </div>
+          <div class="input-row">
+            <label>포함 요소 (선택)</label>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="책" style="accent-color:var(--primary);"> 책</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="꽃" style="accent-color:var(--primary);"> 꽃</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="계절감 소품" style="accent-color:var(--primary);"> 계절감</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="동물" style="accent-color:var(--primary);"> 동물</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="음식/음료" style="accent-color:var(--primary);"> 음식/음료</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="문구류" style="accent-color:var(--primary);"> 문구류</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="우주/별" style="accent-color:var(--primary);"> 우주/별</label>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="자연풍경" style="accent-color:var(--primary);"> 자연풍경</label>
+            </div>
+          </div>
+          <div class="input-row">
+            <label>추가 요청 (자유 입력)</label>
+            <input type="text" id="pg_extra" placeholder="예: 벚꽃 배경, 고양이가 책 읽는 장면" value="봄꽃이 핀 배경에 책으로 꾸며진 아기자기한 디스플레이">
+          </div>
+          <div class="input-row">
+            <label>금지 요소</label>
+            <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
+          </div>
+          <div style="display:flex; gap:10px; margin-top:12px;">
+            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('pc')">🖥️ PC용 복사</button>
+            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('mobile')">📱 모바일용 복사</button>
+          </div>
+          <div id="promptResult" style="display:none; margin-top:12px; padding:14px; background:#111; color:#c4b5fd; border-radius:var(--radius-sm); font-family:'SF Mono','Fira Code',monospace; font-size:12px; line-height:1.7; white-space:pre-wrap; word-break:break-all; max-height:200px; overflow-y:auto;"></div>
+        </div>
+
+        <div class="wiz-nav">
+          <button class="btn btn-reset" onclick="wizardPrev()">← 이전</button>
+          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
+        </div>
+      </div>
+
+      <!-- ===== Step 3: 이미지 URL 설정 + 타이틀 입력 + 코드 추가 ===== -->
+      <div id="wizStep3" class="wizard-step" style="display:none; padding:24px 28px;">
+
+        <div class="wiz-section">
+          <div class="wiz-section-label">📁 이미지 파일 설정</div>
+          <div class="input-row">
+            <label>상단 이미지 - 모바일 (750px 기준)</label>
+            <div class="example-box"><span>💡</span> 현재 분기 경로가 자동 입력됩니다. 파일명만 수정하세요.</div>
+            <input type="text" id="ps_top_img_m" value="">
+          </div>
+          <div class="input-row">
+            <label>상단 이미지 - PC (930px 기준, 없으면 모바일과 동일)</label>
+            <div class="example-box"><span>💡</span> 현재 분기 경로가 자동 입력됩니다. 파일명만 수정하세요.</div>
+            <input type="text" id="ps_top_img_pc" value="">
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <label>상단 배경색 (HEX)</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="text" id="ps_top_bg" value="#e4e8ea" style="flex:1;">
+              <div style="position:relative; width:36px; height:36px; flex-shrink:0;">
+                <div id="ps_color_preview" style="width:36px; height:36px; border-radius:6px; border:1px solid var(--border); background:#e4e8ea; cursor:pointer;" onclick="document.getElementById('ps_color_picker').click();"></div>
+                <input type="color" id="ps_color_picker" value="#e4e8ea" style="position:absolute; top:0; left:0; width:0; height:0; opacity:0; pointer-events:none;" oninput="document.getElementById('ps_top_bg').value=this.value; document.getElementById('ps_color_preview').style.background=this.value;">
+              </div>
+              <button type="button" style="flex-shrink:0; height:36px; padding:0 12px; font-size:12px; font-weight:600; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); cursor:pointer;" onclick="extractBgColor()">이미지에서 추출</button>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; font-weight:600;">
+              <input type="checkbox" id="ps_gradient_fade" checked style="width:18px; height:18px; cursor:pointer; accent-color:var(--primary);">
+              PC에서 양옆 그라데이션 페이드 적용
+            </label>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:4px; padding-left:26px;">체크 시 PC 화면에서 이미지 양옆이 배경색으로 자연스럽게 이어집니다.</div>
+          </div>
+        </div>
+
+        <!-- 텍스트 타이틀 모드일 때만 보이는 섹션 -->
+        <div id="wizTitleInputSection" class="wiz-section" style="display:none;">
+          <div class="wiz-section-label">✏️ 타이틀 스타일 & 텍스트</div>
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-bottom:16px;">
+            <label class="wizard-style-card active" onclick="selectTitleStyle('top1', this)">
+              <input type="radio" name="titleStyle" value="top1" checked style="display:none;">
+              <div class="style-preview" style="background: url(https://image.aladin.co.kr/img/events/book/2026/01/ai_sample1_mo.jpg) #feecc2 no-repeat center bottom / cover;">
+                <div style="padding-top:12px; text-align:center;">
+                  <div style="font-size:10px; font-weight:800; color:#8a3013; line-height:1.2;">봄 도서 기획전</div>
+                  <div style="font-size:7px; color:#8a3013; margin-top:2px;">3월 특별 선물</div>
+                </div>
+              </div>
+              <div style="font-weight:700; font-size:12px; text-align:center; margin-top:8px;">텍스트 직접 노출</div>
+            </label>
+            <label class="wizard-style-card" onclick="selectTitleStyle('top3', this)">
+              <input type="radio" name="titleStyle" value="top3" style="display:none;">
+              <div class="style-preview" style="background: url(https://image.aladin.co.kr/img/events/book/2026/01/ai_sample3_pc01.jpg) #fef7f6 repeat center top / cover; display:flex; align-items:center; justify-content:center;">
+                <div style="width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,0.65); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                  <div style="font-size:8px; font-weight:800; color:#3ba6ff; text-align:center; line-height:1.2;">일상이<br>즐거워지는<br>요리책</div>
+                </div>
+              </div>
+              <div style="font-weight:700; font-size:12px; text-align:center; margin-top:8px;">원형 글래스 박스</div>
+            </label>
+            <label class="wizard-style-card" onclick="selectTitleStyle('top4', this)">
+              <input type="radio" name="titleStyle" value="top4" style="display:none;">
+              <div class="style-preview" style="background: url(https://image.aladin.co.kr/img/events/book/2026/01/ai_sample4_pc.jpg) #dcf0fe repeat center top / cover; display:flex; align-items:center; justify-content:center;">
+                <div style="width:70px; height:50px; border-radius:8px; background:rgba(255,255,255,0.25); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); border:1px solid rgba(255,255,255,0.8); display:flex; align-items:center; justify-content:center;">
+                  <div style="font-size:8px; font-weight:800; color:#ef477f; text-align:center; line-height:1.2;">제과제빵<br>도서전</div>
+                </div>
+              </div>
+              <div style="font-weight:700; font-size:12px; text-align:center; margin-top:8px;">블러 라운드 박스</div>
+            </label>
+            <label class="wizard-style-card" onclick="selectTitleStyle('top6', this)">
+              <input type="radio" name="titleStyle" value="top6" style="display:none;">
+              <div class="style-preview" style="background: url(https://image.aladin.co.kr/img/events/book/2026/01/ai_sample6_mo.jpg) #03080d no-repeat center center / cover;">
+              </div>
+              <div style="background:#fff; padding:6px 0 0; text-align:center;">
+                <div style="font-size:10px; font-weight:800; color:var(--text); line-height:1.2;">미스테리 기획전</div>
+                <div style="font-size:7px; color:var(--text-secondary); margin-top:1px;">추리소설 특집</div>
+              </div>
+              <div style="font-weight:700; font-size:12px; text-align:center; margin-top:4px;">이미지 아래 별도</div>
+            </label>
+          </div>
+          <div class="input-row">
+            <label>메인 타이틀</label>
+            <div class="example-box"><span>💡</span> <b>/br</b> = 모바일 줄바꿈 &nbsp; <b>/br2</b> = PC 줄바꿈 &nbsp; <b>{텍스트}</b> = 핑크 강조<br>예: 외국어가/br나에게로 옵니다! {특별판}</div>
+            <input type="text" id="ps_title" value="외국어가/br나에게로 옵니다!">
+          </div>
+          <div class="input-row">
+            <label>부제목 (선택)</label>
+            <input type="text" id="ps_subtitle" value="봄.봄.봄.봄. 봄이 왔어요 ~">
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <label>타이틀 색상</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="text" id="ps_title_color" value="#8a3013" style="flex:1;">
+              <div style="position:relative; width:36px; height:36px; flex-shrink:0;">
+                <div id="ps_title_color_preview" style="width:36px; height:36px; border-radius:6px; border:1px solid var(--border); background:#8a3013; cursor:pointer;" onclick="document.getElementById('ps_title_color_picker').click();"></div>
+                <input type="color" id="ps_title_color_picker" value="#8a3013" style="position:absolute; top:0; left:0; width:0; height:0; opacity:0; pointer-events:none;" oninput="document.getElementById('ps_title_color').value=this.value; document.getElementById('ps_title_color_preview').style.background=this.value; syncTitleColor(this.value);">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wiz-nav">
+          <button class="btn btn-reset" onclick="wizardPrev()" style="flex:1;">← 이전</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======== 컨텐츠 메인탭 ======== -->
+    <div id="mainTab_content" class="main-tab-content" style="display:none;">
+
+      <!-- 서브 탭 (6개) -->
+      <div class="tab-header sub-tab-header">
+        <button class="tab-btn sub-tab active" onclick="switchTab('author')">✍️ 작가</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('newbook')">📖 신간</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('banner')">🔗 배너</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('gift')">🎁 증정품</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('coupon')">🎟️ 쿠폰</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('booklist')">📚 도서</button>
+        <button class="tab-btn sub-tab" onclick="switchTab('comment')">💬 댓글</button>
+      </div>
+
+      <div id="tab_author" class="tab-content active" style="padding:28px;">
+          <label class="section-label">작가 소개 타입 선택</label>
+          <select id="authorTypeSelect" class="main-select" onchange="renderDirectInputs('author')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="basic">1. 작가 소개 (기본)</option>
+          </select>
+          <div id="authorInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_newbook" class="tab-content">
+          <label class="section-label">신간 소개 타입 선택</label>
+          <select id="newbookTypeSelect" class="main-select" onchange="renderDirectInputs('newbook')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="basic">1. 신간 소개 (기본)</option>
+          </select>
+          <div id="newbookInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_banner" class="tab-content">
+          <label class="section-label">배너 링크 타입 선택</label>
+          <select id="bannerTypeSelect" class="main-select" onchange="renderDirectInputs('banner')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="basic">1. 기본 배너 링크 모음</option>
+          </select>
+          <div id="bannerInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_gift" class="tab-content">
+          <label class="section-label">증정품 타입 선택</label>
+          <select id="giftTypeSelect" class="main-select" onchange="renderDirectInputs('gift')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="slider_only">1. 단일 증정품 (팝업+정보형)</option>
+              <option value="full">2. 증정품 (하단 썸네일형)</option>
+          </select>
+          <div id="giftInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_coupon" class="tab-content">
+          <label class="section-label">쿠폰/적립금 타입 선택</label>
+          <select id="couponTypeSelect" class="main-select" onchange="renderDirectInputs('coupon')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="single">1. 단일 쿠폰 (nType)</option>
+              <option value="multiple">2. 다중 쿠폰 (nTypeList)</option>
+              <option value="reserve_basic">3. 기본 적립금 (일반)</option>
+          </select>
+          <div id="couponInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_booklist" class="tab-content">
+          <label class="section-label">도서 리스트 타입 선택</label>
+          <select id="booklistTypeSelect" class="main-select" onchange="renderDirectInputs('booklist')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="single">1. 단일 도서 리스트 (자동)</option>
+              <option value="multiple">2. 다중 도서 리스트 (탭 기능)</option>
+              <option value="manual">3. 직접 도서 선택 (ItemID 입력)</option>
+              <option value="random">4. 랜덤 탭 (wa_RandomTab)</option>
+          </select>
+          <div id="booklistInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+      <div id="tab_comment" class="tab-content">
+          <label class="section-label">댓글 타입 선택</label>
+          <select id="commentTypeSelect" class="main-select" onchange="renderDirectInputs('comment')">
+              <option value="">-- 타입을 선택하세요 --</option>
+              <option value="basic">1. 일반 댓글 (기본형)</option>
+              <option value="with_item">2. 상품 선택형 댓글</option>
+              <option value="with_author">3. 저자 추천형 댓글</option>
+              <option value="with_image">4. 이미지 첨부형 댓글</option>
+          </select>
+          <div id="commentInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+          <button class="btn btn-add tab-add-btn" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="action-area" id="actionArea">
+    <button class="btn btn-reset" onclick="resetAll()">🗑️ 초기화</button>
+    <button class="btn btn-add" id="contentAddBtn" onclick="addPageSetupToEditor()" style="flex:1;">✅ 상단이미지 코드 추가</button>
+    <button class="btn" id="finishBtn" onclick="finishCode()" style="flex:0 0 auto; padding:0 20px; background:#333; color:#fff;">완성 코드 내보내기</button>
+  </div>
+</div>
+
+<div class="panel-resizer" id="panelResizer"></div>
+<div class="editor-panel">
+  <div class="ep-header">
+    <div class="ep-tab-group">
+      <button class="ep-tab-btn active" onclick="switchEditorTab('code')">코드</button>
+      <button class="ep-tab-btn" onclick="switchEditorTab('preview')">미리보기</button>
+    </div>
+    <div id="codeToolbar" style="display:flex; align-items:center; gap:8px;">
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); white-space:nowrap;">
+        <input type="checkbox" id="headerToggle" checked onchange="toggleHeader()" style="width:16px; height:16px; cursor:pointer; accent-color:var(--primary);">
+        기본 헤더 포함
+      </label>
+      <button class="copy-btn" id="undoBtn" onclick="undoCode()" style="display:none; background:#FFF5FA; color:var(--primary); border-color:var(--primary);">↩ 되돌리기</button>
+      <button class="copy-btn" onclick="copyCode()">📋 전체 복사</button>
+    </div>
+    <div id="previewToolbar" style="display:none; align-items:center; gap:8px;">
+      <button class="copy-btn" id="undoBtnPreview" onclick="undoCode(); updatePreview();" style="display:none; background:#FFF5FA; color:var(--primary); border-color:var(--primary);">↩ 되돌리기</button>
+    </div>
+  </div>
+
+  <textarea id="finalCode" class="code-area" spellcheck="false"></textarea>
+  <div id="previewWrap" class="preview-wrap" style="display:none;">
+    <iframe id="previewFrame" sandbox="allow-same-origin allow-scripts"></iframe>
+  </div>
+</div>
+
+<script>
+// ============================================
+// 기본 헤더 코드
+// ============================================
+const DEFAULT_HEADER = `<%@ Control Language="c#" AutoEventWireup="true" %>
+<%@ Import namespace="Aladdin.FrameWork" %>
+<%@ Import namespace="Aladdin.AppBlock" %>
+<%@ Import namespace="System.Data" %>
+<%@ Import namespace="System.Collections.Generic" %>
+<%@ Import namespace="Aladdin.AppBlock.Blog2.Paper" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info_list" Src="~/ucl/itemview/list/wa_item_info_list.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info" Src="~/ucl/itemview/wa_item_info.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_coupondown_btn" Src="~/ucl/coupon/wa_coupondown_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_comment" Src="~/ucl_editor/events/wa_events_comment.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_RandomTab" Src="~/ucl_editor/events/wa_RandomTab.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_events_sns_btn" Src="~/ucl/events/eventComment/wa_events_sns_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_event_supplements" Src="~/ucl/events/wa_event_supplements.ascx" %>
+<%@ Register Src="/ucl/events/eventComment/wa_events_comment_v3.ascx" TagName="EventComment" TagPrefix="uc1" %>
+<%@ Register TagPrefix="uc1" TagName="alarm" Src="/ucl/m/Event/m_Event_NewAlarm.ascx" %>
+
+<link rel="stylesheet" media="screen" type="text/css" href="/ucl_editor/events/css/comment2019.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>" />
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/swiper@12/swiper-bundle.min.css">
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/mOnly.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>">
+<script type="text/javascript" src="/ucl_editor/events/js/mOnly.js?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>"></scr`+`ipt>
+
+<!-- 이벤트 시작 -->
+<article class="event-wrap">
+`;
+
+document.getElementById('finalCode').value = DEFAULT_HEADER;
+
+// 이미지 서버 경로 자동 생성 (년도/분기)
+function getImageBasePath() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const quarter = '0' + (Math.ceil((now.getMonth() + 1) / 3));
+    return `//image.aladin.co.kr/img/events/book/${year}/${quarter}/`;
+}
+const IMG_BASE = getImageBasePath();
+
+// 상단 이미지 기본 경로 자동 설정
+(function() {
+    const mInput = document.getElementById('ps_top_img_m');
+    const pcInput = document.getElementById('ps_top_img_pc');
+    if (mInput) mInput.value = 'https://image.aladin.co.kr/img/events/book/2025/03/250908_hk_mbg.jpg';
+    if (pcInput) pcInput.value = 'https://image.aladin.co.kr/img/events/book/2025/03/250908_hk_bg.jpg';
+})();
+
+// 헤더 토글 함수
+function toggleHeader() {
+    const codeArea = document.getElementById('finalCode');
+    const isChecked = document.getElementById('headerToggle').checked;
+    const currentCode = codeArea.value;
+    
+    if (isChecked) {
+        // 헤더 추가: 현재 코드 앞에 헤더 붙이기
+        if (!currentCode.startsWith('<%@ Control')) {
+            codeArea.value = DEFAULT_HEADER + currentCode;
+        }
+    } else {
+        // 헤더 제거: DEFAULT_HEADER 부분만 제거
+        if (currentCode.startsWith(DEFAULT_HEADER)) {
+            codeArea.value = currentCode.substring(DEFAULT_HEADER.length);
+        } else if (currentCode.startsWith('<%@ Control')) {
+            // 헤더가 약간 변형되었을 수 있으니 template_v2.css 줄 끝까지 제거
+            const headerEndMarker = 'template_v2.css';
+            const idx = currentCode.indexOf(headerEndMarker);
+            if (idx !== -1) {
+                const afterHeader = currentCode.substring(idx);
+                const lineEnd = afterHeader.indexOf('\n');
+                codeArea.value = lineEnd !== -1 ? afterHeader.substring(lineEnd + 1).replace(/^\s*\n/, '') : '';
+            }
+        }
+    }
+    showToast(isChecked ? '✅ 기본 헤더가 포함됩니다.' : '📝 기본 헤더가 제외됩니다.');
+}
+
+// ============================================
+// 스크립트 템플릿
+// ============================================
+const SCRIPT_SINGLE = `
+<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>
+<script>
+    var $j183 = $j183 || jQuery.noConflict();
+    var slides;
+    $j183(function ($) {
+        var swiper = new Swiper('.giftswiper', {
+            loop:true, speed:800,
+            autoplay: { delay: 2500, disableOnInteraction: false },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            pagination: { el: '.swiper-pagination', clickable: true }
+        });
+        jQuery('.giftswiper .swiper_pause_btn').click(function(){
+            if(jQuery(this).hasClass('stop')) {
+                jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
+                swiper.autoplay.start();
+            } else {
+                jQuery(this).addClass('stop').text('자동슬라이드 시작');
+                swiper.autoplay.stop();
+            }
+        });
+    });
+</scr`+`ipt>`;
+
+const SCRIPT_FULL = `
+<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>
+<script>
+    function random_index() {
+      var r_index = Math.floor(Math.random() * (jQuery('.random .swiper-slide').length));
+      return parseInt(r_index);
+    }
+    var $j183 = $j183 || jQuery.noConflict();
+    var slides;
+    $j183(function ($) {
+    var swiper2 = new Swiper('.giftswiper', {
+        loop:true, speed:800,
+        autoplay: { delay: 2500, disableOnInteraction: false },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        pagination: { el: '.swiper-pagination', type: "fraction" }
+    });
+    jQuery('.giftswiper .swiper_pause_btn').click(function(){
+        if(jQuery(this).hasClass('stop')) {
+            jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
+            swiper2.autoplay.start();
+        } else {
+            jQuery(this).addClass('stop').text('자동슬라이드 시작');
+            swiper2.autoplay.stop();
+        }
+    });
+    const thumbnails = ['thumbnail1', 'thumbnail2', 'thumbnail3'];
+    thumbnails.forEach(function(name) {
+        new Swiper('.' + name, {
+            loop: false,
+            freeMode: { enabled: true, sticky: true },
+            slidesPerView: 'auto',
+            navigation: { nextEl: "." + name + "-next", prevEl: "." + name + "-prev" }
+        });
+    });
+});
+</scr`+`ipt>`;
+
+// ============================================
+// 데이터 정의
+// ============================================
+const MODULE_DATA = {
+    gift: {
+        slider_only: { id: 'gift_slider_only', name: '단일 증정품 (팝업+정보형)', inputs: ['gift_slider_images', 'gift_popup_url', 'gift_name', 'gift_condition_text', 'gift_link', 'gift_info'] },
+        full: { id: 'gift_full', name: '증정품 (하단 썸네일형)', inputs: ['gift_slider_images', 'gift_condition_title', 'gift_thumbnails', 'gift_link', 'gift_info'] }
+    },
+    booklist: {
+        single: { id: 'booklist_single', name: '단일 도서 리스트', inputs: ['booklist_title', 'cid', 'item_count'] },
+        multiple: { id: 'booklist_multiple', name: '다중 도서 리스트 (탭 기능)', inputs: [] },
+        manual: { id: 'booklist_manual', name: '직접 도서 선택 (ItemID)', inputs: ['booklist_title', 'itemid_list'] },
+        random: { id: 'booklist_random', name: '랜덤 탭 (wa_RandomTab)', inputs: [] }
+    },
+    comment: {
+        basic: { id: 'comment_basic', name: '일반 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_item: { id: 'comment_with_item', name: '상품 추가 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_author: { id: 'comment_with_author', name: '저자 추천 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_image: { id: 'comment_with_image', name: '이미지 업로드 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] }
+    },
+    coupon: {
+        single: { id: 'coupon_single', name: '단일 쿠폰 (nType)', inputs: ['coupon_title', 'coupon_condition', 'coupon_name', 'coupon_ntype', 'coupon_price', 'coupon_info'] },
+        multiple: { id: 'coupon_multiple', name: '다중 쿠폰 (nTypeList)', inputs: ['coupon_title', 'coupon_condition', 'coupon_name', 'coupon_ntypelist', 'coupon_price', 'coupon_info'] },
+        reserve_basic: { id: 'reserve_basic', name: '기본 적립금', inputs: ['coupon_title', 'coupon_condition', 'reserve_amount', 'coupon_info'] }
+    },
+    author: {
+        basic: { id: 'author_basic', name: '작가 소개 (기본)', inputs: ['author_name', 'author_image', 'author_bg_color', 'author_desc', 'author_file_id'] }
+    },
+    newbook: {
+        basic: { id: 'newbook_basic', name: '신간 소개 (기본)', inputs: ['newbook_title', 'newbook_covers', 'newbook_desc'] }
+    },
+    banner: {
+        basic: { id: 'banner_basic', name: '기본 배너 링크 모음', inputs: [] }
+    }
+};
+
+let currentTab = 'author';
+
+// ============================================
+// UI 제어 로직
+// ============================================
+function switchTab(tabName) {
+    currentTab = tabName;
+    document.querySelectorAll('.sub-tab').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.getElementById(`tab_${tabName}`).classList.add('active');
+
+    // 하단 버튼 상태 동기화
+    const addBtn = document.getElementById('contentAddBtn');
+    if (addBtn) {
+        addBtn.textContent = tabAddedState[tabName] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
+        addBtn.style.background = tabAddedState[tabName] ? 'var(--secondary)' : '';
+    }
+}
+
+function renderDirectInputs(category) {
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const container = document.getElementById(`${category}InputArea`);
+    const selectedType = typeSelect.value;
+    
+    if (!selectedType) { 
+        container.innerHTML = '👆 위에서 타입을 선택하면 입력창이 나타납니다.'; 
+        container.classList.add('empty-state'); 
+        return; 
+    }
+    
+    // 같은 타입을 다시 선택한 경우 무시
+    if (typeSelect.dataset.previousValue === selectedType) return;
+    
+    typeSelect.dataset.previousValue = selectedType;
+    container.classList.remove('empty-state');
+    
+    const module = MODULE_DATA[category][selectedType];
+
+    // 기존 특수 UI 처리들
+    if (selectedType === 'multiple' && category === 'booklist') { renderMultiListUI(container); return; }
+    if (selectedType === 'random' && category === 'booklist') { renderRandomTabUI(container); return; }
+    if (selectedType === 'basic' && category === 'banner') { renderBannerUI(container); return; }
+
+    // HTML 생성 시작
+    let html = `<h4 style="margin:0 0 15px 0; font-size:16px; color:#8b5cf6;">📝 상세 정보 입력 (${module.name})</h4>`;
+
+    // ★ 수정된 부분: 입력 필드 루프 ★
+    html += module.inputs.map(inp => {
+        // 썸네일 입력인 경우 동적 UI 컨테이너로 대체
+        if (inp === 'gift_thumbnails') {
+            return `
+            <div class="input-row">
+                <label>썸네일 리스트 설정</label>
+                <div class="example-box"><span>💡</span> 이미지URL, 사은품명, 팝업URL을 각각 입력하세요.</div>
+                <div id="thumbListContainer"></div>
+                <button type="button" class="btn-add-thumb" onclick="addThumbRow()">+ 썸네일 한 줄 추가</button>
+                <input type="hidden" id="gift_thumbnails"> </div>`;
+        }
+        return getInputFieldHtml(inp);
+    }).join('');
+
+    // 작가 체크박스 + 신간알리미 드롭다운
+    if (category === 'author') {
+        html += `
+        <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(192, 132, 252, 0.08) 100%); border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+            <div style="font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 12px;">옵션 설정</div>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; margin-bottom: 8px;">
+                <input type="checkbox" id="authorNukiCheckbox" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                <span style="font-weight: 600;">누끼 이미지 (nuki 클래스 적용)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; margin-bottom: 12px;">
+                <input type="checkbox" id="authorFileCheckbox" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                <span style="font-weight: 600;">저자 파일 버튼 표시</span>
+            </label>
+
+            <div style="border-top: 1px solid rgba(139, 92, 246, 0.12); padding-top: 12px; margin-top: 4px;">
+                <div style="font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 8px;">신간 알리미 설정</div>
+                <select id="authorAlarmType" class="main-select" style="margin-bottom: 12px;" onchange="onAlarmTypeChange()">
+                    <option value="">사용 안 함</option>
+                    <option value="1" selected>1. 저자 신간알리미</option>
+                    <option value="2">2. 시리즈 신간알리미</option>
+                    <option value="3">3. 북 신간알리미</option>
+                    <option value="4">4. 전자책 출간 알리미</option>
+                    <option value="5">5. 출판사 신간알리미</option>
+                    <option value="6">6. 분야 신간알리미</option>
+                    <option value="7">7. 재출간 알리미</option>
+                </select>
+                <div id="alarmValueArea" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="input-row" style="margin-bottom: 0;">
+                        <label id="alarmValueLabel" style="font-size: 13px !important;">AlarmValue (AuthorId)</label>
+                        <div class="example-box"><span>💡</span> <span id="alarmValueExample">예: 6306681</span></div>
+                        <input type="text" id="author_alarm_value" placeholder="값을 입력하세요">
+                    </div>
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; margin-top: 4px;">
+                        <input type="checkbox" id="alarmImageBtnCheckbox" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+                        <span style="font-weight: 600;">이미지 버튼 사용</span>
+                    </label>
+                    <div id="alarmImageUrlArea" style="display: none;">
+                        <div class="input-row" style="margin-bottom: 0;">
+                            <label style="font-size: 13px !important;">버튼 이미지 URL</label>
+                            <div class="example-box"><span>💡</span> 예: ${IMG_BASE}alarm_btn.png</div>
+                            <input type="text" id="author_alarm_image" placeholder="이미지 URL 입력">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // 적립금 체크박스 (기존 로직 유지)
+    if (selectedType === 'reserve_basic') {
+         html += `
+        <div style="margin-top: 20px; padding: 15px; background: #f0f7ff; border-radius: 0; border-left: 4px solid var(--primary);">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="reserveCommentLinkCheckbox" style="width: 18px; height: 18px; cursor: pointer;">
+                <span style="font-weight: 600;">댓글 작성하러 가기 버튼 추가</span>
+            </label>
+        </div>`;
+    }
+
+    container.innerHTML = html;
+    
+    // 썸네일 타입이면 기본으로 1줄 추가
+    if (module.inputs.includes('gift_thumbnails')) {
+        addThumbRow();
+    }
+    
+    addInputFieldProtection(container, category);
+}
+
+// ★ 수정된 함수: 이전 행 값 복사 기능 추가 ★
+function addThumbRow() {
+    const container = document.getElementById('thumbListContainer');
+    const rows = container.querySelectorAll('.thumb-row');
+    
+    // 1. 기본값 설정 (첫 번째 줄일 때 사용할 값)
+    let vUrl = IMG_BASE + 'gift_thumb01.jpg';
+    let vTxt = '파우치';
+    let vPop = '/Ucl_Editor/events/book/sample_popup.aspx';
+
+    // 2. 만약 이미 입력된 행이 있다면, '가장 마지막 행'의 값을 가져옴
+    if (rows.length > 0) {
+        const lastRow = rows[rows.length - 1];
+        vUrl = lastRow.querySelector('.thumb-url').value;
+        vTxt = lastRow.querySelector('.thumb-txt').value;
+        vPop = lastRow.querySelector('.thumb-pop').value;
+    }
+
+    // 3. 새 행 생성 (위에서 결정된 vUrl, vTxt, vPop 값을 value에 넣음)
+    const div = document.createElement('div');
+    div.className = 'thumb-row';
+    div.innerHTML = `
+        <input type="text" class="thumb-url" placeholder="이미지 URL" value="${vUrl}" />
+        <input type="text" class="thumb-txt" placeholder="멘트" value="${vTxt}" />
+        <input type="text" class="thumb-pop" placeholder="팝업 URL" value="${vPop}" />
+        <button type="button" class="btn-del-thumb" onclick="this.parentElement.remove()">삭제</button>
+    `;
+    container.appendChild(div);
+}
+
+// ✅ 입력 내용이 있는지 확인하는 함수
+function checkIfContentExists(container) {
+    // empty-state인 경우 내용 없음으로 판단
+    if (container.classList.contains('empty-state')) return false;
+    const inputs = container.querySelectorAll('input[type="text"], textarea');
+    for (let input of inputs) {
+        if (!input.value || input.value.trim() === '') continue;
+        // defaultValue와 동일하면 사용자 입력이 아니므로 건너뜀
+        if (input.defaultValue && input.value.trim() === input.defaultValue.trim()) continue;
+        return true;
+    }
+    return false;
+}
+
+// ✅ 입력 필드 보호 기능 추가
+function addInputFieldProtection(container, category) {
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const inputs = container.querySelectorAll('input[type="text"], textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function(e) {
+            // 타입이 선택되지 않은 경우 (혹시 모를 상황 대비)
+            if (!typeSelect.value) {
+                e.target.blur();
+                alert('⚠️ 먼저 위의 타입 선택 박스에서 타입을 선택해주세요!');
+            }
+        });
+    });
+}
+
+function renderRandomTabUI(container) {
+    container.innerHTML = `
+        <h4 style="margin:0 0 15px 0; font-size:14px; color:#8b5cf6;">🔀 랜덤 탭 구성 (파일명 자동생성)</h4>
+        <div class="example-box"><span>💡 Tip</span> 첫 파일명에 <b>_1</b> 포함 시 (예: basic_1), 추가 시 <b>_2, _3</b> 자동 증가.</div>
+        <div id="randomTabContainer"></div>
+        <button type="button" onclick="addRandomTabItem()" style="width:100%; padding:12px; background:#f0f2f5; border:2px dashed #ccc; border-radius:8px; color:#555; font-weight:bold; cursor:pointer; margin-top:10px;">+ 탭 추가하기</button>
+    `;
+    addRandomTabItem();
+}
+function addRandomTabItem() {
+    const container = document.getElementById('randomTabContainer');
+    const idx = container.children.length + 1;
+    let nextValue = '';
+    
+    // 파일명 자동 증가 로직
+    if (idx > 1) {
+        const prevInput = container.lastElementChild.querySelector('.rt-ucl');
+        if (prevInput && prevInput.value) {
+            const match = prevInput.value.match(/(.*)_(\d+)$/);
+            nextValue = match ? `${match[1]}_${parseInt(match[2]) + 1}` : prevInput.value + `_${idx}`;
+        }
+    } else { nextValue = '2022_monly_basic2_1'; }
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'random-tab-item';
+    itemDiv.style.cssText = 'background:#fff; border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:10px; position:relative; display:flex; gap:10px; align-items:flex-end;';
+    
+    // ▼ 아래 innerHTML 부분의 style에 font-size:16px; 와 padding:10px; 가 추가되었습니다.
+    itemDiv.innerHTML = `
+        <div style="flex:1;">
+            <label style="font-size:15px; color:#666; display:block; margin-bottom:5px;">탭 이름</label>
+            <input type="text" class="rt-title" 
+                style="width:100%; padding:10px; font-size:16px; border:1px solid #eee; border-radius:4px;" 
+                placeholder="탭 ${idx}" value="탭 ${idx}">
+        </div>
+        <div style="flex:2;">
+            <label style="font-size:15px; color:#666; display:block; margin-bottom:5px;">UCL 파일명</label>
+            <input type="text" class="rt-ucl" 
+                style="width:100%; padding:10px; font-size:16px; border:1px solid #eee; border-radius:4px;" 
+                value="${nextValue}">
+        </div>
+        ${idx > 1 ? `<button onclick="this.parentElement.remove();" style="padding:10px 15px; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.15); border-radius:8px; color:#ef4444; cursor:pointer; font-weight:bold;">삭제</button>` : ''}
+    `;
+    
+    container.appendChild(itemDiv);
+}
+
+function renderBannerUI(container) {
+    container.innerHTML = `
+        <h4 style="margin:0 0 15px 0; font-size:16px; color:#8b5cf6;">📝 배너 링크 구성</h4>
+        <div class="example-box"><span>💡</span> 링크 텍스트와 URL을 입력하세요. 행을 추가/삭제할 수 있습니다.</div>
+        <div id="bannerListContainer"></div>
+        <button type="button" class="btn-add-thumb" onclick="addBannerRow()">+ 배너 링크 추가</button>
+    `;
+    // 기본 6줄 추가 (실제 이벤트 기준)
+    const defaults = [
+        { txt: '1권만 구매해도 무료배송!', url: '#' },
+        { txt: '업그레이드 된 당일배송! 양탄자배송', url: '#' },
+        { txt: '최대 2천원 추가 적립금', url: '#' },
+        { txt: '신용카드 무이자 할부', url: '#' },
+        { txt: 'YBM 최신 정기시험 기출 독점 출간!', url: '#' },
+        { txt: '에듀윌 토익 런칭!', url: '#' }
+    ];
+    defaults.forEach(d => addBannerRow(d.txt, d.url));
+}
+
+function addBannerRow(txt, url) {
+    const container = document.getElementById('bannerListContainer');
+    txt = txt || '링크 텍스트';
+    url = url || '#';
+
+    const div = document.createElement('div');
+    div.className = 'thumb-row';
+    div.innerHTML = `
+        <input type="text" class="banner-txt" placeholder="링크 텍스트" value="${txt}" style="flex:2;" />
+        <input type="text" class="banner-url" placeholder="URL" value="${url}" style="flex:2;" />
+        <button type="button" class="btn-del-thumb" onclick="this.parentElement.remove()">삭제</button>
+    `;
+    container.appendChild(div);
+}
+
+function renderMultiListUI(container) {
+    container.innerHTML = `
+        <h4 style="margin:0 0 15px 0; font-size:14px; color:#8b5cf6;">📚 탭 도서 리스트 구성</h4>
+        <div id="multiTabContainer"></div>
+        <button type="button" onclick="addTabItem()" style="width:100%; padding:12px; background:#f0f2f5; border:2px dashed #ccc; border-radius:8px; color:#555; font-weight:bold; cursor:pointer; margin-top:10px;">+ 탭 추가하기</button>
+    `;
+    addTabItem();
+}
+function addTabItem() {
+    const container = document.getElementById('multiTabContainer');
+    const idx = container.children.length + 1;
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'multi-tab-item';
+    itemDiv.style.cssText = 'background:#fff; border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:10px; position:relative;';
+    itemDiv.innerHTML = `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:bold; color:#8b5cf6;">TAB 0${idx}</span>${idx > 1 ? `<button onclick="this.parentElement.parentElement.remove(); reindexTabs();" style="background:none; border:none; color:#999; cursor:pointer;">❌ 삭제</button>` : ''}</div><div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"><div><label style="font-size:15px; color:#666;">탭 제목</label><input type="text" class="mt-title" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="탭 이름"></div><div><label style="font-size:15px; color:#666;">링크 URL</label><input type="text" class="mt-link" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="https://..."></div><div><label style="font-size:15px; color:#666;">CID</label><input type="text" class="mt-cid" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="12345"></div><div><label style="font-size:15px; color:#666;">ItemCount</label><input type="text" class="mt-count" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" value="80"></div></div>`;
+    container.appendChild(itemDiv);
+}
+function reindexTabs() { document.querySelectorAll('.multi-tab-item').forEach((item, index) => { item.querySelector('span').innerText = `TAB 0${index + 1}`; }); }
+
+function getInputFieldHtml(inputType) {
+    const meta = getInputMeta(inputType);
+    const isTextarea = ['gift_slider_images', 'gift_thumbnails', 'gift_info', 'itemid_list', 'coupon_info', 'coupon_title', 'author_desc', 'newbook_covers', 'newbook_desc'].includes(inputType);
+    const defaultVal = meta.defaultValue || '';
+    return `<div class="input-row"><label>${meta.label}</label>${meta.example ? `<div class="example-box"><span>💡</span> ${meta.example}</div>` : ''}${isTextarea ? `<textarea id="${inputType}" placeholder="내용을 입력하세요">${defaultVal}</textarea>` : `<input type="text" id="${inputType}" placeholder="내용을 입력하세요" value="${defaultVal}">`}</div>`;
+}
+
+function getInputMeta(inputType) {
+    const B = IMG_BASE; // 현재 분기 이미지 경로
+    const map = {
+        // 적립금/쿠폰
+        coupon_title: { label: '메인 타이틀 (줄바꿈 = span.br/br2)', example: '이벤트 구매 고객에게 드리는\n즉시 할인 쿠폰!', defaultValue: '이벤트 구매 고객에게 드리는\n즉시 할인 쿠폰!' },
+        coupon_condition: { label: '지급/할인 조건', example: '2만원 이상 2천원, 4만원 이상 5천원', defaultValue: '2만원 이상 2천원, 4만원 이상 5천원' },
+        coupon_name: { label: '쿠폰명', example: '즉시할인쿠폰', defaultValue: '즉시할인쿠폰' },
+        coupon_ntype: { label: '쿠폰 번호 (nType)', example: '15882', defaultValue: '15882' },
+        coupon_ntypelist: { label: '쿠폰 번호 목록 (쉼표구분)', example: '22618,22616,15102', defaultValue: '22618,22616,15102' },
+        coupon_price: { label: '할인 금액/율', example: '5,000 또는 10%', defaultValue: '5,000' },
+        coupon_info: { label: '유의사항 (줄바꿈 구분)', example: '이벤트 기간 : 4월 18일 ~ 5월 18일', defaultValue: '이벤트 기간: 11월 28일 10시 ~ 선착순 한정수량\n예약판매 중인 외국도서, 업체직배송상품, 중고도서는 주문 금액에서 제외됩니다.\n이번 주문으로 발생할 예상 마일리지에서 우선 차감됩니다.' },
+        reserve_amount: { label: '적립금 액수 (숫자만/쉼표포함)', example: '1,000', defaultValue: '1,000' },
+
+        // 증정품
+        gift_popup_url: { label: '자세히보기 팝업 URL', example: '/Ucl_Editor/events/book/pop_name.aspx', defaultValue: '/Ucl_Editor/events/book/sample_popup2.aspx' },
+        gift_name: { label: '증정품명', example: '피너츠 쥬트백+참 세트', defaultValue: '내열 유리컵' },
+        gift_condition_text: { label: '증정 조건', example: '대상도서 1권 포함, 3만원 이상 구입 시', defaultValue: '시즌 2 1, 2 동시 구매 시' },
+        gift_slider_images: { label: '슬라이더 이미지 (줄바꿈 구분)', example: B + 'img_name.jpg | 설명', defaultValue: 'https://image.aladin.co.kr/img/events/book/2025/03/250908_hk_r1.jpg | 증정품1\nhttps://image.aladin.co.kr/img/events/book/2025/03/250908_hk_r2.jpg | 증정품2\nhttps://image.aladin.co.kr/img/events/book/2025/03/250908_hk_r3.jpg | 증정품3\nhttps://image.aladin.co.kr/img/events/book/2025/03/250908_hk_r4.jpg | 증정품4' },
+        gift_condition_title: { label: '증정 조건 제목', example: '4만원 이상 구매 시', defaultValue: '5만원 이상 구매 시' },
+        gift_thumbnails: { label: '썸네일 (줄바꿈 구분)', example: '이미지URL | 사은품명 | 팝업URL' },
+        gift_link: { label: '대상도서 링크', example: 'CID 부분만 수정하세요', defaultValue: 'https://www.aladin.co.kr/shop/wbrowse.aspx?CID=000000' },
+        gift_info: { label: '유의사항 (줄바꿈 구분)', example: '한정수량으로 조기 품절될 수 있습니다.', defaultValue: '이벤트 기간: 11월 28일 10시 ~ 선착순 한정수량\n예약판매 중인 외국도서, 업체직배송상품, 중고도서는 주문 금액에서 제외됩니다.\n이번 주문으로 발생할 예상 마일리지에서 우선 차감됩니다.\n예상 마일리지로 부족한 금액은 기존에 보유한 적립금, 마일리지 순서로 차감되며, 부족한 경우 추가 결제하시면 됩니다.\n참고서, 중고도서, 외국도서, 전자책 주문금액은 제외됩니다.' },
+        booklist_title: { label: '리스트 제목', example: '추천 도서', defaultValue: '신간 추천' },
+        cid: { label: 'CID', example: '196514', defaultValue: '196026' },
+        item_count: { label: 'ItemCount', example: '200', defaultValue: '80' },
+        itemid_list: { label: 'ItemID 목록 (쉼표)', example: '111, 222', defaultValue: '290210397, 291710358, 289175924' },
+        event_id: { label: '이벤트 ID', example: '123456', defaultValue: '256501' },
+        comment_title: { label: '댓글 제목', example: '기대평', defaultValue: '기대평을 남겨주세요' },
+        comment_subtitle: { label: '댓글 부제목', example: '적립금 지급', defaultValue: '추첨을 통해 적립금 지급' },
+        admin_email: { label: '관리자 이메일', example: 'admin@aladin.co.kr', defaultValue: 'admin@aladin.co.kr' },
+
+        // 작가
+        // 신간 소개
+        newbook_title: { label: '신간 제목', example: '{중괄호} = 핑크 강조 &nbsp;|&nbsp; 예: 별똥별이 떨어지는 그곳에서 기다려 {시즌 2} 출간', defaultValue: '별똥별이 떨어지는 그곳에서 기다려 {시즌 2} 출간' },
+        newbook_covers: { label: '표지 이미지 URL (줄바꿈 구분)', example: '표지 URL을 줄바꿈으로 구분', defaultValue: 'https://image.aladin.co.kr/product/29318/2/cover500/8901258277_1.jpg\nhttps://image.aladin.co.kr/product/29318/2/cover500/8901258285_1.jpg' },
+        newbook_desc: { label: '신간 소개글', example: '이 책은...', defaultValue: '별똥별이 떨어지면 새로운 마녀가 탄생하는, 이상하고 아름다운 마법 나라 이야기. 사람 모습을 한 판의 나라 사람들과 괴물의 모습을 한 기둥의 나라 사람들로 나누어진 기묘한 섬 테이블랜드에서, 두 번째 모험이 본격적으로 펼쳐진다.' },
+
+        author_name: { label: '작가명', example: '만물상', defaultValue: '만물상' },
+        author_image: { label: '작가 이미지 URL', example: B + 'author_name.png', defaultValue: B + 'author_name.png' },
+        author_bg_color: { label: '배경색 (HEX)', example: '#A88696', defaultValue: '#A88696' },
+        author_desc: { label: '작가 소개글', example: '카카오웹툰에서 따뜻한 그림체와...', defaultValue: '카카오웹툰에서 따뜻한 그림체와 동화 분위기가 가득한 「양말 도깨비」로 데뷔, 많은 독자들에게 열렬한 지지를 받으며 인기 작가로 자리매김했다. 현재 감성적이고 탄탄한 세계관으로 「별똥별이 떨어지는 그곳에서 기다려」를 연재하며 자신만의 독특한 이야기를 펼치는 중이다.' },
+        author_file_id: { label: '저자 파일 ID (AuthorId)', example: '2450874 (숫자만 입력하면 URL 자동 생성)', defaultValue: '6306681' }
+    };
+    return map[inputType] || { label: inputType, example: '' };
+}
+
+const tabAddedState = {}; // 탭별 추가 여부 추적
+
+function addToEditor() {
+    const category = currentTab;
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const selectedType = typeSelect.value;
+
+    if (!selectedType) { showToast('⚠️ 추가할 타입을 먼저 선택해주세요!'); return; }
+
+    // 수정 모드: 이전 코드 되돌리고 다시 추가
+    if (tabAddedState[category]) {
+        undoCode();
+    }
+    
+    // 썸네일 UI가 있다면 데이터를 합쳐서 hidden input에 넣기
+    const thumbContainer = document.getElementById('thumbListContainer');
+    if (thumbContainer) {
+        const rows = thumbContainer.querySelectorAll('.thumb-row');
+        const lines = [];
+        rows.forEach(row => {
+            const url = row.querySelector('.thumb-url').value.trim();
+            const txt = row.querySelector('.thumb-txt').value.trim();
+            const pop = row.querySelector('.thumb-pop').value.trim();
+            
+            if (url) { lines.push(`${url} | ${txt} | ${pop}`); }
+        });
+        document.getElementById('gift_thumbnails').value = lines.join('\n');
+    }
+
+    let values = {};
+    const module = MODULE_DATA[category][selectedType];
+    module.inputs.forEach(id => { const el = document.getElementById(id); if (el) values[id] = el.value; });
+    
+    if (category === 'booklist' && selectedType === 'multiple') {
+        const items = [];
+        document.querySelectorAll('.multi-tab-item').forEach(div => {
+            items.push({ title: div.querySelector('.mt-title').value || '제목없음', link: div.querySelector('.mt-link').value || '#', cid: div.querySelector('.mt-cid').value || '0', count: div.querySelector('.mt-count').value || '80' });
+        });
+        values.multiItems = items;
+    }
+    if (category === 'banner' && selectedType === 'basic') {
+        const items = [];
+        document.querySelectorAll('#bannerListContainer .thumb-row').forEach(row => {
+            const txt = row.querySelector('.banner-txt').value.trim();
+            const url = row.querySelector('.banner-url').value.trim();
+            if (txt) items.push({ txt, url: url || '#' });
+        });
+        values.bannerItems = items;
+    }
+    if (category === 'booklist' && selectedType === 'random') {
+        const items = [];
+        document.querySelectorAll('.random-tab-item').forEach(div => { items.push({ ucl: div.querySelector('.rt-ucl').value || '' }); });
+        values.randomItems = items;
+    }
+
+    const generatedCode = generateModuleCode(module.id, values);
+    const codeArea = document.getElementById('finalCode');
+    saveHistory();
+    codeArea.value += '\n' + generatedCode;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    // 버튼 상태 전환
+    const addBtn = document.getElementById('contentAddBtn');
+    if (!tabAddedState[category]) {
+        tabAddedState[category] = true;
+        showToast(`✅ [${module.name}] 코드가 추가되었습니다.`);
+    } else {
+        showToast(`✅ [${module.name}] 코드가 수정되었습니다.`);
+    }
+    // 현재 탭이 추가된 상태면 버튼 텍스트 변경
+    if (addBtn) {
+        addBtn.textContent = tabAddedState[currentTab] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
+        addBtn.style.background = tabAddedState[currentTab] ? 'var(--secondary)' : '';
+    }
+
+    // 미리보기 탭이 활성화 상태면 자동 갱신
+    if (currentEditorTab === 'preview') updatePreview();
+}
+
+// ============================================
+// ★ 코드 생성 로직 ★
+// ============================================
+function generateModuleCode(modId, v) {
+    
+    // [NEW] 신간 소개
+    if (modId === 'newbook_basic') {
+        const titleRaw = v.newbook_title || '';
+        const desc = v.newbook_desc || '';
+        const covers = parseTextLines(v.newbook_covers);
+        const coverHtml = covers.map(url => `                <li><a href="#"><img src="${url.trim()}" alt=""></a></li>`).join('\n');
+
+        const titleHtml = parseTitleText(titleRaw) || titleRaw;
+
+        return `<!--신간 소개 섹션-->
+        <section class="monly_newbook">
+            <h2 class="newbook-tit">${titleHtml}</h2>
+            <ul class="newbook_img">
+${coverHtml}
+            </ul>
+            <p>${desc}</p>
+        </section>
+        <!--// 신간 소개 섹션-->`;
+    }
+
+    // [NEW] 배너 링크 모음
+    if (modId === 'banner_basic') {
+        const items = v.bannerItems || [];
+        if (items.length === 0) return '';
+        const listHtml = items.map(i => `                <li><a href="${i.url}">${i.txt}</a></li>`).join('\n');
+        return `<!--배너 링크 모음-->
+        <section>
+            <h2 class="sr-only">알라딘 주요 이벤트 링크 모음</h2>
+            <div class="monly_basic_banner fadein">
+                <ul>
+${listHtml}
+                </ul>
+            </div>
+        </section>
+        <!--// 배너 링크 모음-->`;
+    }
+
+    // [NEW] 작가 소개 로직
+    if (modId === 'author_basic') {
+        const name = v.author_name || '작가명';
+        const image = v.author_image || IMG_BASE + 'author_name.png';
+        const bgColor = v.author_bg_color || '#A88696';
+        const desc = v.author_desc || '';
+        const fileId = v.author_file_id || '';
+        const fileUrl = fileId ? `https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${fileId}` : '#';
+
+        const isNuki = document.getElementById('authorNukiCheckbox')?.checked;
+        const showFile = document.getElementById('authorFileCheckbox')?.checked;
+        const alarmType = document.getElementById('authorAlarmType')?.value || '';
+        const alarmValue = document.getElementById('author_alarm_value')?.value || '';
+        const useImageBtn = document.getElementById('alarmImageBtnCheckbox')?.checked;
+        const alarmImage = document.getElementById('author_alarm_image')?.value || '';
+
+        const nukiClass = isNuki ? ' nuki' : '';
+
+        // 알리미 버튼 생성
+        let alarmBtnAttr = '';
+        if (alarmType && alarmValue) {
+            const meta = ALARM_META[alarmType];
+            if (useImageBtn && alarmImage) {
+                alarmBtnAttr = `AlarmButton="<img src='${alarmImage}' />"`;
+            } else {
+                alarmBtnAttr = `AlarmButton="${meta.button}"`;
+            }
+        }
+
+        let btnHtml = '';
+        const hasFile = showFile;
+        const hasAlarm = alarmType && alarmValue;
+        if (hasFile || hasAlarm) {
+            let btns = '';
+            if (hasFile) btns += `\n                        <a href="${fileUrl}">저자 파일</a>`;
+            if (hasAlarm) btns += `\n                        <uc1:alarm runat="server" AlarmType="${alarmType}" AlarmValue="${alarmValue}" ${alarmBtnAttr} />`;
+            btnHtml = `\n                    <div class="btn">${btns}\n                    </div>`;
+        }
+
+        return `<!--작가 소개 섹션-->
+        <section>
+            <!--작가 이미지-->
+            <div class="monly_author_img${nukiClass}" style="background-color:${bgColor}">
+                <img src="${image}" alt="${name}">
+            </div>
+            <!--// 작가 이미지-->
+
+            <!--작가 설명-->
+            <div class="monly_author_info">
+                <div class="info_top">
+                    <h2>${name}</h2>${btnHtml}
+                </div>
+                <p>${desc}</p>
+            </div>
+            <!--// 작가 설명-->
+        </section>
+        <!--// 작가 소개 섹션-->`;
+    }
+
+    // [NEW] 적립금/쿠폰 로직 (통합 처리)
+    if (modId.startsWith('coupon_') || modId.startsWith('reserve_')) {
+        const titleLines = parseTextLines(v.coupon_title);
+        const titleHtml = titleLines.length ? `<h3>${titleLines.map(line => `<span class="br">${line}</span>`).join(' ')}</h3>` : '<h3><span class="br">타이틀</span></h3>';
+        const condition = v.coupon_condition || '조건 내용';
+        const infos = parseTextLines(v.coupon_info);
+        const buttonLink = v.reserve_button_link || '';
+        
+        let coreHtml = '';
+
+        // 1. 적립금
+        if (modId.startsWith('reserve_')) {
+            const amount = v.reserve_amount || '1,000';
+            coreHtml = `
+    <div class="savedmoney_new">
+        <span class="tit">적립금</span>
+        <span class="price">${amount}</span>
+    </div>`;
+            
+            // 체크박스가 체크되어 있으면 버튼 추가
+            const checkbox = document.getElementById('reserveCommentLinkCheckbox');
+            if (checkbox && checkbox.checked) {
+                coreHtml += `
+    <a href="#comment" class="pink_big_btn mb0">댓글 작성하러 가기</a>`;
+            }
+        }
+        // 2. 쿠폰
+        else {
+            const couponName = v.coupon_name || '쿠폰명';
+            const price = v.coupon_price || '5,000';
+            let btnHtml = '';
+            if (modId === 'coupon_single') {
+                const nType = v.coupon_ntype || '00000';
+                btnHtml = `<uc1:wa_coupondown_btn id="Wa_coupondown_btn_${Math.floor(Math.random()*1000)}" nType="${nType}" runat="server" Price="${price}"></uc1:wa_coupondown_btn>`;
+            } else {
+                const nTypeList = v.coupon_ntypelist || '';
+                btnHtml = `<uc1:wa_coupondown_btn nTypeList="${nTypeList}" runat="server" Price="${price}" />`;
+            }
+            coreHtml = `
+    <div class="coupon_down new">
+        <div class="coupon_name">${couponName}</div>
+        ${btnHtml}
+    </div>`;
+        }
+
+        const commentStart = modId.startsWith('reserve_') ? '<!--적립금 이벤트-->' : '<!--쿠폰 이벤트-->';
+        const commentEnd = modId.startsWith('reserve_') ? '<!--적립금 이벤트 //-->' : '<!--쿠폰 이벤트 //-->';
+
+        return `
+${commentStart}
+<div class="monly_basic_event">
+    ${titleHtml}
+    <p>${condition}</p>
+    ${coreHtml}
+    ${infos.length > 0 ? `\n    <div class="monly_info_box" style="margin-top:20px;">
+        <ul class="infolist">${infos.map(i=>`\n            <li>${i}</li>`).join('')}
+        </ul>
+    </div>` : ''}
+</div>
+${commentEnd}
+`;
+    }
+
+    // 기존 로직들...
+    if (modId === 'booklist_random') {
+        const items = v.randomItems || [];
+        if (items.length === 0) return '';
+        const uclString = items.map(i => i.ucl).filter(u => u).join(',');
+        return `<!--도서 리스트 (랜덤 탭)-->
+<a name="dw" id="dw"></a>
+<uc1:wa_RandomTab runat="server" RandomUcl="${uclString}" NotRandomIndex="" />
+<!--도서 리스트 (랜덤 탭) //-->`;
+    }
+    if (modId === 'gift_slider_only') {
+        const slides = parseLines(v.gift_slider_images);
+        const popupUrl = v.gift_popup_url || '';
+        const giftName = v.gift_name || '증정품명';
+        const giftCondition = v.gift_condition_text || '증정 조건 내용';
+        const giftLink = v.gift_link || '#';
+        const infos = parseTextLines(v.gift_info);
+        const slideHtml = slides.map(s => `            <div class="swiper-slide"><img src="${s.url}" alt="${s.alt}" width="100%"></div>`).join('\n');
+        
+        // zoom_btn: 팝업 URL이 있으면 swiper 안쪽 끝에 배치
+        const zoomBtnHtml = popupUrl
+            ? `\n            <div class="zoom_btn">\n                <a href="${popupUrl}" target="_blank" title="새 창 열림" data-event-popup="scrollbars=yes,width=720,height=800">자세히보기</a>\n            </div>`
+            : '';
+
+        return `<!--증정품 섹션-->
+        <section>
+            <!-- 슬라이드 -->
+            <div class="swiper giftswiper">
+                <div class="swiper-wrapper">
+${slideHtml}
+                </div>
+                <!-- 페이지 bullet -->
+                <div class="pagination_box">
+                    <div class="swiper-pagination"></div>
+                    <button class="swiper_pause_btn">자동슬라이드 멈춤</button>
+                </div>
+                <!-- 좌/우화살표 -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>${zoomBtnHtml}
+            </div>
+            <!--// 슬라이드-->
+
+            <!--증정 조건-->
+            <div class="monly_basic_event">
+                <h2 class="sr-only">증정품 목록과 증정조건</h2>
+                <p class="gift-tit">${giftName}</p>
+                <p><span class="br2">${giftCondition}</span></p>
+        <a href="${giftLink}" class="pink_big_btn">대상도서 모두 보기</a>
+        ${infos.length > 0 ? `<div class="monly_info_box">
+                <button type="button" class="info_btn" aria-expanded="false" aria-controls="info-panel">꼭 읽어주세요</button>
+                    <div class="txt_box" id="info-panel">
+                        <ul class="infolist">
+${infos.map(i => `                            <li>${i}</li>`).join('\n')}
+                        </ul>
+                    </div>
+                </div>` : ''}
+            </div>
+            <!--// 증정 조건-->
+        </section>
+        <!--// 증정품 섹션-->
+${SCRIPT_SINGLE}`;
+    }
+    if (modId === 'gift_full') {
+        const slides = parseLines(v.gift_slider_images);
+        const thumbs = parseLines(v.gift_thumbnails, true);
+        const infos = parseTextLines(v.gift_info);
+        return '<!--증정품 (썸네일형)-->\n' + createGiftHtml(slides, thumbs, v.gift_condition_title, v.gift_link, infos) + '\n<!--증정품 (썸네일형) //-->\n' + SCRIPT_FULL;
+    }
+    if (modId === 'booklist_manual') {
+        const title = v.booklist_title || '추천 도서';
+        const ids = (v.itemid_list || '').split(',').map(s => s.trim()).filter(s => s);
+        if (ids.length === 0) return '';
+        const listItems = ids.map(id => `            <li>
+                <uc1:wa_item_info runat="server" 
+                    ItemId="${id}" 
+                    vtype="2" 
+                    AuthorType="0" 
+                    CoverType="4" 
+                    PriceType="3" 
+                    BorderType="0" 
+                    TitleType="1" 
+                    TitleCut="50" />
+            </li>`).join('\n');
+        return `<!--도서 리스트 (수동)-->
+<div class="monly_booklist_wrap">
+    <div class="list_tit">${title}</div>
+    <div class="booklist">
+        <ul class="booklist_item">
+${listItems}
+        </ul>
+    </div>
+</div>
+<!--도서 리스트 (수동) //-->`;
+    }
+    if (modId === 'booklist_multiple') {
+        const items = v.multiItems || [];
+        if (items.length === 0) return '';
+        const swiperSlides = items.map((item, idx) => {
+            const num = (idx + 1).toString().padStart(2, '0');
+            const isOn = idx === 0 ? ' on' : '';
+            return `            <div class="swiper-slide${isOn}"><a href="#${num}">${item.title}</a></div>`;
+        }).join('\n');
+        const tabHtml = `<!--도서 리스트 (다중 탭)-->
+<a name="dw" id="dw"></a>
+<div class="monly_swiper_tab_wrap">
+    <div class="swiper-container monly_swiper_tab AnchorTab">
+        <div class="swiper-wrapper">
+${swiperSlides}
+        </div>
+    </div>
+    <div class="thumbnail-button-next"></div>
+    <div class="thumbnail-button-prev"></div>
+</div>`;
+const listsHtml = items.map((item, idx) => {
+            const num = (idx + 1).toString().padStart(2, '0');
+            return `<a name="${num}" id="${num}"></a>
+<div class="monly_booklist_wrap">
+    <div class="list_tit">
+        <a href="${item.link}">${item.title}<span>+모두보기</span></a>
+    </div>
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${item.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${item.count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2" StockStatus="0"/>
+    </div>
+</div>`;
+        }).join('\n');
+        
+        return tabHtml + '\n' + listsHtml + '\n';
+    }
+if (modId === 'booklist_single') {
+        return `<div class="monly_booklist_wrap">
+    <div class="list_tit">${v.booklist_title}</div>
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${v.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${v.item_count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2"/>
+    </div>
+</div>
+`;
+    }
+    
+    
+    // ★ [수정됨] 댓글 영역 줄바꿈 포맷팅 적용 ★
+    if (modId.startsWith('comment_')) {
+        let extraAttrs = '';
+        if (modId === 'comment_basic') {
+            extraAttrs = `        IsHideCover="1"`;
+        } else if (modId === 'comment_with_item') {
+            extraAttrs = `        IsMultiple="true"\n        IsItemId="true"`;
+        } else if (modId === 'comment_with_author') {
+            extraAttrs = `        IsAuthorId="true"`;
+        } else if (modId === 'comment_with_image') {
+            extraAttrs = `        IsFileUploader="true"\n        IsFileList="true"`;
+        }
+
+        return `<!--댓글 이벤트-->
+<a name="comment" id="comment"></a>
+<div class="monly_Comment_wrap" style="padding:50px 20px; background:#f8f9fa;">
+    <uc1:EventComment ID="ucEventComment_${Math.floor(Math.random()*1000)}" runat="server"
+        EventId="${v.event_id || ''}"
+${extraAttrs}
+        IsOpen="1"
+        PageCount="20"
+        SubGroupId="0"
+        AdminEmail="${v.admin_email || ''}"
+        Title="${v.comment_title || ''}"
+        SubTitle="${v.comment_subtitle || ''}" />
+</div>
+<!--댓글 이벤트 //-->`;
+    }
+    return '';
+}
+
+function parseTextLines(text) { if (!text) return []; return text.split('\n').map(l => l.trim()).filter(l => l); }
+
+// 타이틀 텍스트 파싱: /br → span.br, /br2 → span.br2, {텍스트} → span.t_pink
+function parseTitleText(text) {
+    if (!text) return '';
+    // {텍스트} → t_pink 변환
+    let html = text.replace(/\{([^}]+)\}/g, '<span class="t_pink">$1</span>');
+    // /br2 → br2 분리 (/br2를 먼저 처리)
+    if (html.includes('/br2')) {
+        html = html.split('/br2').map(s => s.trim()).filter(s => s)
+            .map(s => `<span class="br2">${s}</span>`).join(' ');
+    }
+    // /br → br 분리
+    else if (html.includes('/br')) {
+        html = html.split('/br').map(s => s.trim()).filter(s => s)
+            .map(s => `<span class="br">${s}</span>`).join(' ');
+    }
+    return html;
+}
+function parseLines(text, isThumb=false) { if (!text) return []; return text.split('\n').map(l => l.trim()).filter(l => l).map(l => { const p = l.split('|').map(x=>x.trim()); return isThumb ? { url: p[0], text: p[1], popup: p[2] } : { url: p[0], alt: p[1]||'' }; }); }
+
+function createGiftHtml(slides, thumbs, title, link, infos) {
+    const slideHtml = slides.map(s => `            <div class="swiper-slide"><img src="${s.url}" alt="${s.alt}"/></div>`).join('\n');
+
+    let bottomHtml = '';
+    if (thumbs && thumbs.length) {
+        const thumbHtml = thumbs.map((t,i) => `                    <div class="swiper-slide">
+                        <a href="${t.popup||'#'}" target="_blank" title="새 창 열림" data-event-popup="scrollbars=yes,width=720,height=800">
+                            <div class="gift_img"><img src="${t.url}" alt=""></div>
+                            <p class="gift_txt">${t.text||''}</p>
+                        </a>
+                    </div>`).join('\n');
+
+        bottomHtml = `
+        <div class="monly_basic_event">
+            <h2 class="sr-only">증정품 목록과 증정조건</h2>
+            <p><span class="b-txt">${title || '증정 조건'}</span></p>
+            <div class="thumbnail_wrap">
+                <div class="swiper-container thumbnail_swiper thumbnail1">
+                    <div class="swiper-wrapper">
+${thumbHtml}
+                    </div>
+                </div>
+                <div class="thumbnail-button-next thumbnail1-next"></div>
+                <div class="thumbnail-button-prev thumbnail1-prev"></div>
+            </div>
+            ${link ? `<a href="${link}" class="pink_big_btn">대상도서 모두 보기</a>` : ''}
+            ${infos && infos.length ? `<div class="monly_info_box">
+                <button type="button" class="info_btn" aria-expanded="false" aria-controls="info-panel">꼭 읽어주세요</button>
+                <div class="txt_box" id="info-panel">
+                    <ul class="infolist">
+${infos.map(i=>`                        <li>${i}</li>`).join('\n')}
+                    </ul>
+                </div>
+            </div>` : ''}
+        </div>`;
+    }
+
+    return `    <div class="swiper giftswiper">
+        <div class="swiper-wrapper">
+${slideHtml}
+        </div>
+        <div class="pagination_box fraction-type">
+            <div class="swiper-pagination"></div>
+            <button class="swiper_pause_btn">자동슬라이드 멈춤</button>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>${bottomHtml}`;
+}
+function copyCode() { document.getElementById('finalCode').select(); document.execCommand('copy'); alert('📋 복사완료'); }
+function resetAll() {
+    if(!confirm('초기화하시겠습니까?')) return;
+    
+    // 입력값 초기화 (코드에디터, 헤더토글 제외)
+    document.querySelectorAll('input, textarea').forEach(el => {
+        if (el.id === 'finalCode' || el.id === 'headerToggle') return;
+        if (el.type === 'checkbox') { el.checked = false; }
+        else { el.value = ''; }
+    });
+    
+    // 셀렉트박스 초기화 + previousValue 제거
+    document.querySelectorAll('select').forEach(el => {
+        el.selectedIndex = 0;
+        delete el.dataset.previousValue;
+    });
+    
+    // 동적 컨테이너 초기화 (존재할 때만)
+    const mc = document.getElementById('multiTabContainer');
+    if (mc) mc.innerHTML = '';
+    const rc = document.getElementById('randomTabContainer');
+    if (rc) rc.innerHTML = '';
+    
+    // 입력 영역을 empty-state로 복원
+    ['authorInputArea', 'newbookInputArea', 'bannerInputArea', 'giftInputArea', 'couponInputArea', 'booklistInputArea', 'commentInputArea'].forEach(id => {
+        const area = document.getElementById(id);
+        if (area) {
+            area.innerHTML = '👆 위에서 타입을 선택하면 입력창이 나타납니다.';
+            area.classList.add('empty-state');
+        }
+    });
+    
+    // 코드 에디터 초기화
+    const headerOn = document.getElementById('headerToggle').checked;
+    document.getElementById('finalCode').value = headerOn ? DEFAULT_HEADER : '';
+    
+    showToast('🗑️ 초기화되었습니다.');
+}
+// ============================================
+// 패널 리사이저 (드래그로 좌우 조절)
+// ============================================
+(function() {
+    const resizer = document.getElementById('panelResizer');
+    const panel = document.querySelector('.control-panel');
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', function(e) {
+        isResizing = true;
+        resizer.classList.add('active');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+        const newWidth = e.clientX;
+        if (newWidth >= 500 && newWidth <= 1200) {
+            panel.style.width = newWidth + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (isResizing) {
+            isResizing = false;
+            resizer.classList.remove('active');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+})();
+
+// ============================================
+// 코드 히스토리 (되돌리기)
+// ============================================
+const codeHistory = [];
+
+function saveHistory() {
+    codeHistory.push(document.getElementById('finalCode').value);
+    document.getElementById('undoBtn').style.display = 'inline-flex';
+    document.getElementById('undoBtnPreview').style.display = 'inline-flex';
+}
+
+function undoCode() {
+    if (codeHistory.length === 0) {
+        showToast('되돌릴 내역이 없습니다.');
+        return;
+    }
+    document.getElementById('finalCode').value = codeHistory.pop();
+    if (codeHistory.length === 0) {
+        document.getElementById('undoBtn').style.display = 'none';
+        document.getElementById('undoBtnPreview').style.display = 'none';
+    }
+    if (currentEditorTab === 'preview') updatePreview();
+    showToast('↩ 마지막 추가가 취소되었습니다.');
+}
+
+// ============================================
+// 페이지 설정 토글 + 코드 생성
+// ============================================
+// ============================================
+// 위자드 (상단이미지 설정)
+// ============================================
+let wizardCurrentStep = 1;
+let wizardTitleMode = 'text'; // text, image_title, bg_only
+let topImageAdded = false;
+let wizardTitleStyle = 'top1'; // top1, top3, top4, top6
+
+function selectTitleMode(mode, el) {
+    wizardTitleMode = mode;
+    document.querySelectorAll('#wizStep1 .wizard-radio-card').forEach(c => c.classList.remove('active'));
+    if (el) el.closest('.wizard-radio-card').classList.add('active');
+}
+
+function selectTitleStyle(style, el) {
+    wizardTitleStyle = style;
+    document.querySelectorAll('#wizTitleInputSection .wizard-style-card').forEach(c => c.classList.remove('active'));
+    if (el) el.closest('.wizard-style-card').classList.add('active');
+}
+
+function wizardShowStep(step) {
+    wizardCurrentStep = step;
+    document.querySelectorAll('.wizard-step').forEach(s => s.style.display = 'none');
+
+    if (step === 1) {
+        document.getElementById('wizStep1').style.display = 'block';
+    } else if (step === 2) {
+        document.getElementById('wizStep2').style.display = 'block';
+        // 이미지 타이틀 모드면 타이틀 입력 섹션 표시
+        const imgTitleSection = document.getElementById('wizImgTitleSection');
+        imgTitleSection.style.display = wizardTitleMode === 'image_title' ? 'block' : 'none';
+        // 프롬프트 금지요소 자동 연동
+        const excludeInput = document.getElementById('pg_exclude');
+        if (excludeInput) {
+            excludeInput.value = (wizardTitleMode === 'text' || wizardTitleMode === 'bg_only')
+                ? '텍스트, 글자, 로고' : '로고';
+        }
+    } else if (step === 3) {
+        document.getElementById('wizStep3').style.display = 'block';
+        // 텍스트 모드면 타이틀 입력 섹션 표시
+        const titleSection = document.getElementById('wizTitleInputSection');
+        titleSection.style.display = wizardTitleMode === 'text' ? 'block' : 'none';
+    }
+
+    // 인디케이터 업데이트
+    for (let i = 1; i <= 3; i++) {
+        const item = document.getElementById('wizStep_' + i);
+        item.classList.remove('active', 'done');
+        if (i < step) item.classList.add('done');
+        else if (i === step) item.classList.add('active');
+    }
+    for (let i = 1; i <= 2; i++) {
+        document.getElementById('wizArrow' + i).classList.toggle('done', i < step);
+    }
+
+}
+
+function wizardNext() {
+    if (wizardCurrentStep === 1) {
+        wizardShowStep(2);
+    } else if (wizardCurrentStep === 2) {
+        wizardShowStep(3);
+    }
+}
+
+function wizardPrev() {
+    if (wizardCurrentStep === 3) {
+        if (wizardTitleMode === 'bg_only') {
+            wizardShowStep(1);
+        } else {
+            wizardShowStep(2);
+        }
+    } else if (wizardCurrentStep === 2) {
+        wizardShowStep(1);
+    }
+}
+
+let currentMainTab = 'topimage';
+
+function switchMainTab(tab) {
+    currentMainTab = tab;
+    // 메인 탭 버튼 전환
+    document.querySelectorAll('.main-tab').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // 메인 탭 콘텐츠 전환
+    document.getElementById('mainTab_topimage').style.display = tab === 'topimage' ? 'block' : 'none';
+    document.getElementById('mainTab_content').style.display = tab === 'content' ? 'block' : 'none';
+
+    // 하단 버튼 텍스트 전환
+    const addBtn = document.getElementById('contentAddBtn');
+    if (tab === 'topimage') {
+        addBtn.textContent = topImageAdded ? '🔄 수정하기' : '✅ 상단이미지 코드 추가';
+        addBtn.style.background = topImageAdded ? 'var(--secondary)' : '';
+        addBtn.onclick = addPageSetupToEditor;
+    } else {
+        addBtn.textContent = tabAddedState[currentTab] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
+        addBtn.style.background = tabAddedState[currentTab] ? 'var(--secondary)' : '';
+        addBtn.onclick = addToEditor;
+    }
+}
+
+function handleActionBtn() {
+    addToEditor();
+}
+
+function addPageSetupToEditor() {
+    // 수정 모드: 이전 상단이미지를 되돌리고 다시 추가
+    if (topImageAdded) {
+        undoCode();
+    }
+
+    const topImgM = document.getElementById('ps_top_img_m').value.trim();
+    const topImgPC = document.getElementById('ps_top_img_pc').value.trim();
+    const topBg = document.getElementById('ps_top_bg').value.trim() || '#e4e8ea';
+    const pcImg = topImgPC || topImgM;
+    const mode = wizardTitleMode;
+    const style = wizardTitleStyle;
+
+    // PC 이미지 너비 자동 감지 후 코드 생성
+    const fullPcUrl = pcImg.startsWith('//') ? 'https:' + pcImg : pcImg;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        const detectedWidth = img.naturalWidth;
+        showToast('📐 PC 이미지 너비 감지: ' + detectedWidth + 'px');
+        _buildPageSetupCode(topImgM, pcImg, topBg, mode, style, detectedWidth);
+    };
+    img.onerror = function() {
+        // 이미지 로드 실패 시 기본값 사용
+        _buildPageSetupCode(topImgM, pcImg, topBg, mode, style, 1400);
+    };
+    img.src = fullPcUrl;
+}
+
+function _buildPageSetupCode(topImgM, pcImg, topBg, mode, style, pcImgWidth) {
+
+    let topClass = 'monly_top';
+    let titleHtml = '';
+    let titleCss = '';
+
+    if (mode === 'text') {
+        const title = document.getElementById('ps_title').value.trim();
+        const subtitle = document.getElementById('ps_subtitle').value.trim();
+        const titleColor = document.getElementById('ps_title_color').value.trim() || '#8a3013';
+        const titleSpans = parseTitleText(title);
+
+        if (style === 'top6') {
+            // 이미지 아래 별도 타이틀 (monly_basic_tit)
+            titleHtml = `
+        <header class="monly_basic_tit">
+            <h1>${titleSpans}</h1>
+            ${subtitle ? `<p>${subtitle}</p>` : ''}
+        </header>`;
+        } else {
+            // top1, top3, top4: 이미지 위 텍스트
+            topClass = style === 'top3' ? 'monly_top3' : style === 'top4' ? 'monly_top4' : 'monly_top';
+            const topInClass = style === 'top3' ? 'monly_top3_in' : style === 'top4' ? 'monly_top4_in' : 'monly_top_in';
+
+            titleHtml = '';
+
+            // top3, top4는 CSS에 타이틀 박스 스타일 포함
+            if (style === 'top3') {
+                titleCss = `
+.monly_top3 .monly_top_tit {width: 220px; height:220px; display: flex; flex-direction:column; justify-content: center; align-items: center; text-align: center; padding: 20px; background: rgba(255, 255, 255, 0.65); border-radius:50%; box-sizing:border-box; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.15);}
+.monly_top3 .monly_top_tit h2 {font-size: 26px; line-height: 1.3; color: ${titleColor}; padding:0; margin:0;}
+.monly_top3 .monly_top_tit p {font-size:14px; margin:5px 0 0;}
+@media screen and (min-width: 750px) {
+    .monly_top3 .monly_top_tit {width: auto; height:auto; padding:60px 80px;}
+    .monly_top3 .monly_top_tit h2 {font-size: 40px; white-space:nowrap;}
+    .monly_top3 .monly_top_tit p {font-size:17px; white-space:nowrap;}
+}`;
+            } else if (style === 'top4') {
+                titleCss = `
+.monly_top4 .monly_top_tit {width: 260px; height:180px; display: flex; flex-direction:column; justify-content: center; align-items: center; text-align: center; padding: 20px; background: rgba(255, 255, 255, 0.20); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); border: 1px solid rgba(255,255,255,0.8); border-radius:20px; box-sizing:border-box; margin: 0 auto;}
+.monly_top4 .monly_top_tit h2 {font-size:26px; line-height: 1.3; color: ${titleColor}; padding:0; margin:0;}
+.monly_top4 .monly_top_tit p {font-size:14px; margin:5px 0 0;}
+@media screen and (min-width: 750px) {
+    .monly_top4 .monly_top_tit {width: auto; height:auto; padding:50px 70px; border-radius:30px;}
+    .monly_top4 .monly_top_tit h2 {font-size: 40px; white-space:nowrap;}
+    .monly_top4 .monly_top_tit p {font-size:17px; white-space:nowrap;}
+}`;
+            }
+
+            return generateTopCode(topClass, topInClass, topImgM, pcImg, topBg, titleCss, titleSpans, subtitle, titleColor, style, pcImgWidth);
+        }
+    } else {
+        // image_title, bg_only: 타이틀 없이 이미지만
+        titleHtml = '';
+    }
+
+    const useFade = document.getElementById('ps_gradient_fade')?.checked;
+    const pcSize = pcImgWidth + 'px auto';
+    const fadeCSS = useFade ? `
+    .${topClass}::before,
+    .${topClass}::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 25%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .${topClass}::before {
+        left: 0;
+        background: linear-gradient(to right, ${topBg}, transparent);
+    }
+    .${topClass}::after {
+        right: 0;
+        background: linear-gradient(to left, ${topBg}, transparent);
+    }` : '';
+
+    const code = `
+<style>
+.${topClass} {background: url(${topImgM}) ${topBg} no-repeat center top / 100% auto; position: relative;}
+
+@media screen and (min-width: 750px) {
+    .${topClass} {background: url(${pcImg}) ${topBg} no-repeat center top / ${pcSize};}${fadeCSS}
+}
+</style>
+
+    <!-- 상단 이미지-->
+    <div class="${topClass}">
+        <div class="${topClass}_in"></div>
+    </div>
+    <!--// 상단 이미지 -->
+
+    <div class="monly_basic_wrap">${titleHtml}
+`;
+
+    const codeArea = document.getElementById('finalCode');
+    saveHistory();
+    codeArea.value += '\n' + code;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    // 진행중 주석 추가
+    codeArea.value += '\n<!-- ⚠️ 콘텐츠를 모두 추가한 후 [코드 마무리] 버튼을 눌러주세요 -->\n';
+
+    // 코드 마무리 버튼 표시
+    document.getElementById('finishBtn').style.display = 'flex';
+
+    if (currentEditorTab === 'preview') updatePreview();
+    // 버튼 상태 전환
+    const btn = document.getElementById('contentAddBtn');
+    if (!topImageAdded) {
+        btn.textContent = '🔄 수정하기';
+        btn.style.background = 'var(--secondary)';
+        topImageAdded = true;
+        showToast('✅ 상단이미지 코드가 추가되었습니다. 콘텐츠 추가 후 [코드 마무리]를 눌러주세요.');
+    } else {
+        showToast('✅ 상단이미지가 수정되었습니다.');
+    }
+}
+
+function generateTopCode(topClass, topInClass, imgM, imgPC, bg, extraCss, titleSpans, subtitle, titleColor, style, pcImgWidth) {
+    pcImgWidth = pcImgWidth || 1400;
+    const titPosition = 'bottom';
+    const useFade = document.getElementById('ps_gradient_fade')?.checked;
+    const pcSize = pcImgWidth + 'px auto';
+    const fadeCSS = useFade ? `
+    .${topClass}::before,
+    .${topClass}::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 25%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .${topClass}::before { left: 0; background: linear-gradient(to right, ${bg}, transparent); }
+    .${topClass}::after { right: 0; background: linear-gradient(to left, ${bg}, transparent); }` : '';
+
+    const code = `
+<style>
+.${topClass} {background: ${bg}; height: auto; position: relative;}
+.${topInClass} {background: url(${imgM}) ${bg} no-repeat center top / 100% auto; height: 380px; text-align:center; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; box-sizing:border-box;' : ''}}
+.${topClass} .monly_top_tit h2 {font-size: 32px; line-height: 1.2; color: ${titleColor}; padding:40px 0 15px 0;}
+.${topClass} .monly_top_tit p {font-size: 16px; font-weight: bold; display: inline-block; height: 30px; border-radius: 15px; line-height: 32px; padding: 0 10px; border: 1px solid; margin: 0; color: ${titleColor};}
+${extraCss}
+
+@media screen and (min-width: 750px) {
+    .${topClass} {background: none; height: auto; margin-top: 0px;}
+    .${topInClass} {background: url(${imgPC}) ${bg} no-repeat center top / ${pcSize}; height: 440px; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; padding-bottom:40px; box-sizing:border-box;' : ''}}${fadeCSS}
+    .${topClass} .monly_top_tit h2 {font-size: 47px;}
+    .${topClass} .monly_top_tit p {font-size: 19px; height: 40px; border-radius: 25px; line-height: 42px; padding: 0 30px;}
+}
+</style>
+
+    <div class="${topClass}">
+        <div class="${topInClass}">
+            <div class="monly_top_tit ${titPosition}">
+                <h2>${titleSpans}</h2>
+                ${subtitle ? `<p>${subtitle}</p>` : ''}
+            </div>
+        </div>
+    </div>
+
+    <div class="monly_basic_wrap">
+`;
+
+    const codeArea = document.getElementById('finalCode');
+    saveHistory();
+    codeArea.value += '\n' + code;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    // 진행중 주석 추가
+    codeArea.value += '\n<!-- ⚠️ 콘텐츠를 모두 추가한 후 [코드 마무리] 버튼을 눌러주세요 -->\n';
+
+    // 코드 마무리 버튼 표시
+    document.getElementById('finishBtn').style.display = 'flex';
+
+    if (currentEditorTab === 'preview') updatePreview();
+    // 버튼 상태 전환
+    const btn = document.getElementById('contentAddBtn');
+    if (!topImageAdded) {
+        btn.textContent = '🔄 수정하기';
+        btn.style.background = 'var(--secondary)';
+        topImageAdded = true;
+        showToast('✅ 상단이미지 코드가 추가되었습니다. 콘텐츠 추가 후 [코드 마무리]를 눌러주세요.');
+    } else {
+        showToast('✅ 상단이미지가 수정되었습니다.');
+    }
+}
+
+// ============================================
+// 코드 마무리 (닫기 태그 추가)
+// ============================================
+function finishCode() {
+    const codeArea = document.getElementById('finalCode');
+    let code = codeArea.value;
+
+    // 진행중 주석 제거
+    code = code.replace(/\n?<!-- ⚠️ 콘텐츠를 모두 추가한 후 \[코드 마무리\] 버튼을 눌러주세요 -->\n?/g, '');
+
+    // 닫기 태그 추가
+    code += `
+    </div><!-- monly_basic_wrap -->
+</article>
+<!-- // 이벤트 끝 -->
+`;
+
+    codeArea.value = code;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    // 마무리 버튼 숨기기
+    document.getElementById('finishBtn').style.display = 'none';
+
+    if (currentEditorTab === 'preview') updatePreview();
+    showToast('✅ 코드 마무리 완료! 닫기 태그가 추가되었습니다.');
+}
+
+// ============================================
+// AI 이미지 프롬프트 생성기
+// ============================================
+// ============================================
+// 이미지 배경색 추출
+// ============================================
+function extractBgColor() {
+    const imgUrl = document.getElementById('ps_top_img_pc').value.trim() || document.getElementById('ps_top_img_m').value.trim();
+    if (!imgUrl) {
+        showToast('이미지 URL을 먼저 입력해주세요.');
+        return;
+    }
+
+    // protocol-relative URL 처리
+    const fullUrl = imgUrl.startsWith('//') ? 'https:' + imgUrl : imgUrl;
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // 왼쪽 가장자리 + 오른쪽 가장자리 + 모서리 픽셀 샘플링
+        const samples = [];
+        const samplePoints = [
+            // 왼쪽 가장자리
+            [0, 0], [0, Math.floor(img.height/4)], [0, Math.floor(img.height/2)], [0, Math.floor(img.height*3/4)],
+            [2, 0], [2, Math.floor(img.height/4)], [2, Math.floor(img.height/2)],
+            // 오른쪽 가장자리
+            [img.width-1, 0], [img.width-1, Math.floor(img.height/4)], [img.width-1, Math.floor(img.height/2)],
+            [img.width-3, 0], [img.width-3, Math.floor(img.height/4)],
+            // 상단 모서리
+            [0, 0], [img.width-1, 0], [0, 1], [img.width-1, 1]
+        ];
+
+        samplePoints.forEach(([x, y]) => {
+            try {
+                const pixel = ctx.getImageData(x, y, 1, 1).data;
+                samples.push([pixel[0], pixel[1], pixel[2]]);
+            } catch(e) {}
+        });
+
+        if (samples.length === 0) {
+            showToast('색상을 추출할 수 없습니다. CORS 제한일 수 있습니다.');
+            return;
+        }
+
+        // 평균 색상 계산
+        const avg = samples.reduce((acc, [r, g, b]) => {
+            acc[0] += r; acc[1] += g; acc[2] += b;
+            return acc;
+        }, [0, 0, 0]).map(v => Math.round(v / samples.length));
+
+        const hex = '#' + avg.map(v => v.toString(16).padStart(2, '0')).join('');
+
+        document.getElementById('ps_top_bg').value = hex;
+        document.getElementById('ps_color_preview').style.background = hex;
+        document.getElementById('ps_color_picker').value = hex;
+        showToast('✅ 배경색 추출 완료: ' + hex);
+    };
+
+    img.onerror = function() {
+        showToast('이미지를 불러올 수 없습니다. URL을 확인해주세요.');
+    };
+
+    img.src = fullUrl;
+}
+
+// 배경색 변경 시 미리보기 + 컬러피커 + iframe 실시간 동기화
+function syncBgColor(hex) {
+    const preview = document.getElementById('ps_color_preview');
+    const picker = document.getElementById('ps_color_picker');
+    if (preview) preview.style.background = hex;
+    if (picker && /^#[0-9a-fA-F]{6}$/.test(hex)) picker.value = hex;
+
+    // iframe 미리보기 실시간 반영
+    const iframe = document.getElementById('previewFrame');
+    if (iframe && iframe.contentDocument) {
+        const doc = iframe.contentDocument;
+        // 기존 동기화 스타일 제거 후 재삽입
+        const prev = doc.querySelector('style#live-bg-sync');
+        if (prev) prev.remove();
+        const style = doc.createElement('style');
+        style.id = 'live-bg-sync';
+        style.textContent = `
+            .monly_top, .monly_top3, .monly_top4 { background-color: ${hex} !important; }
+            .monly_top_in, .monly_top3_in, .monly_top4_in { background-color: ${hex} !important; }
+            .monly_top::before, .monly_top3::before, .monly_top4::before { background: linear-gradient(to right, ${hex}, transparent) !important; }
+            .monly_top::after, .monly_top3::after, .monly_top4::after { background: linear-gradient(to left, ${hex}, transparent) !important; }
+        `;
+        doc.head.appendChild(style);
+    }
+}
+
+function syncTitleColor(hex) {
+    const preview = document.getElementById('ps_title_color_preview');
+    const picker = document.getElementById('ps_title_color_picker');
+    if (preview) preview.style.background = hex;
+    if (picker && /^#[0-9a-fA-F]{6}$/.test(hex)) picker.value = hex;
+
+    // iframe 미리보기 실시간 반영
+    const iframe = document.getElementById('previewFrame');
+    if (iframe && iframe.contentDocument) {
+        const doc = iframe.contentDocument;
+        const prev = doc.querySelector('style#live-title-sync');
+        if (prev) prev.remove();
+        const style = doc.createElement('style');
+        style.id = 'live-title-sync';
+        style.textContent = `
+            .monly_top_tit h2, .monly_top_tit h2 span,
+            .monly_top_tit p { color: ${hex} !important; border-color: ${hex} !important; }
+        `;
+        doc.head.appendChild(style);
+    }
+}
+
+document.addEventListener('input', function(e) {
+    if (e.target.id === 'ps_top_bg') syncBgColor(e.target.value);
+    if (e.target.id === 'ps_color_picker') syncBgColor(e.target.value);
+    if (e.target.id === 'ps_title_color') syncTitleColor(e.target.value);
+});
+
+function togglePromptGen() {
+    const body = document.getElementById('promptGenBody');
+    const arrow = document.getElementById('promptGenArrow');
+    const isOpen = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    arrow.classList.toggle('open', !isOpen);
+}
+
+function onPgTypeChange() {
+    // 타입 변경 시 특별히 할 일 없음 (프롬프트 생성 시 반영)
+}
+
+function generatePrompt(device) {
+    const theme = document.getElementById('pg_theme').value.trim() || '도서 이벤트';
+    const mood = document.getElementById('pg_mood').value;
+    const color = document.getElementById('pg_color').value.trim() || '자연스러운 톤';
+    const style = document.getElementById('pg_style').value;
+    const extra = document.getElementById('pg_extra').value.trim();
+    const exclude = document.getElementById('pg_exclude').value.trim();
+
+    // 포함 요소 수집
+    const elements = [];
+    document.querySelectorAll('.pg_element:checked').forEach(cb => elements.push(cb.value));
+
+    // 사이즈 결정
+    let sizeInfo = device === 'pc'
+        ? '1400x440 사이즈의 가로형 배너 이미지'
+        : '750x770 사이즈의 모바일 배너 이미지';
+
+    // 프롬프트 조합
+    let prompt = '';
+
+    // 1. 사이즈
+    prompt += `${sizeInfo}.\n`;
+
+    // 2. 메인 컨셉
+    prompt += `주제: ${theme}.\n`;
+
+    // 3. 배경 스타일/분위기
+    prompt += `${mood} 분위기, ${color} 톤 중심 컬러.\n`;
+
+    // 4. 스타일
+    prompt += `${style}.\n`;
+
+    // 5. 오브젝트 구성
+    if (elements.length > 0) {
+        prompt += `포함 요소: ${elements.join(', ')}.\n`;
+    }
+
+    // 6. 추가 요청
+    if (extra) {
+        prompt += `${extra}.\n`;
+    }
+
+    // 7. 위자드 타이틀 모드에 따른 지시
+    prompt += '온라인 서점 이벤트 배너용.\n';
+    if (wizardTitleMode === 'text') {
+        prompt += '상단에 텍스트가 올라가므로, 타이틀 영역에 빈 공간을 확보해주세요.\n';
+        prompt += '배경 이미지만 생성, 텍스트는 별도로 입력합니다.\n';
+    } else if (wizardTitleMode === 'image_title') {
+        const imgTitle = document.getElementById('ps_img_title')?.value?.trim() || '';
+        const imgSubtitle = document.getElementById('ps_img_subtitle')?.value?.trim() || '';
+        if (imgTitle) prompt += `이미지에 다음 타이틀 텍스트를 포함해주세요: "${imgTitle}".\n`;
+        if (imgSubtitle) prompt += `부제목: "${imgSubtitle}".\n`;
+        prompt += '타이틀이 잘 읽히도록 배경과 대비되게 해주세요.\n';
+    } else {
+        prompt += '타이틀 텍스트 없이 순수 배경 이미지만 생성해주세요.\n';
+    }
+
+    // 8. 금지 요소
+    if (exclude) {
+        prompt += `금지 요소: ${exclude}.\n`;
+    }
+
+    // 후처리 안내
+    prompt += '\n※ 후처리 프롬프트:\n';
+    if (device === 'pc') {
+        prompt += '- 배경 가로를 우니배 테에리크 중 20% 넓은 캔버스 수정.\n';
+    } else {
+        prompt += '- 배경 가로를 우니배 테에리크 중 20% 넓은 캔버스 수정.\n';
+    }
+    prompt += '- 밝기 조정 및 색감 보정 후 사용.\n';
+    prompt += '- 미니멀하고 깔끔한 인상이 되도록.';
+
+    // 결과 표시 + 클립보드 복사
+    const resultDiv = document.getElementById('promptResult');
+    resultDiv.textContent = prompt;
+    resultDiv.style.display = 'block';
+
+    navigator.clipboard.writeText(prompt).then(() => {
+        showToast(`✅ ${device === 'pc' ? 'PC' : '모바일'}용 프롬프트가 클립보드에 복사되었습니다.`);
+    }).catch(() => {
+        // 클립보드 실패 시 수동 선택
+        showToast('📋 아래 프롬프트를 직접 복사해주세요.');
+    });
+}
+
+// ============================================
+// 에디터 탭 전환 (코드 / 미리보기)
+// ============================================
+let currentEditorTab = 'code';
+
+function switchEditorTab(tab) {
+    currentEditorTab = tab;
+    const codeArea = document.getElementById('finalCode');
+    const previewWrap = document.getElementById('previewWrap');
+    const codeToolbar = document.getElementById('codeToolbar');
+    const previewToolbar = document.getElementById('previewToolbar');
+
+    document.querySelectorAll('.ep-tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    if (tab === 'code') {
+        codeArea.style.display = 'block';
+        previewWrap.style.display = 'none';
+        codeToolbar.style.display = 'flex';
+        previewToolbar.style.display = 'none';
+    } else {
+        codeArea.style.display = 'none';
+        previewWrap.style.display = 'block';
+        codeToolbar.style.display = 'none';
+        previewToolbar.style.display = 'flex';
+        updatePreview();
+    }
+}
+
+function updatePreview() {
+    const code = document.getElementById('finalCode').value;
+    let html = code;
+
+    // 1. ASP.NET 지시문 제거
+    html = html.replace(/<%@[^%]*%>/g, '');
+
+    // 2. DateTime.Now 치환
+    const now = new Date();
+    const ts = now.getFullYear().toString() +
+        (now.getMonth()+1).toString().padStart(2,'0') +
+        now.getDate().toString().padStart(2,'0') +
+        now.getHours().toString().padStart(2,'0') +
+        now.getMinutes().toString().padStart(2,'0');
+    html = html.replace(/<%=DateTime\.Now\.ToString\([^)]*\)%>/g, ts);
+
+    // 3. 서버 컨트롤 → 더미 HTML 치환
+    // wa_item_info_list
+    html = html.replace(/<uc1:wa_item_info_list[^>]*\/>/gi,
+        '<div style="padding:40px 20px; background:#f3f0ff; border:2px dashed #c4b5fd; border-radius:12px; text-align:center; color:#8b5cf6; font-weight:700; margin:10px 0;">📚 도서 리스트 영역 (서버 렌더링)</div>');
+
+    // wa_item_info (개별 도서)
+    html = html.replace(/<uc1:wa_item_info\s[^>]*?ItemId="([^"]*)"[^>]*\/>/gi,
+        '<div style="padding:20px; background:#f8f7ff; border:1px dashed #c4b5fd; border-radius:8px; text-align:center; color:#8b5cf6; font-size:13px; margin:5px 0;">📖 도서 (ItemId: $1)</div>');
+
+    // wa_coupondown_btn - Price 추출
+    html = html.replace(/<uc1:wa_coupondown_btn[^>]*?Price="([^"]*)"[^>]*\/?>/gi,
+        '<a href="javascript:void(0);" style="text-decoration:none;"><span style="font-size:76px; font-family:NanumSquare,sans-serif; color:#e62e8b; font-weight:300; letter-spacing:-3px; position:absolute; left:40px; top:116px;">$1</span></a>');
+
+    // alarm - AlarmButton 추출 (이미지 버튼 포함)
+    html = html.replace(/<uc1:alarm\s[^>]*?AlarmButton="([^"]*)"[^>]*?\/?>/gi, function(match, btnText) {
+        if (btnText.includes('img')) {
+            return btnText.replace(/'/g, '"');
+        }
+        return '<a href="javascript:void(0);">' + btnText + '</a>';
+    });
+    // 남은 uc1:alarm 태그 (AlarmButton 없는 경우) 제거
+    html = html.replace(/<uc1:alarm[^>]*\/?>/gi, '');
+
+    // EventComment - Title 추출
+    html = html.replace(/<uc1:EventComment[^>]*?Title="([^"]*)"[^>]*\/?>/gi,
+        '<div style="padding:40px 20px; background:#f8f9fa; border:2px dashed #d1d5db; border-radius:12px; text-align:center; color:#6b7280; font-weight:700; margin:10px 0;">💬 댓글 영역: $1 (서버 렌더링)</div>');
+
+    // wa_RandomTab
+    html = html.replace(/<uc1:wa_RandomTab[^>]*\/?>/gi,
+        '<div style="padding:40px 20px; background:#f3f0ff; border:2px dashed #c4b5fd; border-radius:12px; text-align:center; color:#8b5cf6; font-weight:700; margin:10px 0;">🔀 랜덤 탭 영역 (서버 렌더링)</div>');
+
+    // wa_events_sns_btn, wa_event_supplements 등 기타 서버 컨트롤
+    html = html.replace(/<uc1:\w+[^>]*\/?>/gi, '');
+
+    // 4. 상대경로 → 알라딘 절대경로 변환
+    html = html.replace(/src="\/js\//g, 'src="https://www.aladin.co.kr/js/');
+    html = html.replace(/src="\/ucl_editor\//g, 'src="https://www.aladin.co.kr/ucl_editor/');
+    html = html.replace(/href="\/ucl_editor\//g, 'href="https://www.aladin.co.kr/ucl_editor/');
+
+    // 5. protocol-relative URL (//image.aladin.co.kr/...) → https:// 변환
+    html = html.replace(/src="\/\//g, 'src="https://');
+    html = html.replace(/href="\/\//g, 'href="https://');
+
+    // 6. CSS url(//...) 패턴도 변환 (background-image 등)
+    html = html.replace(/url\(\/\//g, 'url(https://');
+
+    // 5. iframe에 주입할 전체 HTML 구성
+    const fullHtml = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/mOnly.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/template_v2.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/css/swiper-bundle.min.css" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/css/mobile/swiper.css" rel="stylesheet">
+<link href="https://www.aladin.co.kr/css/style.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/css/autoevent.css" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/css/style.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/swiper@12/swiper-bundle.min.css" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/comment2019.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/mOnly.css?ver=${ts}" rel="stylesheet">
+<link href="https://www.aladin.co.kr/ucl_editor/events/css/template_v2.css?ver=${ts}" rel="stylesheet">
+<script src="https://www.aladin.co.kr/js/jquery-1.8.3.min.js"><\/script>
+<script src="https://www.aladin.co.kr/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>
+<script src="https://www.aladin.co.kr/ucl_editor/events/js/mOnly.js?ver=${ts}"><\/script>
+<script>
+// mOnly.js 바인딩 실패 대비 폴백 (이벤트 위임)
+setTimeout(function() {
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.info_btn');
+        if (!btn) return;
+        var txtBox = btn.nextElementSibling;
+        if (txtBox && txtBox.classList.contains('txt_box')) {
+            var isOpen = txtBox.style.display === 'block';
+            txtBox.style.display = isOpen ? 'none' : 'block';
+            btn.setAttribute('aria-expanded', !isOpen);
+        }
+    });
+}, 500);
+<\/script>
+<style>
+  body { margin: 0; padding: 0; }
+  img { max-width: 100%; height: auto; }
+  /* 사이트 기본 CSS의 파란색 오버라이드 방지 */
+  .event_container h1, .event_container h2, .event_container h3, .event_container h4,
+  .event_container p, .event_container span:not(.t_pink):not(.b-txt), .event_container li { color: inherit; }
+  .event_container a { color: inherit; }
+  .event_container { color: #333; }
+  .event_container .t_pink { color: #eb217c !important; }
+  .event_container .b-txt { font-weight: 700; }
+  /* 작가 소개 버튼 영역 스타일 */
+  .event_container .monly_author_info .info_top .btn a {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    background-color: #EB217C;
+    padding: 0 12px;
+    color: #fff !important;
+    font-size: 14px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+  .event_container .monly_author_info .info_top .btn a ~ a {
+    margin-left: 8px;
+  }
+</style>
+</head>
+<body>
+<div id="pEventType9">
+<div id="container" class="event_container">
+${html}
+</div>
+</div>
+</body>
+</html>`;
+
+    document.getElementById('previewFrame').srcdoc = fullHtml;
+}
+
+// ============================================
+// 신간알리미 드롭다운 연동
+// ============================================
+const ALARM_META = {
+    '1': { label: 'AuthorId (저자 ID)', example: '예: 6306681', button: '저자 신간알리미 신청' },
+    '2': { label: 'SeriesId (시리즈 ID)', example: '예: 15441', button: '시리즈 신간알리미 신청' },
+    '3': { label: 'ISBN / ItemId (북)', example: '예: K572635454', button: '북 신간알리미 신청' },
+    '4': { label: 'ISBN (전자책)', example: '예: 8986022109', button: '전자책 출간 알리미 신청' },
+    '5': { label: 'PublisherId (출판사 ID)', example: '예: 1728', button: '출판사 신간알리미 신청' },
+    '6': { label: 'CategoryId (분야 ID)', example: '예: 51378', button: '분야 신간알리미 신청' },
+    '7': { label: 'ISBN (재출간)', example: '예: 8996968765', button: '재출간 알리미 신청' }
+};
+
+function onAlarmTypeChange() {
+    const type = document.getElementById('authorAlarmType').value;
+    const area = document.getElementById('alarmValueArea');
+    if (!type) {
+        area.style.display = 'none';
+        return;
+    }
+    area.style.display = 'flex';
+    const meta = ALARM_META[type];
+    document.getElementById('alarmValueLabel').textContent = meta.label;
+    document.getElementById('alarmValueExample').textContent = meta.example;
+}
+
+// 이미지 버튼 체크박스 토글 (이벤트 위임)
+document.addEventListener('change', function(e) {
+    if (e.target.id === 'alarmImageBtnCheckbox') {
+        const area = document.getElementById('alarmImageUrlArea');
+        if (area) area.style.display = e.target.checked ? 'block' : 'none';
+    }
+});
+
+// 토스트 메시지 띄우는 함수
+function showToast(message) {
+    const x = document.getElementById("toast");
+    if (!x) return;
+    x.innerText = message;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+<div id="toast"></div>
+</body>
+</html>

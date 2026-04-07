@@ -1,0 +1,44 @@
+기본 타입8,,,,,,,,
+,,,,,,,,
+주소,https://aa.aladin.co.kr/events/wevent.aspx?EventId=266743,,,,,,,
+파일명,2024_book_type8.ascx,,,,,,,
+,,,,,,,,
+,,,,,,,,
+가이드, ,,,,,상단이미지,PC (1400x440),https://image.aladin.co.kr/img/events/book/2023/04/231006_gilbut_bg.jpg
+,,,,,,,모바일 (750x770),https://image.aladin.co.kr/img/events/book/2023/04/231006_gilbut_mbg.jpg
+,,,,,,,상단이미지는 디자인팀에 일상업무로 요청,
+,,,,,,,,
+,,,,,,,"    .monly_top {background: url(//image.aladin.co.kr/img/events/book/2023/04/231006_gilbut_mbg.jpg) #e7f4f3 no-repeat top center / 100% auto;}
+
+/* pc 대응 */
+@media screen and (min-width: 750px) {
+    .monly_top {background: url(//image.aladin.co.kr/img/events/book/2023/04/231006_gilbut_bg.jpg) #f2eb4f no-repeat center bottom / 1400px auto;}
+}",
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,대표도서 목록,커버,ItemId 변경
+,,,,,,,도서명/도서설명,텍스트 수정
+,,,,,,,도서 링크와 장바구니 담기 링크 수정,
