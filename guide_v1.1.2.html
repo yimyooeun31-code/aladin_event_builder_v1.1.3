@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>이벤트 공통 모듈 빌더 v1.1.2 사용 가이드</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Pretendard Variable",sans-serif; color:#333; background:#f7f8fa; line-height:1.7; }
+  .wrap { max-width:800px; margin:0 auto; padding:60px 24px 100px; }
+  h1 { font-size:28px; font-weight:800; margin-bottom:8px; letter-spacing:-0.03em; }
+  h1 span { color:#8b5cf6; }
+  .subtitle { font-size:15px; color:#737373; margin-bottom:40px; }
+  h2 { font-size:20px; font-weight:700; margin:48px 0 16px; padding-bottom:10px; border-bottom:2px solid #e8e8e8; letter-spacing:-0.02em; }
+  h3 { font-size:16px; font-weight:700; margin:28px 0 10px; color:#333; }
+  p, li { font-size:15px; color:#555; }
+  ul, ol { padding-left:20px; margin:8px 0 16px; }
+  li { margin-bottom:6px; }
+  .step { background:#fff; border:1px solid #e8e8e8; border-radius:12px; padding:24px; margin:16px 0; }
+  .step-num { display:inline-block; width:28px; height:28px; background:#8b5cf6; color:#fff; border-radius:50%; text-align:center; line-height:28px; font-size:13px; font-weight:700; margin-right:10px; }
+  .step-title { font-size:16px; font-weight:700; }
+  .step p { margin-top:10px; }
+  table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:14px; }
+  th { background:#333; color:#fff; padding:10px 14px; text-align:left; font-weight:600; }
+  td { padding:10px 14px; border-bottom:1px solid #e8e8e8; }
+  tr:hover td { background:#f9fafb; }
+  code { background:#f3f0ff; padding:2px 6px; border-radius:4px; font-size:13px; color:#7c3aed; }
+  .tip { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+  .tip::before { content:"💡 "; font-weight:700; }
+  .warn { background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+  .warn::before { content:"⚠️ "; font-weight:700; }
+  .back-link { display:inline-block; margin-bottom:20px; color:#8b5cf6; text-decoration:none; font-size:14px; font-weight:600; }
+  .back-link:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>이벤트 공통 모듈 빌더 <span>v1.1.2</span></h1>
+<p class="subtitle">증정품 · 도서리스트 · 댓글 · 쿠폰/적립금 코드를 자동으로 생성하는 도구</p>
+
+<h2>1. 시작하기</h2>
+<p>브라우저에서 HTML 파일을 열면 바로 사용 가능합니다. 별도 설치가 필요 없습니다.</p>
+
+<div class="step">
+  <span class="step-num">1</span><span class="step-title">탭 선택</span>
+  <p>상단 4개 탭(증정품, 도서 리스트, 댓글, 쿠폰/적립금) 중 필요한 모듈을 선택합니다.</p>
+</div>
+<div class="step">
+  <span class="step-num">2</span><span class="step-title">타입 선택 & 입력</span>
+  <p>드롭다운에서 세부 타입을 선택하면 입력 폼이 나타납니다. 예시 값이 미리 입력되어 있으니 필요한 부분만 수정합니다.</p>
+</div>
+<div class="step">
+  <span class="step-num">3</span><span class="step-title">코드 추가</span>
+  <p>하단 <code>+ 현재 탭 내용 추가</code> 버튼을 클릭하면 우측 코드 에디터에 코드가 추가됩니다.</p>
+</div>
+<div class="step">
+  <span class="step-num">4</span><span class="step-title">복사 & 붙여넣기</span>
+  <p><code>📋 전체 복사</code> 버튼으로 코드를 복사한 뒤, .ascx 파일에 붙여넣습니다.</p>
+</div>
+
+<h2>2. 지원 모듈</h2>
+
+<h3>🎁 증정품 (2개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>단일 증정품 (팝업+정보형)</td><td>슬라이더 이미지 + 자세히보기 팝업 + 증정 조건 + 유의사항</td></tr>
+  <tr><td>증정품 (하단 썸네일형)</td><td>슬라이더 + 하단 썸네일 리스트 (여러 증정품 표시)</td></tr>
+</table>
+<div class="tip"><b>슬라이더 이미지:</b> 이미지 주소를 입력하고 엔터를 치면 각각 하나의 슬라이드(div)로 자동 생성됩니다. 엔터로 구분하여 여러 장을 입력할 수 있습니다.</div>
+<div class="tip"><b>유의사항:</b> 마찬가지로 엔터를 치면 각 줄이 하나의 li 항목으로 자동 변환됩니다.</div>
+
+<h3>📚 도서 리스트 (4개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>단일 도서 리스트</td><td>CID 기반 자동 도서 목록</td></tr>
+  <tr><td>다중 도서 리스트 (탭)</td><td>여러 CID를 탭으로 분리하여 표시</td></tr>
+  <tr><td>직접 도서 선택</td><td>ItemID를 직접 입력하여 개별 도서 표시</td></tr>
+  <tr><td>랜덤 탭</td><td>wa_RandomTab 서버 컨트롤 사용</td></tr>
+</table>
+<div class="tip"><b>직접 도서 선택:</b> ItemID를 쉼표(,)로 구분하여 입력하면 각각 개별 도서 리스트로 생성됩니다. 예: <code>290210397, 291710358, 289175924</code></div>
+
+<h3>💬 댓글 (4개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>일반 댓글</td><td>기본 댓글 폼 (EventComment v3)</td></tr>
+  <tr><td>상품 선택형</td><td>댓글 작성 시 상품 선택 가능</td></tr>
+  <tr><td>저자 추천형</td><td>저자 추천 기능 포함</td></tr>
+  <tr><td>이미지 첨부형</td><td>이미지 업로드 기능 포함</td></tr>
+</table>
+
+<h3>🎟️ 쿠폰/적립금 (3개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>단일 쿠폰 (nType)</td><td>하나의 쿠폰 번호로 다운로드</td></tr>
+  <tr><td>다중 쿠폰 (nTypeList)</td><td>여러 쿠폰을 콤마로 구분하여 표시</td></tr>
+  <tr><td>기본 적립금</td><td>적립금 표시 + 댓글 작성 링크 옵션</td></tr>
+</table>
+<div class="tip"><b>메인 타이틀:</b> 엔터를 치면 줄바꿈이 적용됩니다. 각 줄이 <code>span.br</code>로 감싸져 모바일에서 줄바꿈 처리됩니다.</div>
+<div class="tip"><b>유의사항:</b> 엔터를 치면 각 줄이 하나의 li 항목으로 자동 변환됩니다.</div>
+
+<h2>3. 기본 헤더</h2>
+<p><code>기본 헤더 포함</code> 체크박스로 ASP.NET 헤더 코드(Register 지시문, CSS/JS 링크)를 포함하거나 제외할 수 있습니다.</p>
+<div class="tip">처음 만드는 이벤트 파일이면 헤더를 포함하고, 기존 파일에 모듈만 추가하는 경우 체크 해제하세요.</div>
+
+<h2>4. 주의사항</h2>
+<div class="warn">생성된 코드의 서버 컨트롤(<code>&lt;uc1:...&gt;</code>)은 알라딘 서버에서만 동작합니다. 로컬에서는 미리보기가 불가합니다.</div>
+<div class="warn">쿠폰 번호(nType), 이벤트 ID 등은 실제 값으로 반드시 교체해야 합니다.</div>
+
+</div>
+</body>
+</html>

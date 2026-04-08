@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Aladin Monly Template Event Module Builder v1.1.3 사용 가이드</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Pretendard Variable",sans-serif; color:#333; background:#f7f8fa; line-height:1.7; }
+  .wrap { max-width:800px; margin:0 auto; padding:60px 24px 100px; }
+  h1 { font-size:28px; font-weight:800; margin-bottom:8px; letter-spacing:-0.03em; }
+  h1 span { color:#EB217C; }
+  .subtitle { font-size:15px; color:#737373; margin-bottom:40px; }
+  .badge { display:inline-block; background:#EB217C; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle; }
+  h2 { font-size:20px; font-weight:700; margin:48px 0 16px; padding-bottom:10px; border-bottom:2px solid #e8e8e8; letter-spacing:-0.02em; }
+  h3 { font-size:16px; font-weight:700; margin:28px 0 10px; color:#333; }
+  p, li { font-size:15px; color:#555; }
+  ul, ol { padding-left:20px; margin:8px 0 16px; }
+  li { margin-bottom:6px; }
+  .step { background:#fff; border:1px solid #e8e8e8; border-radius:12px; padding:24px; margin:16px 0; }
+  .step-num { display:inline-block; width:28px; height:28px; background:#EB217C; color:#fff; border-radius:50%; text-align:center; line-height:28px; font-size:13px; font-weight:700; margin-right:10px; }
+  .step-title { font-size:16px; font-weight:700; }
+  .step p { margin-top:10px; }
+  table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:14px; }
+  th { background:#333; color:#fff; padding:10px 14px; text-align:left; font-weight:600; }
+  td { padding:10px 14px; border-bottom:1px solid #e8e8e8; }
+  tr:hover td { background:#f9fafb; }
+  code { background:#FFF5FA; padding:2px 6px; border-radius:4px; font-size:13px; color:#EB217C; }
+  .tip { background:#FFF5FA; border:1px solid #f9a8d4; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+  .tip::before { content:"💡 "; font-weight:700; }
+  .warn { background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+  .warn::before { content:"⚠️ "; font-weight:700; }
+  .new { background:#ecfdf5; border:1px solid #6ee7b7; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:14px; }
+  .new::before { content:"✨ "; font-weight:700; }
+  .back-link { display:inline-block; margin-bottom:20px; color:#EB217C; text-decoration:none; font-size:14px; font-weight:600; }
+  .back-link:hover { text-decoration:underline; }
+  .tag-table td:first-child { font-weight:600; white-space:nowrap; }
+  .flow { display:flex; align-items:center; gap:8px; margin:12px 0; flex-wrap:wrap; }
+  .flow-item { background:#fff; border:1px solid #e8e8e8; border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; }
+  .flow-arrow { color:#ccc; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Monly Template Event Module Builder <span>v1.1.3</span></h1>
+<p class="subtitle">상단이미지 · 작가 · 신간 · 배너 · 증정품 · 쿠폰 · 도서리스트 · 댓글 코드를 자동으로 생성하고 실시간 미리보기로 확인하는 도구</p>
+
+<!-- ===== 전체 흐름 ===== -->
+<h2>1. 전체 작업 흐름</h2>
+
+<div class="flow">
+  <div class="flow-item">🖼️ 상단이미지 설정</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-item">📦 컨텐츠 추가</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-item">👁️ 미리보기 확인</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-item">📄 완성 코드 내보내기</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-item">📋 복사 & 붙여넣기</div>
+</div>
+
+<p>상단에 <b>상단이미지</b>와 <b>컨텐츠</b> 두 개의 메인 탭이 있습니다. 상단이미지부터 설정한 뒤, 컨텐츠 탭에서 필요한 모듈을 추가하는 순서로 작업합니다.</p>
+
+<!-- ===== 상단이미지 ===== -->
+<h2>2. 상단이미지 (3단계 위자드)</h2>
+
+<div class="step">
+  <span class="step-num">1</span><span class="step-title">타이틀 방식 선택</span>
+  <p>3가지 중 선택합니다:</p>
+  <ul>
+    <li><b>텍스트로 직접 입력</b> — 배경 이미지 위에 h태그로 타이틀을 코드에 입력</li>
+    <li><b>이미지에 타이틀 포함</b> — AI가 타이틀 글자까지 이미지로 생성</li>
+    <li><b>타이틀 없이 배경만</b> — 순수 배경 이미지만 사용</li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="step-num">2</span><span class="step-title">AI 이미지 프롬프트 생성</span>
+  <p>이벤트 주제, 분위기, 컬러, 스타일 등을 선택하면 ChatGPT/Gemini에 바로 붙여넣을 수 있는 프롬프트가 자동 생성됩니다.</p>
+  <ul>
+    <li><code>🖥️ PC용 복사</code> / <code>📱 모바일용 복사</code> 버튼으로 각각 복사</li>
+    <li>타이틀 방식에 따라 프롬프트 내용이 자동 조정됨</li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="step-num">3</span><span class="step-title">이미지 설정 & 코드 추가</span>
+  <p>이미지 제작이 완료되면:</p>
+  <ul>
+    <li>모바일/PC 이미지 URL 입력 (분기별 경로 자동 생성됨)</li>
+    <li><b>이미지에서 추출</b> 버튼으로 배경색 자동 추출 가능</li>
+    <li>색상 미리보기 박스를 클릭하면 컬러피커로 직접 선택 가능</li>
+    <li>텍스트 타이틀 선택 시: 4가지 스타일(직접 노출/원형 글래스/블러 라운드/이미지 아래) 중 선택</li>
+    <li><b>PC 그라데이션 페이드</b> 체크 시 양옆이 배경색으로 자연스럽게 이어짐</li>
+  </ul>
+</div>
+
+<div class="new">이미지 크기를 자동 감지하여 background-size가 자동 설정됩니다. 배경색과 타이틀 색상은 컬러피커에서 변경하면 미리보기에 실시간 반영됩니다.</div>
+
+<!-- ===== 텍스트 표기법 ===== -->
+<h2>3. 텍스트 표기법</h2>
+<p>타이틀이나 신간 제목 입력 시 특수 표기로 줄바꿈과 강조를 적용할 수 있습니다.</p>
+
+<table class="tag-table">
+  <tr><th>표기</th><th>변환 결과</th><th>용도</th></tr>
+  <tr><td><code>/br</code></td><td><code>&lt;span class="br"&gt;</code></td><td>모바일에서 줄바꿈 (PC에서는 한 줄)</td></tr>
+  <tr><td><code>/br2</code></td><td><code>&lt;span class="br2"&gt;</code></td><td>PC에서 줄바꿈 (모바일에서는 한 줄)</td></tr>
+  <tr><td><code>{텍스트}</code></td><td><code>&lt;span class="t_pink"&gt;</code></td><td>핑크색 강조</td></tr>
+</table>
+
+<div class="tip">
+  <b>예시:</b> <code>외국어가/br나에게로 옵니다! {특별판}</code><br>
+  → <code>&lt;span class="br"&gt;외국어가&lt;/span&gt; &lt;span class="br"&gt;나에게로 옵니다! &lt;span class="t_pink"&gt;특별판&lt;/span&gt;&lt;/span&gt;</code>
+</div>
+
+<!-- ===== 컨텐츠 탭 ===== -->
+<h2>4. 컨텐츠 모듈 (7개 서브 탭)</h2>
+<p>컨텐츠 메인 탭 안에 7개의 서브 탭이 있습니다. 각 탭에서 타입을 선택하고, 내용을 입력한 뒤 하단 <code>+ 현재 탭 내용 추가</code> 버튼으로 코드에 추가합니다.</p>
+
+<h3>✍️ 작가 소개</h3>
+<table>
+  <tr><th>입력 필드</th><th>설명</th></tr>
+  <tr><td>작가명, 이미지 URL, 배경색</td><td>작가 프로필 영역 생성</td></tr>
+  <tr><td>저자 파일 ID</td><td>AuthorId 입력 → 저자 파일 URL 자동 생성</td></tr>
+  <tr><td>신간 알리미</td><td>7종 알리미 타입 선택 (저자/시리즈/북/전자책/출판사/분야/재출간)</td></tr>
+  <tr><td>이미지 버튼</td><td>체크 시 알리미 버튼을 이미지로 표시</td></tr>
+</table>
+
+<h3>📖 신간 소개<span class="badge">NEW</span></h3>
+<table>
+  <tr><th>입력 필드</th><th>설명</th></tr>
+  <tr><td>신간 제목</td><td><code>{중괄호}</code>로 핑크 강조 가능</td></tr>
+  <tr><td>표지 이미지 URL</td><td>줄바꿈으로 여러 장 입력</td></tr>
+  <tr><td>신간 소개글</td><td>책 설명 텍스트</td></tr>
+</table>
+
+<h3>🔗 배너 링크 모음<span class="badge">NEW</span></h3>
+<p>링크 텍스트 + URL을 동적으로 추가/삭제할 수 있습니다. 기본 6개 예시가 포함되어 있습니다.</p>
+
+<h3>🎁 증정품 (2개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th><th>pagination</th></tr>
+  <tr><td>단일 증정품 (팝업+정보형)</td><td>슬라이더 + 자세히보기 팝업 + 조건</td><td>불릿 (●●●)</td></tr>
+  <tr><td>증정품 (하단 썸네일형)</td><td>슬라이더 + 하단 썸네일 리스트</td><td>분수 (1/10)</td></tr>
+</table>
+
+<h3>🎟️ 쿠폰/적립금 (3개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>단일 쿠폰 (nType)</td><td>하나의 쿠폰 번호</td></tr>
+  <tr><td>다중 쿠폰 (nTypeList)</td><td>여러 쿠폰을 콤마로 구분</td></tr>
+  <tr><td>기본 적립금</td><td>적립금 표시 + 댓글 작성 링크 옵션</td></tr>
+</table>
+
+<h3>📚 도서 리스트 (4개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>단일 도서 리스트</td><td>CID 기반 자동 목록</td></tr>
+  <tr><td>다중 도서 리스트 (탭)</td><td>여러 CID를 탭으로 분리</td></tr>
+  <tr><td>직접 도서 선택</td><td>ItemID 직접 입력</td></tr>
+  <tr><td>랜덤 탭</td><td>wa_RandomTab 서버 컨트롤</td></tr>
+</table>
+
+<h3>💬 댓글 (4개 타입)</h3>
+<table>
+  <tr><th>타입</th><th>설명</th></tr>
+  <tr><td>일반 댓글</td><td>기본 댓글 폼 (EventComment v3)</td></tr>
+  <tr><td>상품 선택형</td><td>댓글 작성 시 상품 선택</td></tr>
+  <tr><td>저자 추천형</td><td>저자 추천 기능</td></tr>
+  <tr><td>이미지 첨부형</td><td>이미지 업로드 기능</td></tr>
+</table>
+
+<!-- ===== 미리보기 ===== -->
+<h2>5. 미리보기<span class="badge">NEW</span></h2>
+<p>우측 패널 상단의 <b>코드 / 미리보기</b> 탭으로 전환할 수 있습니다.</p>
+<ul>
+  <li>알라딘 실서버 CSS/JS를 로드하여 실제와 유사한 미리보기 제공</li>
+  <li>Swiper 슬라이더 실제 동작</li>
+  <li>서버 컨트롤(uc1 태그)은 더미 플레이스홀더로 표시</li>
+  <li>배경색/타이틀 색상 변경 시 미리보기에 실시간 반영</li>
+</ul>
+
+<!-- ===== 코드 관리 ===== -->
+<h2>6. 코드 관리 기능<span class="badge">NEW</span></h2>
+
+<table>
+  <tr><th>기능</th><th>설명</th></tr>
+  <tr><td><code>↩ 되돌리기</code></td><td>마지막에 추가한 모듈 취소 (여러 번 가능)</td></tr>
+  <tr><td><code>🔄 수정하기</code></td><td>값 수정 후 클릭하면 자동으로 되돌리기 + 재추가</td></tr>
+  <tr><td><code>완성 코드 내보내기</code></td><td>닫기 태그 추가 + 진행중 주석 제거</td></tr>
+  <tr><td><code>🗑️ 초기화</code></td><td>전체 리셋</td></tr>
+  <tr><td><code>📋 전체 복사</code></td><td>코드 에디터 내용 클립보드에 복사</td></tr>
+  <tr><td>기본 헤더 포함</td><td>ASP.NET 헤더 코드 포함/제외 토글</td></tr>
+</table>
+
+<div class="tip">모듈을 추가한 후 수정이 필요하면 <b>수정하기</b> 버튼을 누르세요. 자동으로 이전 코드를 제거하고 새 값으로 교체합니다.</div>
+
+<!-- ===== 패널 조절 ===== -->
+<h2>7. 패널 조절</h2>
+<p>좌측 입력 패널과 우측 코드/미리보기 패널 사이의 <b>경계선을 드래그</b>하면 좌우 비율을 자유롭게 조절할 수 있습니다. (최소 500px ~ 최대 1200px)</p>
+
+<!-- ===== 이미지 경로 ===== -->
+<h2>8. 이미지 경로 자동 생성</h2>
+<p>현재 날짜 기준으로 분기별 이미지 경로가 자동 생성됩니다.</p>
+<table>
+  <tr><th>분기</th><th>경로</th></tr>
+  <tr><td>1분기 (1~3월)</td><td><code>//image.aladin.co.kr/img/events/book/{년도}/01/</code></td></tr>
+  <tr><td>2분기 (4~6월)</td><td><code>//image.aladin.co.kr/img/events/book/{년도}/02/</code></td></tr>
+  <tr><td>3분기 (7~9월)</td><td><code>//image.aladin.co.kr/img/events/book/{년도}/03/</code></td></tr>
+  <tr><td>4분기 (10~12월)</td><td><code>//image.aladin.co.kr/img/events/book/{년도}/04/</code></td></tr>
+</table>
+<div class="tip">경로가 자동 입력되니 파일명만 수정하면 됩니다.</div>
+
+<!-- ===== 주의사항 ===== -->
+<h2>9. 주의사항</h2>
+<div class="warn">서버 컨트롤(<code>&lt;uc1:...&gt;</code>)은 알라딘 서버에서만 동작합니다. 미리보기에서는 더미로 표시됩니다.</div>
+<div class="warn">쿠폰 번호(nType), 이벤트 ID, AuthorId 등은 실제 값으로 반드시 교체해야 합니다.</div>
+<div class="warn">모든 모듈 추가가 끝나면 반드시 <code>완성 코드 내보내기</code>를 눌러 닫기 태그를 추가하세요.</div>
+
+<!-- ===== v1.1.2 대비 변경점 ===== -->
+<h2>10. v1.1.2 대비 주요 변경점</h2>
+<table>
+  <tr><th>항목</th><th>v1.1.2</th><th>v1.1.3</th></tr>
+  <tr><td>모듈</td><td>4개 카테고리 (13타입)</td><td>7개 카테고리 + 상단이미지 위자드</td></tr>
+  <tr><td>미리보기</td><td>없음</td><td>실시간 미리보기 (알라딘 CSS/JS)</td></tr>
+  <tr><td>AI 프롬프트</td><td>없음</td><td>이미지 프롬프트 자동 생성기</td></tr>
+  <tr><td>되돌리기</td><td>없음</td><td>히스토리 기반 되돌리기 + 수정하기</td></tr>
+  <tr><td>이미지 경로</td><td>수동 입력</td><td>분기별 자동 생성</td></tr>
+  <tr><td>배경색</td><td>수동 입력</td><td>이미지에서 자동 추출 + 컬러피커</td></tr>
+  <tr><td>디자인</td><td>보라색 그라데이션</td><td>토스 스타일 + 알라딘 디자인 가이드</td></tr>
+  <tr><td>텍스트 표기</td><td>없음</td><td>/br, /br2, {핑크강조}</td></tr>
+</table>
+
+</div>
+</body>
+</html>

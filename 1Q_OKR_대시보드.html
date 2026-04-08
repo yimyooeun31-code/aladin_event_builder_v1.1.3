@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 1분기 OKR — 이벤트 공통 모듈 빌더</title>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+    :root {
+      --blue: #0078ff;
+      --yellow: #fde64b;
+      --navy: #1a2a44;
+      --bg: #f2f4f7;
+      --text: #2c3e50;
+      --sub: #5a6a7a;
+      --white: #ffffff;
+      --green: #52c41a;
+      --orange: #fa8c16;
+      --red: #ff4d4f;
+      --pink: #EB217C;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, #2a4a7f 100%);
+      color: white;
+      padding: 52px 48px;
+      border-radius: 28px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: var(--yellow);
+      opacity: 0.08;
+      border-radius: 50%;
+    }
+
+    .header-label {
+      display: inline-block;
+      background: rgba(253,230,75,0.2);
+      border: 1px solid rgba(253,230,75,0.4);
+      color: var(--yellow);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    header p {
+      font-size: 16px;
+      opacity: 0.8;
+      line-height: 1.7;
+      max-width: 680px;
+    }
+
+    .done-bar {
+      background: #f6ffed;
+      border: 1px solid #b7eb8f;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 14px;
+      color: #389e0d;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title .icon {
+      width: 32px; height: 32px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .okr-objective {
+      background: linear-gradient(135deg, #f0f4ff, #e8f0ff);
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .okr-objective .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .okr-objective p {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    .kr-list { list-style: none; }
+
+    .kr-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+      line-height: 1.6;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .kr-item:last-child { border-bottom: none; }
+
+    .kr-num {
+      min-width: 28px; height: 28px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-done { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+
+    .timeline { display: flex; flex-direction: column; gap: 16px; }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .timeline-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .dot-done { background: var(--green); }
+
+    .timeline-content strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .timeline-content span {
+      font-size: 12px;
+      color: var(--sub);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .feature-item {
+      background: #fafbff;
+      border: 1px solid #e8edff;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .feature-item .f-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .feature-item .f-desc {
+      font-size: 12px;
+      color: var(--sub);
+      line-height: 1.5;
+    }
+
+    .process-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .process-step {
+      flex: 1;
+      background: #f8f9ff;
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .process-step::after {
+      content: "\2192";
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ccc;
+      font-size: 18px;
+    }
+
+    .process-step:last-child::after { display: none; }
+
+    .process-step .p-num {
+      width: 28px; height: 28px;
+      background: var(--blue);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 auto 8px;
+    }
+
+    .process-step .p-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .process-step .p-desc { font-size: 11px; color: var(--sub); line-height: 1.4; }
+
+    .section-gap { margin-top: 32px; }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sub);
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .result-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: #f5f5f5;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .result-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+
+    .result-table tr:last-child td { border-bottom: none; }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .link-btn:hover { background: #0060cc; }
+
+    .next-box {
+      background: linear-gradient(135deg, #fff7e6, #fff3cd);
+      border: 1px solid #ffe58f;
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .next-box h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #d46b08;
+      margin-bottom: 10px;
+    }
+
+    .next-box ul {
+      list-style: none;
+      font-size: 13px;
+      color: #7c5a00;
+      line-height: 1.8;
+    }
+
+    .next-box ul li::before {
+      content: "→ ";
+      color: #d46b08;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--sub);
+      font-size: 13px;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .span-2, .span-3 { grid-column: span 1; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .process-row { flex-direction: column; }
+      .process-step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 헤더 -->
+  <header>
+    <div class="header-label">2026 1분기 OKR</div>
+    <h1>이벤트 공통 모듈 빌더<br>프로토타입 구축</h1>
+    <p>
+      이벤트 디자인의 반복 요소를 구조화/모듈화하여 자동화 기반을 구축하고, 이벤트 제작 생산성을 높이는 것이 목표입니다.
+    </p>
+  </header>
+
+  <!-- 완료 안내 -->
+  <div class="done-bar">
+    &#10003; 1분기 OKR 전체 달성 완료 (KR1 100%)
+  </div>
+
+  <div class="grid">
+
+    <!-- OKR -->
+    <div class="card span-3">
+      <div class="card-title"><span class="icon">&#127919;</span> Objective & Key Results</div>
+      <div class="okr-objective">
+        <div class="label">OBJECTIVE</div>
+        <p>이벤트 디자인의 반복 요소를 구조화/모듈화하여 자동화 기반을 구축하여 생산성을 높인다.</p>
+      </div>
+      <ul class="kr-list">
+        <li class="kr-item">
+          <span class="kr-num">1</span>
+          <div>
+            <strong>이벤트 공통 영역 프로토타입 구현</strong>
+            반복 사용되는 이벤트 공통 영역(적립금, 쿠폰, 도서 리스트 등) 구조 모듈 정의. 공통 영역 프로토타입 코드 구현 및 실제 이벤트 적용을 통한 동작 검증. 공통 영역 적용을 통해 이벤트 제작 소요 시간 약 30% 단축 및 MD 요청 기반 수정 업무 소요 시간 50% 이상 단축.
+            <div style="margin-top:6px;"><span class="badge badge-done">&#10003; KR1 완료</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 배경 및 문제 -->
+    <div class="card span-2">
+      <div class="card-title"><span class="icon">&#128269;</span> 배경 및 문제</div>
+      <ul style="list-style:none; font-size:14px; line-height:1.8; color:#555;">
+        <li style="margin-bottom:8px;">&#8226; 이벤트 페이지 제작 시 적립금, 쿠폰, 도서 리스트, 증정품, 댓글 영역이 이벤트마다 반복적으로 재작성</li>
+        <li style="margin-bottom:8px;">&#8226; 이전 파일 또는 매뉴얼을 참고해 복붙하는 방식 사용</li>
+        <li style="margin-bottom:8px;">&#8226; MD가 직접 수정할 경우 태그 누락/닫힘 오류로 페이지가 깨지는 문제 반복 발생</li>
+        <li>&#8226; 디자이너가 작성하더라도 해당 코드를 찾고 수정하는 시간이 비효율적으로 소요</li>
+      </ul>
+    </div>
+
+    <!-- 개발 일정 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">&#128197;</span> 개발 과정</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot dot-done"></div>
+          <div class="timeline-content">
+            <strong>v1 (2024.12)</strong>
+            <span>도서 리스트/증정품/쿠폰 3종 모듈 정의, 기본 구조 구현</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-done"></div>
+          <div class="timeline-content">
+            <strong>v1.1.0 (2025.01)</strong>
+            <span>4개 탭 UI 구축, 댓글 모듈 추가, UI/UX 개선</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-done"></div>
+          <div class="timeline-content">
+            <strong>v1.1.2 (2025.02)</strong>
+            <span>팝업 버그 수정, 코드 출력 포맷 개선, 실무 적용 검증 완료</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과물: 지원 모듈 -->
+    <div class="card span-2">
+      <div class="card-title"><span class="icon">&#128230;</span> 결과물: 지원 모듈 (4종 / 13개 타입)</div>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="f-title">&#127873; 증정품 <span class="badge badge-done">2개 타입</span></div>
+          <div class="f-desc">단일(팝업+정보형), 썸네일형 슬라이더</div>
+        </div>
+        <div class="feature-item">
+          <div class="f-title">&#128218; 도서 리스트 <span class="badge badge-done">4개 타입</span></div>
+          <div class="f-desc">단일 CID / 다중 탭 / 수동 ItemID / 랜덤탭</div>
+        </div>
+        <div class="feature-item">
+          <div class="f-title">&#128172; 댓글 <span class="badge badge-done">4개 타입</span></div>
+          <div class="f-desc">기본형/상품선택형/저자추천형/이미지첨부형</div>
+        </div>
+        <div class="feature-item">
+          <div class="f-title">&#127915; 쿠폰/적립금 <span class="badge badge-done">3개 타입</span></div>
+          <div class="f-desc">단일/다중 쿠폰, 기본 적립금</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <a href="aladin_event_builder_v1.1.2.html" target="_blank" class="link-btn">&#128279; v1.1.2 빌더 열기</a>
+      </div>
+    </div>
+
+    <!-- KR 달성 현황 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">&#9989;</span> KR 달성 현황</div>
+      <table class="result-table">
+        <tr><th>KR 항목</th><th>결과</th></tr>
+        <tr>
+          <td>공통 영역 구조 모듈 정의</td>
+          <td><span class="badge badge-done">&#10003; 완료</span><br><span style="font-size:12px; color:var(--sub);">4종 13개 세부 타입 정의</span></td>
+        </tr>
+        <tr>
+          <td>프로토타입 구현 및 실제 이벤트 적용 검증</td>
+          <td><span class="badge badge-done">&#10003; 완료</span><br><span style="font-size:12px; color:var(--sub);">v1.1.2 실무 적용 중</span></td>
+        </tr>
+        <tr>
+          <td>이벤트 제작 소요 시간 단축</td>
+          <td><span class="badge badge-done">&#10003; 달성</span><br><span style="font-size:12px; color:var(--sub);">쿠폰/적립금/댓글 요청 기준 처리 속도 50% 이상 단축 (실측)</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 사용 프로세스 -->
+    <div class="card span-3">
+      <div class="card-title"><span class="icon">&#9881;</span> 빌더 사용 프로세스</div>
+      <div class="process-row">
+        <div class="process-step">
+          <div class="p-num">1</div>
+          <div class="p-title">탭 선택</div>
+          <div class="p-desc">증정품/도서/댓글/쿠폰 중 선택</div>
+        </div>
+        <div class="process-step">
+          <div class="p-num">2</div>
+          <div class="p-title">타입 선택</div>
+          <div class="p-desc">세부 타입 드롭다운에서 선택</div>
+        </div>
+        <div class="process-step">
+          <div class="p-num">3</div>
+          <div class="p-title">값 입력</div>
+          <div class="p-desc">예시 값을 실제 값으로 수정</div>
+        </div>
+        <div class="process-step">
+          <div class="p-num">4</div>
+          <div class="p-title">코드 추가</div>
+          <div class="p-desc">버튼 클릭으로 코드 자동 생성</div>
+        </div>
+        <div class="process-step">
+          <div class="p-num">5</div>
+          <div class="p-title">복사 & 붙여넣기</div>
+          <div class="p-desc">.ascx 파일에 붙여넣기</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 실사용 효과 -->
+    <div class="card span-2">
+      <div class="card-title"><span class="icon">&#128200;</span> 실사용 효과</div>
+      <ul style="list-style:none; font-size:14px; line-height:1.8; color:#555;">
+        <li style="margin-bottom:8px;">&#8226; 이전 방식(파일 열기 &#8594; 코드 탐색 &#8594; 복붙 &#8594; 수정 &#8594; 검토)에서 빌더 사용(타입 선택 &#8594; 값 입력 &#8594; 코드 복사)으로 전환</li>
+        <li style="margin-bottom:8px;">&#8226; 특히 쿠폰/적립금/유형별 댓글 요청 처리 속도가 <strong>절반 이상 단축</strong></li>
+        <li>&#8226; 복붙 방식에서 반복 발생하던 <strong>태그 누락/코드 깨짐 오류 해소</strong></li>
+      </ul>
+    </div>
+
+    <!-- 다음 단계 -->
+    <div class="card">
+      <div class="card-title"><span class="icon">&#128640;</span> 다음 단계 (2분기)</div>
+      <div class="next-box">
+        <h4>v1.1.3 업그레이드 진행 중</h4>
+        <ul>
+          <li>Monly 템플릿 모듈 확장 (작가/신간/배너)</li>
+          <li>AI 이미지 프롬프트 자동 생성기</li>
+          <li>실시간 미리보기 기능</li>
+          <li>UI/UX 전면 개편</li>
+          <li>MD/스태프 대상 빌더 전달 및 사용 확산</li>
+        </ul>
+      </div>
+      <div style="margin-top:16px;">
+        <a href="2Q_OKR_대시보드.html" target="_blank" class="link-btn">&#128200; 2분기 진행 현황 보기 &#8594;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    2026 1분기 OKR 대시보드 &#8212; 알라딘 디자인팀
+  </footer>
+
+</div>
+</body>
+</html>

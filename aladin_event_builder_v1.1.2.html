@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>알라딘 이벤트 공통 모듈 빌더 v1</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+  :root {
+    --primary: #8b5cf6;
+    --primary-light: #a78bfa;
+    --primary-dark: #7c3aed;
+    --primary-ultra-light: #ede9fe;
+    --accent: #c084fc;
+    --accent-pink: #e879f9;
+    --bg: #f3f0ff;
+    --bg-gradient: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 30%, #fae8ff 60%, #f3f0ff 100%);
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.7);
+    --glass-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
+    --border: rgba(139, 92, 246, 0.12);
+    --text: #1e1b4b;
+    --text-secondary: #6b7280;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+  }
+
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+  }
+
+  /* 배경 장식 블롭 */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -120px; left: -120px;
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    animation: blobFloat 18s ease-in-out infinite alternate;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232, 121, 249, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    animation: blobFloat 22s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes blobFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, 30px) scale(1.08); }
+    100% { transform: translate(-20px, 50px) scale(0.95); }
+  }
+
+  /* ============================
+     왼쪽 컨트롤 패널
+     ============================ */
+  .control-panel {
+    width: 1000px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    box-shadow: 4px 0 30px rgba(139, 92, 246, 0.06);
+    position: relative;
+  }
+
+  /* 헤더 */
+  .cp-header {
+    padding: 28px 28px 24px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 50%, #c084fc 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .cp-header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+  .cp-header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 40%;
+    width: 80px; height: 80px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .cp-header h1 {
+    margin: 0; font-size: 26px; font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    position: relative; z-index: 1;
+  }
+  .cp-header p {
+    margin: 8px 0 0; font-size: 14px; opacity: 0.85; font-weight: 400;
+    line-height: 1.4;
+    position: relative; z-index: 1;
+  }
+
+  /* 탭 메뉴 */
+  .tab-header {
+    display: flex;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    gap: 0px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 20px 0;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 700;
+    color: #9ca3af;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tab-btn:hover {
+    color: var(--primary);
+    background: rgba(139, 92, 246, 0.04);
+  }
+  .tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: rgba(139, 92, 246, 0.06);
+  }
+
+  /* 바디 영역 */
+  .cp-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    background: transparent;
+  }
+  .cp-body::-webkit-scrollbar { width: 6px; }
+  .cp-body::-webkit-scrollbar-track { background: transparent; }
+  .cp-body::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 10px;
+  }
+  .cp-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.35);
+  }
+
+  .tab-content { display: none; padding: 28px; }
+  .tab-content.active { display: block; animation: fadeSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 섹션 라벨 */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 5px; height: 24px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--accent-pink) 100%);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* 메인 셀렉트 */
+  .main-select {
+    width: 100%;
+    padding: 15px 40px 15px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 16px;
+    color: var(--text);
+    background: var(--glass-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b5cf6' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E") no-repeat right 16px center;
+    backdrop-filter: blur(8px);
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-bottom: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .main-select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  }
+  .main-select:hover {
+    border-color: var(--primary-light);
+  }
+
+  /* 입력 폼 컨테이너 */
+  .input-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--glass-shadow);
+  }
+  .input-container.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #a5a0c8;
+    border: 2px dashed rgba(139, 92, 246, 0.15);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* 입력 필드 */
+  .input-row { margin-bottom: 22px; }
+  .input-row:last-child { margin-bottom: 0; }
+  .input-row label {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .example-box {
+    font-size: 13px;
+    color: #7c6fae;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(192, 132, 252, 0.08) 100%);
+    padding: 9px 14px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    margin-bottom: 0;
+    font-family: inherit;
+    line-height: 1.5;
+    border-left: 3px solid var(--primary-light);
+    backdrop-filter: blur(4px);
+    font-weight: 400;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-bottom: none;
+  }
+
+  .input-row input, .input-row textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: all 0.25s;
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .input-row input:focus, .input-row textarea:focus {
+    border-color: var(--primary-light);
+    outline: none;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+  }
+  .input-row textarea {
+    height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* 하단 버튼 영역 */
+  .action-area {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    display: flex;
+    gap: 12px;
+  }
+  .btn {
+    flex: 1;
+    padding: 0 16px;
+    height: 52px;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+  }
+  .btn:active { transform: translateY(0); }
+
+  .btn-reset {
+    background: rgba(248, 113, 113, 0.1);
+    color: #ef4444;
+    flex: 0 0 110px;
+    border: 1.5px solid rgba(248, 113, 113, 0.2);
+  }
+  .btn-reset:hover {
+    background: rgba(248, 113, 113, 0.15);
+    box-shadow: 0 8px 24px rgba(248, 113, 113, 0.1);
+  }
+  .btn-add {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25);
+  }
+  .btn-add:hover {
+    box-shadow: 0 8px 28px rgba(139, 92, 246, 0.35);
+  }
+
+  /* ============================
+     우측 에디터 패널
+     ============================ */
+  .editor-panel {
+    flex: 1;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: transparent;
+    position: relative;
+    z-index: 1;
+  }
+  .ep-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ep-header h3 {
+    margin: 0; color: var(--text); font-size: 20px; font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+
+  .code-area {
+    flex: 1;
+    background: #111;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    color: #c4b5fd;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace, "Pretendard Variable";
+    font-size: 13px;
+    line-height: 1.7;
+    resize: none;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    outline: none;
+    box-shadow: inset 0 2px 12px rgba(0,0,0,0.3), var(--glass-shadow);
+  }
+  .code-area::selection {
+    background: rgba(139, 92, 246, 0.4);
+  }
+  .code-area::-webkit-scrollbar { width: 8px; }
+  .code-area::-webkit-scrollbar-track { background: transparent; }
+  .code-area::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+  }
+
+  .copy-btn {
+    padding: 0 20px;
+    height: 40px;
+    border: 1.5px solid var(--border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1;
+  }
+  .copy-btn:hover {
+    border-color: var(--primary-light);
+    background: rgba(139, 92, 246, 0.08);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+  }
+
+  /* ============================
+     썸네일 동적 입력 폼
+     ============================ */
+  .thumb-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    padding: 12px;
+    border: 1.5px solid rgba(139, 92, 246, 0.15);
+    border-radius:0 0 var(--radius-sm) var(--radius-sm);
+    transition: all 0.2s;
+  }
+  .thumb-row:hover {
+    border-color: rgba(139, 92, 246, 0.2);
+    background: rgba(255, 255, 255, 0.75);
+  }
+  .thumb-row input {
+    margin-bottom: 0 !important;
+    font-size: 14px;
+  }
+  .thumb-url { flex: 2; }
+  .thumb-txt { flex: 1; }
+  .thumb-pop { flex: 1; }
+  .btn-del-thumb {
+    padding: 8px 14px;
+    background: rgba(248, 113, 113, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(248, 113, 113, 0.15);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .btn-del-thumb:hover {
+    background: rgba(248, 113, 113, 0.18);
+  }
+  .btn-add-thumb {
+    width: 100%;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.04);
+    border: 2px dashed rgba(139, 92, 246, 0.2);
+    color: var(--primary);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+  .btn-add-thumb:hover {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.35);
+  }
+
+  /* ============================
+     입력창 스타일 통합
+     ============================ */
+  .input-row input,
+  .input-row textarea,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    font-size: 14px !important;
+    padding: 11px 14px !important;
+    line-height: 1.5 !important;
+    box-sizing: border-box;
+    border: 1.5px solid rgba(139, 92, 246, 0.15) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.25s !important;
+  }
+
+  /* input만 height auto (textarea 제외) */
+  .input-row input,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    height: auto !important;
+  }
+
+  /* example-box 뒤 input/textarea: 상단 라운드 제거하여 한 묶음 처리 */
+  .example-box + input,
+  .example-box + textarea {
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
+    border-top: 1px solid rgba(139, 92, 246, 0.08) !important;
+  }
+
+  /* example-box 없이 단독인 input/textarea: 네 모서리 라운드 */
+  .input-row input,
+  .input-row textarea,
+  .multi-tab-item input,
+  .random-tab-item input,
+  .thumb-row input {
+    border-radius: var(--radius-sm);
+  }
+
+  /* textarea 드래그로 높이 조절 가능 */
+  .input-row textarea {
+    resize: vertical !important;
+    min-height: 80px;
+    height: 120px;
+    overflow-y: auto;
+  }
+  .input-row input:focus,
+  .input-row textarea:focus,
+  .multi-tab-item input:focus,
+  .random-tab-item input:focus,
+  .thumb-row input:focus {
+    border-color: var(--primary-light) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08) !important;
+  }
+
+  .multi-tab-item label,
+  .random-tab-item label {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--text-secondary) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .multi-tab-item,
+  .random-tab-item {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.1) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.04);
+    transition: all 0.2s;
+  }
+  .multi-tab-item:hover,
+  .random-tab-item:hover {
+    border-color: rgba(139, 92, 246, 0.2) !important;
+  }
+
+  /* ============================
+     토스트 알림
+     ============================ */
+  #toast {
+    visibility: hidden;
+    min-width: 280px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    text-align: center;
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+    opacity: 0;
+    transition: opacity 0.35s, bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+  }
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+  }
+</style>
+</head>
+<body>
+
+<div class="control-panel">
+  <div class="cp-header">
+    <h1>알라딘 이벤트 공통 모듈 빌더 v1</h1>
+    <p>증정품 · 도서리스트 · 댓글 · 쿠폰/적립금 통합</p>
+    <a href="guide_v1.1.2.html" target="_blank" style="position:absolute; top:28px; right:28px; display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:#fff; border-radius:20px; color:#7c3aed; font-size:13px; font-weight:700; text-decoration:none; z-index:2; transition:all 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.1);" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">사용 가이드 <span style="font-size:16px;">→</span></a>
+  </div>
+
+  <div class="tab-header">
+    <button class="tab-btn active" onclick="switchTab('gift')">🎁 증정품</button>
+    <button class="tab-btn" onclick="switchTab('booklist')">📚 도서 리스트</button>
+    <button class="tab-btn" onclick="switchTab('comment')">💬 댓글</button>
+    <button class="tab-btn" onclick="switchTab('coupon')">🎟️ 쿠폰/적립금</button>
+  </div>
+
+  <div class="cp-body">
+    
+    <div id="tab_gift" class="tab-content active">
+        <label class="section-label">증정품 타입 선택</label>
+        <select id="giftTypeSelect" class="main-select" onchange="renderDirectInputs('gift')">
+            <option value="">-- 타입을 선택하세요 --</option>
+            <option value="slider_only">1. 단일 증정품 (팝업+정보형)</option>
+            <option value="full">2. 증정품 (하단 썸네일형)</option>
+        </select>
+        <div id="giftInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+    </div>
+
+    <div id="tab_booklist" class="tab-content">
+        <label class="section-label">도서 리스트 타입 선택</label>
+        <select id="booklistTypeSelect" class="main-select" onchange="renderDirectInputs('booklist')">
+            <option value="">-- 타입을 선택하세요 --</option>
+            <option value="single">1. 단일 도서 리스트 (자동)</option>
+            <option value="multiple">2. 다중 도서 리스트 (탭 기능)</option>
+            <option value="manual">3. 직접 도서 선택 (ItemID 입력)</option>
+            <option value="random">4. 랜덤 탭 (wa_RandomTab)</option>
+        </select>
+        <div id="booklistInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+    </div>
+
+    <div id="tab_comment" class="tab-content">
+        <label class="section-label">댓글 타입 선택</label>
+        <select id="commentTypeSelect" class="main-select" onchange="renderDirectInputs('comment')">
+            <option value="">-- 타입을 선택하세요 --</option>
+            <option value="basic">1. 일반 댓글 (기본형)</option>
+            <option value="with_item">2. 상품 선택형 댓글</option>
+            <option value="with_author">3. 저자 추천형 댓글</option>
+            <option value="with_image">4. 이미지 첨부형 댓글</option>
+        </select>
+        <div id="commentInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+    </div>
+
+    <div id="tab_coupon" class="tab-content">
+        <label class="section-label">쿠폰/적립금 타입 선택</label>
+        <select id="couponTypeSelect" class="main-select" onchange="renderDirectInputs('coupon')">
+            <option value="">-- 타입을 선택하세요 --</option>
+            <option value="single">1. 단일 쿠폰 (nType)</option>
+            <option value="multiple">2. 다중 쿠폰 (nTypeList)</option>
+            <option value="reserve_basic">3. 기본 적립금 (일반)</option>
+        </select>
+        <div id="couponInputArea" class="input-container empty-state">👆 위에서 타입을 선택하면 입력창이 나타납니다.</div>
+    </div>
+
+  </div>
+
+  <div class="action-area">
+    <button class="btn btn-reset" onclick="resetAll()">🗑️ 초기화</button>
+    <button class="btn btn-add" onclick="addToEditor()">+ 현재 탭 내용 추가</button>
+  </div>
+</div>
+
+<div class="editor-panel">
+  <div class="ep-header">
+    <h3>📄 완성된 코드 (ASP.NET Control)</h3>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); white-space:nowrap;">
+        <input type="checkbox" id="headerToggle" checked onchange="toggleHeader()" style="width:16px; height:16px; cursor:pointer; accent-color:var(--primary);">
+        기본 헤더 포함
+      </label>
+      <button class="copy-btn" onclick="copyCode()">📋 전체 복사</button>
+    </div>
+  </div>
+  
+  <textarea id="finalCode" class="code-area" spellcheck="false"></textarea>
+</div>
+
+<script>
+// ============================================
+// 기본 헤더 코드
+// ============================================
+const DEFAULT_HEADER = `<%@ Control Language="c#" AutoEventWireup="true" %>
+<%@ Import namespace="Aladdin.FrameWork" %>
+<%@ Import namespace="Aladdin.AppBlock" %>
+<%@ Import namespace="System.Data" %>
+<%@ Import namespace="System.Collections.Generic" %>
+<%@ Import namespace="Aladdin.AppBlock.Blog2.Paper" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info_list" Src="~/ucl/itemview/list/wa_item_info_list.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info" Src="~/ucl/itemview/wa_item_info.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_coupondown_btn" Src="~/ucl/coupon/wa_coupondown_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_comment" Src="~/ucl_editor/events/wa_events_comment.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_RandomTab" Src="~/ucl_editor/events/wa_RandomTab.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_events_sns_btn" Src="~/ucl/events/eventComment/wa_events_sns_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_event_supplements" Src="~/ucl/events/wa_event_supplements.ascx" %>
+<%@ Register Src="/ucl/events/eventComment/wa_events_comment_v3.ascx" TagName="EventComment" TagPrefix="uc1" %>
+
+<script type="text/javascript" src="/ucl_editor/js/swiper-bundle.min.js"></scr`+`ipt>
+<link type="text/css" rel="stylesheet" href="/ucl_editor/css/swiper-bundle.min.css">
+<link type="text/css" rel="stylesheet" href="/ucl_editor/css/mobile/swiper.css">
+<link rel="stylesheet" media="screen" type="text/css" href="/ucl_editor/events/css/comment2019.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>" />
+<script type="text/javascript" src="/ucl_editor/events/js/mOnly.js?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>"></scr`+`ipt>
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/mOnly.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>">
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/template_v2.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>">
+
+`;
+
+document.getElementById('finalCode').value = DEFAULT_HEADER;
+
+// 헤더 토글 함수
+function toggleHeader() {
+    const codeArea = document.getElementById('finalCode');
+    const isChecked = document.getElementById('headerToggle').checked;
+    const currentCode = codeArea.value;
+    
+    if (isChecked) {
+        // 헤더 추가: 현재 코드 앞에 헤더 붙이기
+        if (!currentCode.startsWith('<%@ Control')) {
+            codeArea.value = DEFAULT_HEADER + currentCode;
+        }
+    } else {
+        // 헤더 제거: DEFAULT_HEADER 부분만 제거
+        if (currentCode.startsWith(DEFAULT_HEADER)) {
+            codeArea.value = currentCode.substring(DEFAULT_HEADER.length);
+        } else if (currentCode.startsWith('<%@ Control')) {
+            // 헤더가 약간 변형되었을 수 있으니 template_v2.css 줄 끝까지 제거
+            const headerEndMarker = 'template_v2.css';
+            const idx = currentCode.indexOf(headerEndMarker);
+            if (idx !== -1) {
+                const afterHeader = currentCode.substring(idx);
+                const lineEnd = afterHeader.indexOf('\n');
+                codeArea.value = lineEnd !== -1 ? afterHeader.substring(lineEnd + 1).replace(/^\s*\n/, '') : '';
+            }
+        }
+    }
+    showToast(isChecked ? '✅ 기본 헤더가 포함됩니다.' : '📝 기본 헤더가 제외됩니다.');
+}
+
+// ============================================
+// 스크립트 템플릿
+// ============================================
+const SCRIPT_SINGLE = `
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></scr`+`ipt> 
+<script>
+    var $j183 = $j183 || jQuery.noConflict();
+    var slides;
+    $j183(function ($) {  
+        var swiper = new Swiper('.giftswiper', {
+            loop:true, speed:800,
+            autoplay: { delay: 2500, disableOnInteraction: false },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            pagination: { el: '.swiper-pagination', clickable: true }
+        });      
+        jQuery('.giftswiper .swiper_pause_btn').click(function(){
+            if(jQuery(this).hasClass('stop')) {
+                jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
+                swiper.autoplay.start();
+            } else {
+                jQuery(this).addClass('stop').text('자동슬라이드 시작');
+                swiper.autoplay.stop();
+            }
+        });
+    });
+</scr`+`ipt>`;
+
+const SCRIPT_FULL = `
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></scr`+`ipt> 
+<script>
+    function random_index() {
+      var r_index = Math.floor(Math.random() * (jQuery('.random .swiper-slide').length));
+      return parseInt(r_index);
+    }
+    var $j183 = $j183 || jQuery.noConflict();
+    var slides;
+    $j183(function ($) {    
+    var swiper2 = new Swiper('.giftswiper', {
+        loop:true, speed:800,
+        autoplay: { delay: 2500, disableOnInteraction: false },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        pagination: { el: '.swiper-pagination', clickable: true }
+    });
+    jQuery('.giftswiper .swiper_pause_btn').click(function(){
+        if(jQuery(this).hasClass('stop')) {
+            jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
+            swiper2.autoplay.start();
+        } else {
+            jQuery(this).addClass('stop').text('자동슬라이드 시작');
+            swiper2.autoplay.stop();
+        }
+    });
+    var swiper = new Swiper('.thumbnail1', { loop: false, freeMode: { enabled: true, sticky: true }, slidesPerView: 'auto', navigation: { nextEl: ".thumbnail1-next", prevEl: ".thumbnail1-prev" } });  
+    var swiper = new Swiper('.thumbnail2', { loop: false, freeMode: { enabled: true, sticky: true }, slidesPerView: 'auto', navigation: { nextEl: ".thumbnail2-next", prevEl: ".thumbnail2-prev" } }); 
+    var swiper = new Swiper('.thumbnail3', { loop: false, freeMode: { enabled: true, sticky: true }, slidesPerView: 'auto', navigation: { nextEl: ".thumbnail3-next", prevEl: ".thumbnail3-prev" } });                         
+});
+</scr`+`ipt>`;
+
+// ============================================
+// 데이터 정의
+// ============================================
+const MODULE_DATA = {
+    gift: {
+        slider_only: { id: 'gift_slider_only', name: '단일 증정품 (팝업+정보형)', inputs: ['gift_slider_images', 'gift_popup_url', 'gift_name', 'gift_condition_text', 'gift_link', 'gift_info'] },
+        full: { id: 'gift_full', name: '증정품 (하단 썸네일형)', inputs: ['gift_slider_images', 'gift_condition_title', 'gift_thumbnails', 'gift_link', 'gift_info'] }
+    },
+    booklist: {
+        single: { id: 'booklist_single', name: '단일 도서 리스트', inputs: ['booklist_title', 'cid', 'item_count'] },
+        multiple: { id: 'booklist_multiple', name: '다중 도서 리스트 (탭 기능)', inputs: [] },
+        manual: { id: 'booklist_manual', name: '직접 도서 선택 (ItemID)', inputs: ['booklist_title', 'itemid_list'] },
+        random: { id: 'booklist_random', name: '랜덤 탭 (wa_RandomTab)', inputs: [] }
+    },
+    comment: {
+        basic: { id: 'comment_basic', name: '일반 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_item: { id: 'comment_with_item', name: '상품 추가 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_author: { id: 'comment_with_author', name: '저자 추천 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] },
+        with_image: { id: 'comment_with_image', name: '이미지 업로드 댓글', inputs: ['event_id', 'comment_title', 'comment_subtitle', 'admin_email'] }
+    },
+    coupon: {
+        single: { id: 'coupon_single', name: '단일 쿠폰 (nType)', inputs: ['coupon_title', 'coupon_condition', 'coupon_name', 'coupon_ntype', 'coupon_price', 'coupon_info'] },
+        multiple: { id: 'coupon_multiple', name: '다중 쿠폰 (nTypeList)', inputs: ['coupon_title', 'coupon_condition', 'coupon_name', 'coupon_ntypelist', 'coupon_price', 'coupon_info'] },
+        reserve_basic: { id: 'reserve_basic', name: '기본 적립금', inputs: ['coupon_title', 'coupon_condition', 'reserve_amount', 'coupon_info'] }
+    }
+};
+
+let currentTab = 'gift';
+
+// ============================================
+// UI 제어 로직
+// ============================================
+function switchTab(tabName) {
+    currentTab = tabName;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.getElementById(`tab_${tabName}`).classList.add('active');
+}
+
+function renderDirectInputs(category) {
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const container = document.getElementById(`${category}InputArea`);
+    const selectedType = typeSelect.value;
+    
+    if (!selectedType) { 
+        container.innerHTML = '👆 위에서 타입을 선택하면 입력창이 나타납니다.'; 
+        container.classList.add('empty-state'); 
+        return; 
+    }
+    
+    // 같은 타입을 다시 선택한 경우 무시
+    if (typeSelect.dataset.previousValue === selectedType) return;
+    
+    typeSelect.dataset.previousValue = selectedType;
+    container.classList.remove('empty-state');
+    
+    const module = MODULE_DATA[category][selectedType];
+
+    // 기존 특수 UI 처리들
+    if (selectedType === 'multiple' && category === 'booklist') { renderMultiListUI(container); return; }
+    if (selectedType === 'random' && category === 'booklist') { renderRandomTabUI(container); return; }
+
+    // HTML 생성 시작
+    let html = `<h4 style="margin:0 0 15px 0; font-size:16px; color:#8b5cf6;">📝 상세 정보 입력 (${module.name})</h4>`;
+
+    // ★ 수정된 부분: 입력 필드 루프 ★
+    html += module.inputs.map(inp => {
+        // 썸네일 입력인 경우 동적 UI 컨테이너로 대체
+        if (inp === 'gift_thumbnails') {
+            return `
+            <div class="input-row">
+                <label>썸네일 리스트 설정</label>
+                <div class="example-box"><span>💡</span> 이미지URL, 사은품명, 팝업URL을 각각 입력하세요.</div>
+                <div id="thumbListContainer"></div>
+                <button type="button" class="btn-add-thumb" onclick="addThumbRow()">+ 썸네일 한 줄 추가</button>
+                <input type="hidden" id="gift_thumbnails"> </div>`;
+        }
+        return getInputFieldHtml(inp);
+    }).join('');
+
+    // 적립금 체크박스 (기존 로직 유지)
+    if (selectedType === 'reserve_basic') {
+         html += `
+        <div style="margin-top: 20px; padding: 15px; background: #f0f7ff; border-radius: 0; border-left: 4px solid var(--primary);">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="reserveCommentLinkCheckbox" style="width: 18px; height: 18px; cursor: pointer;">
+                <span style="font-weight: 600;">댓글 작성하러 가기 버튼 추가</span>
+            </label>
+        </div>`;
+    }
+
+    container.innerHTML = html;
+    
+    // 썸네일 타입이면 기본으로 1줄 추가
+    if (module.inputs.includes('gift_thumbnails')) {
+        addThumbRow();
+    }
+    
+    addInputFieldProtection(container, category);
+}
+
+// ★ 수정된 함수: 이전 행 값 복사 기능 추가 ★
+function addThumbRow() {
+    const container = document.getElementById('thumbListContainer');
+    const rows = container.querySelectorAll('.thumb-row');
+    
+    // 1. 기본값 설정 (첫 번째 줄일 때 사용할 값)
+    let vUrl = '//image.aladin.co.kr/img/events/book/2022/02/monlygift_img02.jpg';
+    let vTxt = '파우치';
+    let vPop = '/Ucl_Editor/events/book/220401_language_pop.aspx';
+
+    // 2. 만약 이미 입력된 행이 있다면, '가장 마지막 행'의 값을 가져옴
+    if (rows.length > 0) {
+        const lastRow = rows[rows.length - 1];
+        vUrl = lastRow.querySelector('.thumb-url').value;
+        vTxt = lastRow.querySelector('.thumb-txt').value;
+        vPop = lastRow.querySelector('.thumb-pop').value;
+    }
+
+    // 3. 새 행 생성 (위에서 결정된 vUrl, vTxt, vPop 값을 value에 넣음)
+    const div = document.createElement('div');
+    div.className = 'thumb-row';
+    div.innerHTML = `
+        <input type="text" class="thumb-url" placeholder="이미지 URL" value="${vUrl}" />
+        <input type="text" class="thumb-txt" placeholder="멘트" value="${vTxt}" />
+        <input type="text" class="thumb-pop" placeholder="팝업 URL" value="${vPop}" />
+        <button type="button" class="btn-del-thumb" onclick="this.parentElement.remove()">삭제</button>
+    `;
+    container.appendChild(div);
+}
+
+// ✅ 입력 내용이 있는지 확인하는 함수
+function checkIfContentExists(container) {
+    // empty-state인 경우 내용 없음으로 판단
+    if (container.classList.contains('empty-state')) return false;
+    const inputs = container.querySelectorAll('input[type="text"], textarea');
+    for (let input of inputs) {
+        if (!input.value || input.value.trim() === '') continue;
+        // defaultValue와 동일하면 사용자 입력이 아니므로 건너뜀
+        if (input.defaultValue && input.value.trim() === input.defaultValue.trim()) continue;
+        return true;
+    }
+    return false;
+}
+
+// ✅ 입력 필드 보호 기능 추가
+function addInputFieldProtection(container, category) {
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const inputs = container.querySelectorAll('input[type="text"], textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function(e) {
+            // 타입이 선택되지 않은 경우 (혹시 모를 상황 대비)
+            if (!typeSelect.value) {
+                e.target.blur();
+                alert('⚠️ 먼저 위의 타입 선택 박스에서 타입을 선택해주세요!');
+            }
+        });
+    });
+}
+
+function renderRandomTabUI(container) {
+    container.innerHTML = `
+        <h4 style="margin:0 0 15px 0; font-size:14px; color:#8b5cf6;">🔀 랜덤 탭 구성 (파일명 자동생성)</h4>
+        <div class="example-box"><span>💡 Tip</span> 첫 파일명에 <b>_1</b> 포함 시 (예: basic_1), 추가 시 <b>_2, _3</b> 자동 증가.</div>
+        <div id="randomTabContainer"></div>
+        <button type="button" onclick="addRandomTabItem()" style="width:100%; padding:12px; background:#f0f2f5; border:2px dashed #ccc; border-radius:8px; color:#555; font-weight:bold; cursor:pointer; margin-top:10px;">+ 탭 추가하기</button>
+    `;
+    addRandomTabItem();
+}
+function addRandomTabItem() {
+    const container = document.getElementById('randomTabContainer');
+    const idx = container.children.length + 1;
+    let nextValue = '';
+    
+    // 파일명 자동 증가 로직
+    if (idx > 1) {
+        const prevInput = container.lastElementChild.querySelector('.rt-ucl');
+        if (prevInput && prevInput.value) {
+            const match = prevInput.value.match(/(.*)_(\d+)$/);
+            nextValue = match ? `${match[1]}_${parseInt(match[2]) + 1}` : prevInput.value + `_${idx}`;
+        }
+    } else { nextValue = '2022_monly_basic2_1'; }
+    
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'random-tab-item';
+    itemDiv.style.cssText = 'background:#fff; border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:10px; position:relative; display:flex; gap:10px; align-items:flex-end;';
+    
+    // ▼ 아래 innerHTML 부분의 style에 font-size:16px; 와 padding:10px; 가 추가되었습니다.
+    itemDiv.innerHTML = `
+        <div style="flex:1;">
+            <label style="font-size:15px; color:#666; display:block; margin-bottom:5px;">탭 이름</label>
+            <input type="text" class="rt-title" 
+                style="width:100%; padding:10px; font-size:16px; border:1px solid #eee; border-radius:4px;" 
+                placeholder="탭 ${idx}" value="탭 ${idx}">
+        </div>
+        <div style="flex:2;">
+            <label style="font-size:15px; color:#666; display:block; margin-bottom:5px;">UCL 파일명</label>
+            <input type="text" class="rt-ucl" 
+                style="width:100%; padding:10px; font-size:16px; border:1px solid #eee; border-radius:4px;" 
+                value="${nextValue}">
+        </div>
+        ${idx > 1 ? `<button onclick="this.parentElement.remove();" style="padding:10px 15px; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.15); border-radius:8px; color:#ef4444; cursor:pointer; font-weight:bold;">삭제</button>` : ''}
+    `;
+    
+    container.appendChild(itemDiv);
+}
+
+function renderMultiListUI(container) {
+    container.innerHTML = `
+        <h4 style="margin:0 0 15px 0; font-size:14px; color:#8b5cf6;">📚 탭 도서 리스트 구성</h4>
+        <div id="multiTabContainer"></div>
+        <button type="button" onclick="addTabItem()" style="width:100%; padding:12px; background:#f0f2f5; border:2px dashed #ccc; border-radius:8px; color:#555; font-weight:bold; cursor:pointer; margin-top:10px;">+ 탭 추가하기</button>
+    `;
+    addTabItem();
+}
+function addTabItem() {
+    const container = document.getElementById('multiTabContainer');
+    const idx = container.children.length + 1;
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'multi-tab-item';
+    itemDiv.style.cssText = 'background:#fff; border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:10px; position:relative;';
+    itemDiv.innerHTML = `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span style="font-weight:bold; color:#8b5cf6;">TAB 0${idx}</span>${idx > 1 ? `<button onclick="this.parentElement.parentElement.remove(); reindexTabs();" style="background:none; border:none; color:#999; cursor:pointer;">❌ 삭제</button>` : ''}</div><div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"><div><label style="font-size:15px; color:#666;">탭 제목</label><input type="text" class="mt-title" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="탭 이름"></div><div><label style="font-size:15px; color:#666;">링크 URL</label><input type="text" class="mt-link" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="https://..."></div><div><label style="font-size:15px; color:#666;">CID</label><input type="text" class="mt-cid" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" placeholder="12345"></div><div><label style="font-size:15px; color:#666;">ItemCount</label><input type="text" class="mt-count" style="width:100%; padding:8px; border:1px solid #eee; border-radius:4px;" value="80"></div></div>`;
+    container.appendChild(itemDiv);
+}
+function reindexTabs() { document.querySelectorAll('.multi-tab-item').forEach((item, index) => { item.querySelector('span').innerText = `TAB 0${index + 1}`; }); }
+
+function getInputFieldHtml(inputType) {
+    const meta = getInputMeta(inputType);
+    const isTextarea = ['gift_slider_images', 'gift_thumbnails', 'gift_info', 'itemid_list', 'coupon_info', 'coupon_title'].includes(inputType);
+    const defaultVal = meta.defaultValue || '';
+    return `<div class="input-row"><label>${meta.label}</label>${meta.example ? `<div class="example-box"><span>💡</span> ${meta.example}</div>` : ''}${isTextarea ? `<textarea id="${inputType}" placeholder="내용을 입력하세요">${defaultVal}</textarea>` : `<input type="text" id="${inputType}" placeholder="내용을 입력하세요" value="${defaultVal}">`}</div>`;
+}
+
+function getInputMeta(inputType) {
+    const map = {
+        // 적립금/쿠폰
+        coupon_title: { label: '메인 타이틀 (줄바꿈 = span.br/br2)', example: '이벤트 구매 고객에게 드리는\n즉시 할인 쿠폰!' },
+        coupon_condition: { label: '지급/할인 조건', example: '2만원 이상 2천원, 4만원 이상 5천원' },
+        coupon_name: { label: '쿠폰명', example: '즉시할인쿠폰' },
+        coupon_ntype: { label: '쿠폰 번호 (nType)', example: '15882' },
+        coupon_ntypelist: { label: '쿠폰 번호 목록 (쉼표구분)', example: '22618,22616,15102' },
+        coupon_price: { label: '할인 금액/율', example: '5,000 또는 10%' },
+        coupon_info: { label: '유의사항 (줄바꿈 구분)', example: '이벤트 기간 : 4월 18일 ~ 5월 18일' },
+        reserve_amount: { label: '적립금 액수 (숫자만/쉼표포함)', example: '1,000' },
+
+        // 기존
+        gift_popup_url: { label: '자세히보기 팝업 URL', example: '/Ucl_Editor/events/book/pop_name.aspx' },
+        gift_name: { label: '증정품명', example: '피너츠 쥬트백+참 세트' },
+        gift_condition_text: { label: '증정 조건', example: '대상도서 1권 포함, 3만원 이상 구입 시' },
+        gift_slider_images: { label: '슬라이더 이미지 (줄바꿈 구분)', example: '//image.aladin.co.kr/img/events/book/2026/01/img_name.jpg | 설명' },
+        gift_condition_title: { label: '증정 조건 제목', example: '4만원 이상 구매 시' },
+        gift_thumbnails: { label: '썸네일 (줄바꿈 구분)', example: '//image.aladin.co.kr/img/events/book/2022/02/monlygift_img01.jpg | 파우치 | /Ucl_Editor/events/book/sample_popup.aspx' },
+        gift_link: { label: '대상도서 링크', example: 'CID 부분만 수정하세요', defaultValue: 'https://www.aladin.co.kr/shop/wbrowse.aspx?CID=000000' },
+        gift_info: { label: '유의사항 (줄바꿈 구분)', example: '한정수량으로 조기 품절될 수 있습니다.', defaultValue: '이벤트 기간: 2026년 0월 0일 ~ 0월 0일\n이번 주문으로 발생할 예상 마일리지에서 우선 차감됩니다.\n예상 마일리지로 부족한 금액은 기존에 보유한 적립금, 마일리지 순서로 차감됩니다.\n보유 적립금/마일리지가 부족한 경우, 남은 금액은 추가로 결제하셔야 합니다.\n참고서, 중고도서, 외국도서, 전자책 주문금액은 제외됩니다.' },
+        booklist_title: { label: '리스트 제목', example: '추천 도서' },
+        cid: { label: 'CID', example: '196514' },
+        item_count: { label: 'ItemCount', example: '200' },
+        itemid_list: { label: 'ItemID 목록 (쉼표)', example: '111, 222' },
+        event_id: { label: '이벤트 ID', example: '123456' },
+        comment_title: { label: '댓글 제목', example: '기대평' },
+        comment_subtitle: { label: '댓글 부제목', example: '적립금 지급' },
+        admin_email: { label: '관리자 이메일', example: 'admin@aladin.co.kr' }
+    };
+    return map[inputType] || { label: inputType, example: '' };
+}
+
+function addToEditor() {
+    const category = currentTab;
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    const selectedType = typeSelect.value;
+    
+    // ▼ 수정됨: alert -> showToast 로 변경
+    if (!selectedType) { showToast('⚠️ 추가할 타입을 먼저 선택해주세요!'); return; }
+    
+    // 썸네일 UI가 있다면 데이터를 합쳐서 hidden input에 넣기
+    const thumbContainer = document.getElementById('thumbListContainer');
+    if (thumbContainer) {
+        const rows = thumbContainer.querySelectorAll('.thumb-row');
+        const lines = [];
+        rows.forEach(row => {
+            const url = row.querySelector('.thumb-url').value.trim();
+            const txt = row.querySelector('.thumb-txt').value.trim();
+            const pop = row.querySelector('.thumb-pop').value.trim();
+            
+            if (url) { lines.push(`${url} | ${txt} | ${pop}`); }
+        });
+        document.getElementById('gift_thumbnails').value = lines.join('\n');
+    }
+
+    let values = {};
+    const module = MODULE_DATA[category][selectedType];
+    module.inputs.forEach(id => { const el = document.getElementById(id); if (el) values[id] = el.value; });
+    
+    if (category === 'booklist' && selectedType === 'multiple') {
+        const items = [];
+        document.querySelectorAll('.multi-tab-item').forEach(div => {
+            items.push({ title: div.querySelector('.mt-title').value || '제목없음', link: div.querySelector('.mt-link').value || '#', cid: div.querySelector('.mt-cid').value || '0', count: div.querySelector('.mt-count').value || '80' });
+        });
+        values.multiItems = items;
+    }
+    if (category === 'booklist' && selectedType === 'random') {
+        const items = [];
+        document.querySelectorAll('.random-tab-item').forEach(div => { items.push({ ucl: div.querySelector('.rt-ucl').value || '' }); });
+        values.randomItems = items;
+    }
+
+    const generatedCode = generateModuleCode(module.id, values);
+    const codeArea = document.getElementById('finalCode');
+    codeArea.value += '\n' + generatedCode;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    showToast(`✅ [${module.name}] 코드가 추가되었습니다.`);
+}
+
+// ============================================
+// ★ 코드 생성 로직 ★
+// ============================================
+function generateModuleCode(modId, v) {
+    
+    // [NEW] 적립금/쿠폰 로직 (통합 처리)
+    if (modId.startsWith('coupon_') || modId.startsWith('reserve_')) {
+        const titleLines = parseTextLines(v.coupon_title);
+        const titleHtml = titleLines.length ? `<h3>${titleLines.map(line => `<span class="br">${line}</span>`).join(' ')}</h3>` : '<h3><span class="br">타이틀</span></h3>';
+        const condition = v.coupon_condition || '조건 내용';
+        const infos = parseTextLines(v.coupon_info);
+        const buttonLink = v.reserve_button_link || '';
+        
+        let coreHtml = '';
+
+        // 1. 적립금
+        if (modId.startsWith('reserve_')) {
+            const amount = v.reserve_amount || '1,000';
+            coreHtml = `
+    <div class="savedmoney_new">
+        <span class="tit">적립금</span>
+        <span class="price">${amount}</span>
+    </div>`;
+            
+            // 체크박스가 체크되어 있으면 버튼 추가
+            const checkbox = document.getElementById('reserveCommentLinkCheckbox');
+            if (checkbox && checkbox.checked) {
+                coreHtml += `
+    <a href="#comment" class="pink_big_btn mb0">댓글 작성하러 가기</a>`;
+            }
+        }
+        // 2. 쿠폰
+        else {
+            const couponName = v.coupon_name || '쿠폰명';
+            const price = v.coupon_price || '5,000';
+            let btnHtml = '';
+            if (modId === 'coupon_single') {
+                const nType = v.coupon_ntype || '00000';
+                btnHtml = `<uc1:wa_coupondown_btn id="Wa_coupondown_btn_${Math.floor(Math.random()*1000)}" nType="${nType}" runat="server" Price="${price}"></uc1:wa_coupondown_btn>`;
+            } else {
+                const nTypeList = v.coupon_ntypelist || '';
+                btnHtml = `<uc1:wa_coupondown_btn nTypeList="${nTypeList}" runat="server" Price="${price}" />`;
+            }
+            coreHtml = `
+    <div class="coupon_down new">
+        <div class="coupon_name">${couponName}</div>
+        ${btnHtml}
+    </div>`;
+        }
+
+        const commentStart = modId.startsWith('reserve_') ? '<!--적립금 이벤트-->' : '<!--쿠폰 이벤트-->';
+        const commentEnd = modId.startsWith('reserve_') ? '<!--적립금 이벤트 //-->' : '<!--쿠폰 이벤트 //-->';
+
+        return `
+${commentStart}
+<div class="monly_basic_event">
+    ${titleHtml}
+    <p>${condition}</p>
+    ${coreHtml}
+    ${infos.length > 0 ? `<ul class="infolist">${infos.map(i=>`\n        <li>${i}</li>`).join('')}\n    </ul>` : ''}
+</div>
+${commentEnd}
+`;
+    }
+
+    // 기존 로직들...
+    if (modId === 'booklist_random') {
+        const items = v.randomItems || [];
+        if (items.length === 0) return '';
+        const uclString = items.map(i => i.ucl).filter(u => u).join(',');
+        return `<!--도서 리스트 (랜덤 탭)-->
+<a name="dw" id="dw"></a>
+<uc1:wa_RandomTab runat="server" RandomUcl="${uclString}" NotRandomIndex="" />
+<!--도서 리스트 (랜덤 탭) //-->`;
+    }
+    if (modId === 'gift_slider_only') {
+        const slides = parseLines(v.gift_slider_images);
+        const popupUrl = v.gift_popup_url || '';
+        const giftName = v.gift_name || '증정품명';
+        const giftCondition = v.gift_condition_text || '증정 조건 내용';
+        const giftLink = v.gift_link || '#';
+        const infos = parseTextLines(v.gift_info);
+        const slideHtml = slides.map(s => `            <div class="swiper-slide"><img src="${s.url}" alt="${s.alt}" width="100%"></div>`).join('\n');
+        
+        // zoom_btn: 팝업 URL이 있으면 항상 swiper-container 안쪽 끝에 배치
+        const zoomBtnHtml = popupUrl 
+            ? `\n\n\n\n        <div class="zoom_btn"><a href="javascript:void(0);" onclick="MM_openBrWindow('${popupUrl}','','scrollbars=yes,width=720,height=750')" title="새창열림"/>자세히보기</a></div>`
+            : '';
+
+        return `<!--증정품 슬라이더-->
+    <!-- 슬라이드 -->
+    <div class="swiper-container giftswiper">
+        <div class="swiper-wrapper">
+${slideHtml}
+        </div>
+        <!-- 페이지 bullet -->
+        <div class="pagination_box">
+            <div class="swiper-pagination"></div>
+            <button class="swiper_pause_btn">자동슬라이드 멈춤</button>
+        </div>
+        <!-- 좌/우화살표 -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>${zoomBtnHtml}
+    </div>
+    <!--슬라이드 //-->
+
+    <div class="monly_basic_event">
+        <h3>${giftName}</h3>
+        <p><span class="br2">${giftCondition}</span></p>
+        <a href="${giftLink}" class="pink_big_btn">대상도서 모두 보기</a>
+        ${infos.length > 0 ? `<div class="monly_info_box">
+            <a href="javascript:void(0)">꼭 읽어주세요</a>
+            <div class="txt_box">
+                <ul class="infolist">
+${infos.map(i => `                    <li>${i}</li>`).join('\n')}
+                </ul>
+            </div>
+        </div>` : ''}
+    </div>
+<!--증정품 슬라이더 //-->
+${SCRIPT_SINGLE}`;
+    }
+    if (modId === 'gift_full') {
+        const slides = parseLines(v.gift_slider_images);
+        const thumbs = parseLines(v.gift_thumbnails, true);
+        const infos = parseTextLines(v.gift_info);
+        return '<!--증정품 (썸네일형)-->\n' + createGiftHtml(slides, thumbs, v.gift_condition_title, v.gift_link, infos) + '\n<!--증정품 (썸네일형) //-->\n' + SCRIPT_FULL;
+    }
+    if (modId === 'booklist_manual') {
+        const title = v.booklist_title || '추천 도서';
+        const ids = (v.itemid_list || '').split(',').map(s => s.trim()).filter(s => s);
+        if (ids.length === 0) return '';
+        const listItems = ids.map(id => `            <li>
+                <uc1:wa_item_info runat="server" 
+                    ItemId="${id}" 
+                    vtype="2" 
+                    AuthorType="0" 
+                    CoverType="4" 
+                    PriceType="3" 
+                    BorderType="0" 
+                    TitleType="1" 
+                    TitleCut="50" />
+            </li>`).join('\n');
+        return `<!--도서 리스트 (수동)-->
+<div class="monly_booklist_wrap">
+    <div class="list_tit">${title}</div>
+    <div class="booklist">
+        <ul class="booklist_item">
+${listItems}
+        </ul>
+    </div>
+</div>
+<!--도서 리스트 (수동) //-->`;
+    }
+    if (modId === 'booklist_multiple') {
+        const items = v.multiItems || [];
+        if (items.length === 0) return '';
+        const swiperSlides = items.map((item, idx) => {
+            const num = (idx + 1).toString().padStart(2, '0');
+            const isOn = idx === 0 ? ' on' : '';
+            return `            <div class="swiper-slide${isOn}"><a href="#${num}">${item.title}</a></div>`;
+        }).join('\n');
+        const tabHtml = `<!--도서 리스트 (다중 탭)-->
+<a name="dw" id="dw"></a>
+<div class="monly_swiper_tab_wrap">
+    <div class="swiper-container monly_swiper_tab AnchorTab">
+        <div class="swiper-wrapper">
+${swiperSlides}
+        </div>
+    </div>
+    <div class="thumbnail-button-next"></div>
+    <div class="thumbnail-button-prev"></div>
+</div>`;
+const listsHtml = items.map((item, idx) => {
+            const num = (idx + 1).toString().padStart(2, '0');
+            return `<a name="${num}" id="${num}"></a>
+<div class="monly_booklist_wrap">
+    <div class="list_tit">
+        <a href="${item.link}">${item.title}<span>+모두보기</span></a>
+    </div>
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${item.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${item.count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2" StockStatus="0"/>
+    </div>
+</div>`;
+        }).join('\n');
+        
+        return tabHtml + '\n' + listsHtml + '\n';
+    }
+if (modId === 'booklist_single') {
+        return `<div class="monly_booklist_wrap">
+    <div class="list_tit">${v.booklist_title}</div>
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${v.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${v.item_count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2"/>
+    </div>
+</div>
+`;
+    }
+    
+    
+    // ★ [수정됨] 댓글 영역 줄바꿈 포맷팅 적용 ★
+    if (modId.startsWith('comment_')) {
+        let extraAttrs = '';
+        if (modId === 'comment_basic') {
+            extraAttrs = `        IsHideCover="1"`;
+        } else if (modId === 'comment_with_item') {
+            extraAttrs = `        IsMultiple="true"\n        IsItemId="true"`;
+        } else if (modId === 'comment_with_author') {
+            extraAttrs = `        IsAuthorId="true"`;
+        } else if (modId === 'comment_with_image') {
+            extraAttrs = `        IsFileUploader="true"\n        IsFileList="true"`;
+        }
+
+        return `<!--댓글 이벤트-->
+<a name="comment" id="comment"></a>
+<div class="monly_Comment_wrap" style="padding:50px 20px; background:#f8f9fa;">
+    <uc1:EventComment ID="ucEventComment_${Math.floor(Math.random()*1000)}" runat="server"
+        EventId="${v.event_id || ''}"
+${extraAttrs}
+        IsOpen="1"
+        PageCount="20"
+        SubGroupId="0"
+        AdminEmail="${v.admin_email || ''}"
+        Title="${v.comment_title || ''}"
+        SubTitle="${v.comment_subtitle || ''}" />
+</div>
+<!--댓글 이벤트 //-->`;
+    }
+    return '';
+}
+
+function parseTextLines(text) { if (!text) return []; return text.split('\n').map(l => l.trim()).filter(l => l); }
+function parseLines(text, isThumb=false) { if (!text) return []; return text.split('\n').map(l => l.trim()).filter(l => l).map(l => { const p = l.split('|').map(x=>x.trim()); return isThumb ? { url: p[0], text: p[1], popup: p[2] } : { url: p[0], alt: p[1]||'' }; }); }
+
+function createGiftHtml(slides, thumbs, title, link, infos) { 
+    const slideHtml = slides.map(s => `        <div class="swiper-slide">
+            <img src="${s.url}" alt="${s.alt}" width="100%">
+        </div>`).join('\n');
+    
+    let bottomHtml = ''; 
+    if (thumbs && thumbs.length) { 
+        const thumbHtml = thumbs.map((t,i) => `            <div class="swiper-slide">
+                <a href="javascript:void(0);" onClick="opeSupplePop('${t.popup||''}',${i+1},'','width=720,height=800')">
+                    <div class="gift_img">
+                        <img src="${t.url}" alt="">
+                    </div>
+                    <div class="gift_txt">${t.text||''}</div>
+                </a>
+            </div>`).join('\n');
+        
+        bottomHtml = `
+    <div class="monly_basic_event">
+        <h3>${title || '증정 조건'}</h3>
+        <div class="thumbnail_wrap">
+            <div class="swiper-container thumbnail1">
+                <div class="swiper-wrapper">
+${thumbHtml}
+                </div>
+            </div>
+            <div class="thumbnail-button-next thumbnail1-next"></div>
+            <div class="thumbnail-button-prev thumbnail1-prev"></div>
+        </div>
+        ${link ? `<a href="${link}" class="pink_big_btn">대상도서 보기</a>` : ''}
+        ${infos && infos.length ? `<div class="monly_info_box">
+            <ul>
+${infos.map(i=>`                <li>${i}</li>`).join('\n')}
+            </ul>
+        </div>` : ''}
+    </div>`; 
+    } 
+    
+    return `<div class="book_gift_wrap">
+    <div class="swiper-container giftswiper">
+        <div class="swiper-wrapper">
+${slideHtml}
+        </div>
+        <div class="pagination_box">
+            <div class="swiper-pagination"></div>
+            <button class="swiper_pause_btn">자동슬라이드 멈춤</button>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>${bottomHtml}
+</div>`; 
+}
+function copyCode() { document.getElementById('finalCode').select(); document.execCommand('copy'); alert('📋 복사완료'); }
+function resetAll() {
+    if(!confirm('초기화하시겠습니까?')) return;
+    
+    // 입력값 초기화 (코드에디터, 헤더토글 제외)
+    document.querySelectorAll('input, textarea').forEach(el => {
+        if (el.id === 'finalCode' || el.id === 'headerToggle') return;
+        if (el.type === 'checkbox') { el.checked = false; }
+        else { el.value = ''; }
+    });
+    
+    // 셀렉트박스 초기화 + previousValue 제거
+    document.querySelectorAll('select').forEach(el => {
+        el.selectedIndex = 0;
+        delete el.dataset.previousValue;
+    });
+    
+    // 동적 컨테이너 초기화 (존재할 때만)
+    const mc = document.getElementById('multiTabContainer');
+    if (mc) mc.innerHTML = '';
+    const rc = document.getElementById('randomTabContainer');
+    if (rc) rc.innerHTML = '';
+    
+    // 입력 영역을 empty-state로 복원
+    ['giftInputArea', 'booklistInputArea', 'commentInputArea', 'couponInputArea'].forEach(id => {
+        const area = document.getElementById(id);
+        if (area) {
+            area.innerHTML = '👆 위에서 타입을 선택하면 입력창이 나타납니다.';
+            area.classList.add('empty-state');
+        }
+    });
+    
+    // 코드 에디터 초기화
+    const headerOn = document.getElementById('headerToggle').checked;
+    document.getElementById('finalCode').value = headerOn ? DEFAULT_HEADER : '';
+    
+    showToast('🗑️ 초기화되었습니다.');
+}
+// 토스트 메시지 띄우는 함수
+function showToast(message) {
+    const x = document.getElementById("toast");
+    if (!x) return;
+    x.innerText = message;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+<div id="toast"></div>
+</body>
+</html>
