@@ -958,10 +958,7 @@
             </label>
           </div>
         </div>
-        <div class="wiz-nav" style="border-top:none; margin-top:0; padding-top:0;">
-          <div></div>
-          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
-        </div>
+        <!-- wiz-nav moved to action-area -->
       </div>
 
       <!-- ===== Step 2: AI 프롬프트 생성기 ===== -->
@@ -982,78 +979,141 @@
         </div>
 
         <div class="wiz-section">
-          <div class="wiz-section-label">🎨 AI 이미지 프롬프트 생성기</div>
+          <div class="wiz-section-label">📁 이미지 파일명</div>
           <div class="input-row">
-            <label>이벤트 주제 / 컨셉</label>
-            <input type="text" id="pg_theme" placeholder="예: 봄 외국어 학습, 추리소설 특집" value="봄 시즌 맞이 행복한 분위기의 도서 이벤트">
+            <label>파일명 (날짜_이벤트명)</label>
+            <div class="example-box"><span>💡</span> 입력하면 자동으로 PC: <b>_bg.jpg</b> / 모바일: <b>_mbg.jpg</b> 가 붙습니다</div>
+            <input type="text" id="pg_filename" placeholder="예: 260409_봄독서주간" value="" oninput="updateFilenamePreview()">
           </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <div class="input-row" style="margin-bottom:0;">
-              <label>분위기 / 톤</label>
-              <select id="pg_mood" class="main-select" style="margin-bottom:0;">
-                <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
-                <option value="시원하고 청량한">시원한 / 청량한</option>
-                <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
-                <option value="귀엽고 아기자기한">귀여운 / 아기자기한</option>
-                <option value="모던하고 깔끔한">모던 / 미니멀</option>
-                <option value="다크하고 몽환적인">다크 / 몽환적</option>
-                <option value="밝고 활기찬">밝은 / 활기찬</option>
-                <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
-              </select>
+          <div id="filenamePreview" style="display:none; margin-top:6px; padding:10px; background:#f5f3ff; border-radius:8px; font-size:13px; line-height:1.8;">
+            <div>🖥️ PC: <code id="fnPreviewPc" style="background:#e0d4ff; padding:2px 6px; border-radius:4px; font-weight:700;"></code></div>
+            <div>📱 모바일: <code id="fnPreviewM" style="background:#e0d4ff; padding:2px 6px; border-radius:4px; font-weight:700;"></code></div>
+          </div>
+        </div>
+
+        <div class="wiz-section">
+          <div class="wiz-section-label">🎨 AI 이미지 생성</div>
+
+          <!-- 모드 탭 -->
+          <div style="display:flex; gap:6px; margin-bottom:14px;">
+            <button id="aiModeRef" onclick="switchAiMode('reference')" style="flex:1; padding:12px; border:2px solid #7c3aed; border-radius:10px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; background:#7c3aed; color:#fff; transition:all 0.15s;">📎 참조 이미지</button>
+            <button id="aiModeManual" onclick="switchAiMode('manual')" style="flex:1; padding:12px; border:2px solid var(--border); border-radius:10px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; background:#f9fafb; color:var(--text-secondary); transition:all 0.15s;">⚙️ 직접 설정</button>
+          </div>
+
+          <!-- ===== 직접 설정 모드 ===== -->
+          <div id="aiManualPanel" style="display:none;">
+            <div class="input-row">
+              <label>이벤트 주제 / 컨셉</label>
+              <input type="text" id="pg_theme" placeholder="예: 봄 외국어 학습, 추리소설 특집" value="봄 시즌 맞이 행복한 분위기의 도서 이벤트">
             </div>
-            <div class="input-row" style="margin-bottom:0;">
-              <label>스타일</label>
-              <select id="pg_style" class="main-select" style="margin-bottom:0;">
-                <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
-                <option value="일러스트 스타일">일러스트</option>
-                <option value="3D 렌더링 스타일">3D 렌더링</option>
-                <option value="수채화 스타일">수채화</option>
-                <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
-                <option value="유화풍 / 회화적">유화풍 / 회화적</option>
-                <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
-              </select>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="input-row" style="margin-bottom:0;">
+                <label>분위기 / 톤</label>
+                <select id="pg_mood" class="main-select" style="margin-bottom:0;">
+                  <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
+                  <option value="시원하고 청량한">시원한 / 청량한</option>
+                  <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
+                  <option value="귀엽고 아기자기한">귀여운 / 아기자기한</option>
+                  <option value="모던하고 깔끔한">모던 / 미니멀</option>
+                  <option value="다크하고 몽환적인">다크 / 몽환적</option>
+                  <option value="밝고 활기찬">밝은 / 활기찬</option>
+                  <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
+                </select>
+              </div>
+              <div class="input-row" style="margin-bottom:0;">
+                <label>스타일</label>
+                <select id="pg_style" class="main-select" style="margin-bottom:0;">
+                  <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
+                  <option value="일러스트 스타일">일러스트</option>
+                  <option value="3D 렌더링 스타일">3D 렌더링</option>
+                  <option value="수채화 스타일">수채화</option>
+                  <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
+                  <option value="유화풍 / 회화적">유화풍 / 회화적</option>
+                  <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row" style="margin-top:12px;">
+              <label>메인 컬러 / 색감</label>
+              <input type="text" id="pg_color" placeholder="예: 파스텔 연두, 따뜻한 베이지" value="밝고 따뜻한 베이지, 연한 파스텔 톤">
+            </div>
+            <div class="input-row">
+              <label>포함 요소 (선택)</label>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="책" style="accent-color:var(--primary);"> 책</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="꽃" style="accent-color:var(--primary);"> 꽃</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="계절감 소품" style="accent-color:var(--primary);"> 계절감</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="동물" style="accent-color:var(--primary);"> 동물</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="음식/음료" style="accent-color:var(--primary);"> 음식/음료</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="문구류" style="accent-color:var(--primary);"> 문구류</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="우주/별" style="accent-color:var(--primary);"> 우주/별</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="자연풍경" style="accent-color:var(--primary);"> 자연풍경</label>
+              </div>
+            </div>
+            <div class="input-row">
+              <label>추가 요청 (자유 입력)</label>
+              <input type="text" id="pg_extra" placeholder="예: 벚꽃 배경, 고양이가 책 읽는 장면" value="봄꽃이 핀 배경에 책으로 꾸며진 아기자기한 디스플레이">
+            </div>
+            <div class="input-row">
+              <label>금지 요소</label>
+              <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:12px;">
+              <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('pc')">🖥️ PC용 복사</button>
+              <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('mobile')">📱 모바일용 복사</button>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:8px;">
+              <button style="flex:1; height:42px; font-size:13px; font-weight:700; border:none; border-radius:8px; cursor:pointer; background:var(--primary); color:#fff; transition:opacity 0.15s;" onclick="aiGenerateImage('pc')">🤖 PC 이미지 생성</button>
+              <button style="flex:1; height:42px; font-size:13px; font-weight:700; border:none; border-radius:8px; cursor:pointer; background:var(--secondary); color:#fff; transition:opacity 0.15s;" onclick="aiGenerateImage('mobile')">🤖 모바일 이미지 생성</button>
             </div>
           </div>
-          <div class="input-row" style="margin-top:12px;">
-            <label>메인 컬러 / 색감</label>
-            <input type="text" id="pg_color" placeholder="예: 파스텔 연두, 따뜻한 베이지" value="밝고 따뜻한 베이지, 연한 파스텔 톤">
+
+          <!-- ===== 참조 이미지 모드 ===== -->
+          <div id="aiRefPanel">
+            <div class="input-row">
+              <label>도서 이미지 첨부</label>
+              <p style="margin:0 0 6px; font-size:12px; color:var(--text-secondary); line-height:1.5;">도서 표지를 첨부하면 PC + 모바일 배경을 한번에 생성합니다.</p>
+              <div id="pgRefPreview" style="display:none; position:relative; margin-top:6px;">
+                <img id="pgRefImg" style="width:100%; max-height:120px; object-fit:cover; border-radius:8px; border:1.5px solid var(--border);" />
+                <button onclick="clearRefImage()" style="position:absolute; top:4px; right:4px; width:22px; height:22px; border:none; border-radius:50%; background:rgba(0,0,0,0.6); color:#fff; font-size:11px; cursor:pointer;">✕</button>
+              </div>
+              <label id="pgRefUploadLabel" style="display:flex; align-items:center; justify-content:center; padding:14px; margin-top:6px; border:2px dashed var(--border); border-radius:8px; background:#fff; color:var(--text-secondary); font-size:13px; cursor:pointer; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                <span>+ 도서 이미지 첨부</span>
+                <input type="file" accept="image/*" style="display:none" onchange="handleRefImage(this)">
+              </label>
+            </div>
+            <button id="refGenBtn" onclick="aiGenerateRefBoth()" style="width:100%; height:44px; margin-top:8px; font-size:14px; font-weight:700; border:none; border-radius:8px; cursor:pointer; background:var(--primary); color:#fff; opacity:0.4; pointer-events:none; transition:opacity 0.15s;" disabled>🤖 PC + 모바일 배경 생성</button>
           </div>
-          <div class="input-row">
-            <label>포함 요소 (선택)</label>
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="책" style="accent-color:var(--primary);"> 책</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="꽃" style="accent-color:var(--primary);"> 꽃</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="계절감 소품" style="accent-color:var(--primary);"> 계절감</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="동물" style="accent-color:var(--primary);"> 동물</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="음식/음료" style="accent-color:var(--primary);"> 음식/음료</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="문구류" style="accent-color:var(--primary);"> 문구류</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="우주/별" style="accent-color:var(--primary);"> 우주/별</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="자연풍경" style="accent-color:var(--primary);"> 자연풍경</label>
+
+          <!-- 공통: 프로그레스 + 에러 + 결과 -->
+          <div id="aiGenProgress" style="display:none; margin-top:8px; height:24px; background:#e5e7eb; border-radius:6px; overflow:hidden; position:relative;">
+            <div id="aiGenBar" style="height:100%; background:linear-gradient(90deg,#818cf8,#4f46e5); border-radius:6px; transition:width 0.3s; width:0%;"></div>
+            <span id="aiGenText" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.3);"></span>
+          </div>
+          <div id="aiGenError" style="display:none; margin-top:6px; font-size:12px; color:#ef4444;"></div>
+
+          <!-- 생성 결과 미리보기 -->
+          <div id="aiPreviewArea" style="display:none; margin-top:12px; padding:12px; background:#f9fafb; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:var(--text);">생성 결과 미리보기</div>
+            <div style="display:flex; gap:8px;">
+              <div style="flex:1; text-align:center;">
+                <div style="font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:4px;">🖥️ PC</div>
+                <img id="aiPreviewPc" style="width:100%; border-radius:6px; border:1px solid var(--border); aspect-ratio:14/4.4; object-fit:cover;" />
+              </div>
+              <div style="flex:1; text-align:center;">
+                <div style="font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:4px;">📱 모바일</div>
+                <img id="aiPreviewM" style="width:100%; border-radius:6px; border:1px solid var(--border); aspect-ratio:75/77; object-fit:cover;" />
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button onclick="applyGeneratedImages()" style="flex:1; height:40px; font-size:13px; font-weight:700; border:none; border-radius:8px; cursor:pointer; background:#22c55e; color:#fff; transition:opacity 0.15s;">✅ 사용하기</button>
+              <button onclick="regenerateImages()" style="flex:1; height:40px; font-size:13px; font-weight:700; border:none; border-radius:8px; cursor:pointer; background:var(--secondary); color:#fff; transition:opacity 0.15s;">🔄 다시 생성</button>
             </div>
           </div>
-          <div class="input-row">
-            <label>추가 요청 (자유 입력)</label>
-            <input type="text" id="pg_extra" placeholder="예: 벚꽃 배경, 고양이가 책 읽는 장면" value="봄꽃이 핀 배경에 책으로 꾸며진 아기자기한 디스플레이">
-          </div>
-          <div class="input-row">
-            <label>금지 요소</label>
-            <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
-          </div>
-          <div style="display:flex; gap:10px; margin-top:12px;">
-            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('pc')">🖥️ PC용 복사</button>
-            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('mobile')">📱 모바일용 복사</button>
-          </div>
+
           <div id="promptResult" style="display:none; margin-top:12px; padding:14px; background:#111; color:#c4b5fd; border-radius:var(--radius-sm); font-family:'SF Mono','Fira Code',monospace; font-size:12px; line-height:1.7; white-space:pre-wrap; word-break:break-all; max-height:200px; overflow-y:auto;"></div>
         </div>
-
-        <div class="wiz-nav">
-          <button class="btn btn-reset" onclick="wizardPrev()">← 이전</button>
-          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
-        </div>
-      </div>
-
-      <!-- ===== Step 3: 이미지 URL 설정 + 타이틀 입력 + 코드 추가 ===== -->
-      <div id="wizStep3" class="wizard-step" style="display:none; padding:24px 28px;">
 
         <div class="wiz-section">
           <div class="wiz-section-label">📁 이미지 파일 설정</div>
@@ -1086,6 +1146,12 @@
             <div style="font-size:12px; color:var(--text-secondary); margin-top:4px; padding-left:26px;">체크 시 PC 화면에서 이미지 양옆이 배경색으로 자연스럽게 이어집니다.</div>
           </div>
         </div>
+
+        <!-- wiz-nav moved to action-area -->
+      </div>
+
+      <!-- ===== Step 3: 타이틀 입력 + 코드 추가 ===== -->
+      <div id="wizStep3" class="wizard-step" style="display:none; padding:24px 28px;">
 
         <!-- 텍스트 타이틀 모드일 때만 보이는 섹션 -->
         <div id="wizTitleInputSection" class="wiz-section" style="display:none;">
@@ -1151,9 +1217,7 @@
           </div>
         </div>
 
-        <div class="wiz-nav">
-          <button class="btn btn-reset" onclick="wizardPrev()" style="flex:1;">← 이전</button>
-        </div>
+        <!-- wiz-nav moved to action-area -->
       </div>
 
     </div>
@@ -1255,9 +1319,10 @@
   </div>
 
   <div class="action-area" id="actionArea">
-    <button class="btn btn-reset" onclick="resetAll()">🗑️ 초기화</button>
+    <button class="btn btn-reset" id="wizPrevBtn" onclick="wizardPrev()" style="flex:0 0 auto; padding:0 20px; display:none;">← 이전</button>
     <button class="btn btn-add" id="contentAddBtn" onclick="addPageSetupToEditor()" style="flex:1;">✅ 상단이미지 코드 추가</button>
-    <button class="btn" id="finishBtn" onclick="finishCode()" style="flex:0 0 auto; padding:0 20px; background:#333; color:#fff;">완성 코드 내보내기</button>
+    <button class="btn" id="finishBtn" onclick="finishCode()" style="flex:0 0 auto; padding:0 20px; background:#333; color:#fff; display:none;">코드 완료하기</button>
+    <button class="btn btn-add" id="wizNextBtn" onclick="wizardNext()" style="flex:0 0 auto; padding:0 20px; background:var(--secondary);">다음 →</button>
   </div>
 </div>
 
@@ -1265,8 +1330,8 @@
 <div class="editor-panel">
   <div class="ep-header">
     <div class="ep-tab-group">
-      <button class="ep-tab-btn active" onclick="switchEditorTab('code')">코드</button>
-      <button class="ep-tab-btn" onclick="switchEditorTab('preview')">미리보기</button>
+      <button class="ep-tab-btn" onclick="switchEditorTab('code')">코드</button>
+      <button class="ep-tab-btn active" onclick="switchEditorTab('preview')">미리보기</button>
     </div>
     <div id="codeToolbar" style="display:flex; align-items:center; gap:8px;">
       <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); white-space:nowrap;">
@@ -1281,8 +1346,8 @@
     </div>
   </div>
 
-  <textarea id="finalCode" class="code-area" spellcheck="false"></textarea>
-  <div id="previewWrap" class="preview-wrap" style="display:none;">
+  <textarea id="finalCode" class="code-area" style="display:none;" spellcheck="false"></textarea>
+  <div id="previewWrap" class="preview-wrap">
     <iframe id="previewFrame" sandbox="allow-same-origin allow-scripts"></iframe>
   </div>
 </div>
@@ -2446,6 +2511,13 @@ function wizardShowStep(step) {
         document.getElementById('wizArrow' + i).classList.toggle('done', i < step);
     }
 
+    // 하단 이전/다음/완료 버튼 표시 제어
+    const prevBtn = document.getElementById('wizPrevBtn');
+    const nextBtn = document.getElementById('wizNextBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    if (prevBtn) prevBtn.style.display = step === 1 ? 'none' : '';
+    if (nextBtn) nextBtn.style.display = step === 3 ? 'none' : '';
+    if (finishBtn) finishBtn.style.display = step === 3 ? '' : 'none';
 }
 
 function wizardNext() {
@@ -2737,8 +2809,13 @@ function finishCode() {
     codeArea.value = code;
     codeArea.scrollTop = codeArea.scrollHeight;
 
-    // 마무리 버튼 숨기기
-    document.getElementById('finishBtn').style.display = 'none';
+    // 마무리 버튼 비활성화
+    document.querySelectorAll('[onclick="finishCode()"]').forEach(btn => {
+        btn.textContent = '✅ 완료됨';
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+    });
 
     if (currentEditorTab === 'preview') updatePreview();
     showToast('✅ 코드 마무리 완료! 닫기 태그가 추가되었습니다.');
@@ -2967,9 +3044,318 @@ function generatePrompt(device) {
 }
 
 // ============================================
+// 참조 이미지 업로드 + AI 이미지 생성
+// ============================================
+let pgRefImageData = null; // base64 data URL
+let pendingImages = { pc: null, mobile: null }; // 확정 전 임시 저장
+let lastGenerateMode = null; // 'reference' or 'manual'
+let currentAiMode = 'reference';
+let refSizeDevice = 'pc';
+
+function switchAiMode(mode) {
+    currentAiMode = mode;
+    document.getElementById('aiManualPanel').style.display = mode === 'manual' ? 'block' : 'none';
+    document.getElementById('aiRefPanel').style.display = mode === 'reference' ? 'block' : 'none';
+    const manualBtn = document.getElementById('aiModeManual');
+    const refBtn = document.getElementById('aiModeRef');
+    refBtn.style.background = mode === 'reference' ? '#7c3aed' : '#f9fafb';
+    refBtn.style.color = mode === 'reference' ? '#fff' : 'var(--text-secondary)';
+    refBtn.style.borderColor = mode === 'reference' ? '#7c3aed' : 'var(--border)';
+    manualBtn.style.background = mode === 'manual' ? '#7c3aed' : '#f9fafb';
+    manualBtn.style.color = mode === 'manual' ? '#fff' : 'var(--text-secondary)';
+    manualBtn.style.borderColor = mode === 'manual' ? '#7c3aed' : 'var(--border)';
+}
+
+function selectRefSize(device) {
+    refSizeDevice = device;
+    const pcBtn = document.getElementById('refSizePc');
+    const mBtn = document.getElementById('refSizeMobile');
+    pcBtn.style.background = device === 'pc' ? 'var(--primary)' : '#fff';
+    pcBtn.style.color = device === 'pc' ? '#fff' : 'var(--text-secondary)';
+    pcBtn.style.borderColor = device === 'pc' ? 'var(--primary)' : 'var(--border)';
+    mBtn.style.background = device === 'mobile' ? 'var(--primary)' : '#fff';
+    mBtn.style.color = device === 'mobile' ? '#fff' : 'var(--text-secondary)';
+    mBtn.style.borderColor = device === 'mobile' ? 'var(--primary)' : 'var(--border)';
+}
+
+function updateFilenamePreview() {
+    const val = document.getElementById('pg_filename').value.trim();
+    const preview = document.getElementById('filenamePreview');
+    if (val) {
+        document.getElementById('fnPreviewPc').textContent = val + '_bg.jpg';
+        document.getElementById('fnPreviewM').textContent = val + '_mbg.jpg';
+        preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
+    }
+}
+
+function getFilename(device) {
+    const val = document.getElementById('pg_filename').value.trim();
+    if (val) return val + (device === 'pc' ? '_bg.png' : '_mbg.png');
+    return 'ref' + (device === 'pc' ? '_bg.png' : '_mbg.png');
+}
+
+function applyGeneratedImages() {
+    if (pendingImages.pc) setImageUrl('pc', pendingImages.pc);
+    if (pendingImages.mobile) setImageUrl('mobile', pendingImages.mobile);
+    document.getElementById('aiPreviewArea').style.display = 'none';
+    pendingImages = { pc: null, mobile: null };
+    showToast('✅ 이미지가 적용되었습니다!');
+}
+
+function regenerateImages() {
+    document.getElementById('aiPreviewArea').style.display = 'none';
+    pendingImages = { pc: null, mobile: null };
+    if (lastGenerateMode === 'reference') {
+        aiGenerateRefBoth();
+    } else if (lastGenerateMode === 'manual_pc') {
+        aiGenerateImage('pc');
+    } else if (lastGenerateMode === 'manual_mobile') {
+        aiGenerateImage('mobile');
+    }
+}
+
+function replaceImageInCode(device, newUrl) {
+    const code = document.getElementById('finalCode');
+    if (!code || !code.value) return;
+    const field = device === 'pc' ? 'ps_top_img_pc' : 'ps_top_img_m';
+    const oldUrl = document.getElementById(field)?._prevUrl;
+    if (oldUrl && oldUrl !== newUrl) {
+        code.value = code.value.split(oldUrl).join(newUrl);
+        if (currentEditorTab === 'preview') updatePreview();
+    }
+}
+
+function setImageUrl(device, url) {
+    const field = device === 'pc' ? 'ps_top_img_pc' : 'ps_top_img_m';
+    const el = document.getElementById(field);
+    if (!el) return;
+    // 이전 URL 저장 → 코드 치환용
+    el._prevUrl = el.value;
+    el.value = url;
+    // 코드에서 이전 경로 → 새 경로로 자동 치환
+    replaceImageInCode(device, url);
+}
+
+function updateRefGenBtn() {
+    const btn = document.getElementById('refGenBtn');
+    if (pgRefImageData) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+    } else {
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        btn.style.pointerEvents = 'none';
+    }
+}
+
+async function aiGenerateRefSingle(device) {
+    const dim = device === 'pc' ? '1400x440' : '750x770';
+    const prompt = `Size: ${dim} 전체 배경 이미지.\nConcept: 첨부파일의 분위기를 반영한 테마.\nStyle: 첨부된 이미지의 색감과 화풍을 계승할 것.\n배경 확장: 참조 이미지의 배경 요소(예: 자연물, 건축물, 또는 추상적인 배경 그래픽)만을 활용하여 캔버스 전체를 자연스럽게 채웁니다.\nLayout: 중앙에는 텍스트가 위치해야 하므로 반드시 넓은 빈 공간(Empty Space)을 유지할 것. 주요 오브젝트는 좌우측 가장자리에 배치.\nObject Placement: 좌우측 가장자리에 주요 오브젝트를 과하지 않게 배치.\nNegative Prompt: 텍스트 절대 금지, 인물, 구체적인 캐릭터, 복잡한 패턴, 중앙 오브젝트 금지.\nPost-Processing: 좌우 끝은 자연스럽게 흐려지는 그라데이션 효과.`;
+
+    const res = await fetch('http://localhost:5173/api/gemini-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, referenceImage: pgRefImageData }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    if (!data.imageUrl) throw new Error('이미지가 생성되지 않았습니다');
+
+    const filename = getFilename(device);
+    const saveRes = await fetch('http://localhost:5173/api/save-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dataUrl: data.imageUrl, filename }),
+    });
+    const saveData = await saveRes.json();
+
+    if (saveData.path) {
+        pendingImages[device] = 'http://localhost:5173' + saveData.path;
+        // 미리보기에는 base64 직접 표시 (CORS 우회)
+        const previewImg = document.getElementById(device === 'pc' ? 'aiPreviewPc' : 'aiPreviewM');
+        if (previewImg) previewImg.src = data.imageUrl;
+    }
+    return device;
+}
+
+async function aiGenerateRefBoth() {
+    if (!document.getElementById('pg_filename').value.trim()) {
+        document.getElementById('pg_filename').focus();
+        document.getElementById('pg_filename').style.border = '2px solid #ef4444';
+        setTimeout(() => document.getElementById('pg_filename').style.border = '', 3000);
+        showToast('⚠️ 파일명을 먼저 입력해주세요.');
+        return;
+    }
+    const progressEl = document.getElementById('aiGenProgress');
+    const barEl = document.getElementById('aiGenBar');
+    const textEl = document.getElementById('aiGenText');
+    const errorEl = document.getElementById('aiGenError');
+    progressEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    barEl.style.width = '0%';
+    document.getElementById('refGenBtn').disabled = true;
+    document.getElementById('refGenBtn').style.opacity = '0.4';
+
+    const start = Date.now();
+    const timer = setInterval(() => {
+        const elapsed = (Date.now() - start) / 1000;
+        const pct = Math.min(90, Math.round((1 - Math.exp(-elapsed / 20)) * 90));
+        barEl.style.width = pct + '%';
+        textEl.textContent = (pct < 25 ? 'PC 이미지 생성 중...' : pct < 50 ? 'PC 거의 완료...' : pct < 70 ? '모바일 이미지 생성 중...' : '모바일 거의 완료...') + ' ' + pct + '%';
+    }, 300);
+
+    try {
+        // 1) PC 생성
+        await aiGenerateRefSingle('pc');
+        barEl.style.width = '50%';
+        textEl.textContent = '✅ PC 완료! 모바일 생성 중... 50%';
+
+        // 2) 모바일 생성
+        await aiGenerateRefSingle('mobile');
+        clearInterval(timer);
+        barEl.style.width = '100%';
+        textEl.textContent = '✅ PC + 모바일 모두 완료! 100%';
+        showToast('✅ 이미지가 생성되었습니다. 미리보기를 확인하세요!');
+        lastGenerateMode = 'reference';
+
+        document.getElementById('refGenBtn').disabled = false;
+        document.getElementById('refGenBtn').style.opacity = '1';
+        document.getElementById('aiPreviewArea').style.display = 'block';
+        setTimeout(() => { progressEl.style.display = 'none'; }, 2000);
+    } catch (err) {
+        clearInterval(timer);
+        progressEl.style.display = 'none';
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+        document.getElementById('refGenBtn').disabled = false;
+        document.getElementById('refGenBtn').style.opacity = '1';
+    }
+}
+
+function handleRefImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+        pgRefImageData = reader.result;
+        document.getElementById('pgRefImg').src = pgRefImageData;
+        document.getElementById('pgRefPreview').style.display = 'block';
+        document.getElementById('pgRefUploadLabel').style.display = 'none';
+        updateRefGenBtn();
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+}
+
+function clearRefImage() {
+    pgRefImageData = null;
+    document.getElementById('pgRefPreview').style.display = 'none';
+    document.getElementById('pgRefUploadLabel').style.display = 'flex';
+    updateRefGenBtn();
+}
+
+async function aiGenerateImage(device) {
+    if (!document.getElementById('pg_filename').value.trim()) {
+        document.getElementById('pg_filename').focus();
+        document.getElementById('pg_filename').style.border = '2px solid #ef4444';
+        setTimeout(() => document.getElementById('pg_filename').style.border = '', 3000);
+        showToast('⚠️ 파일명을 먼저 입력해주세요.');
+        return;
+    }
+    const theme = document.getElementById('pg_theme').value.trim();
+    const mood = document.getElementById('pg_mood').value;
+    const style = document.getElementById('pg_style').value;
+    const extra = document.getElementById('pg_extra').value.trim();
+    const exclude = document.getElementById('pg_exclude').value.trim();
+
+    const dim = device === 'pc' ? '1400x440' : '750x770';
+    const elements = [];
+    document.querySelectorAll('.pg_element:checked').forEach(cb => elements.push(cb.value));
+
+    // 프롬프트 빌드
+    let prompt = `Create a beautiful background image for a Korean bookstore event page.\n\n`;
+
+    if (pgRefImageData) {
+        prompt += `=== REFERENCE IMAGE ===\nAnalyze the attached reference image carefully.\n- Inherit its color palette, mood, and artistic style\n- Extend its background elements naturally to fill the canvas\n- Keep the center area empty for text overlay\n- Do NOT copy specific objects — only capture the atmosphere and visual tone\n\n`;
+    }
+
+    prompt += `=== IMAGE SPEC ===\nSize: ${dim} pixels\nPurpose: Full-bleed event banner background\n\n`;
+    if (theme) prompt += `=== THEME ===\n${theme}\n\n`;
+    if (mood) prompt += `=== MOOD ===\n${mood}\n\n`;
+    if (style) prompt += `=== STYLE ===\n${style}\n\n`;
+    if (elements.length) prompt += `=== ELEMENTS ===\n${elements.join(', ')}\n\n`;
+    if (extra) prompt += `=== ADDITIONAL ===\n${extra}\n\n`;
+    prompt += `=== COMPOSITION ===\n- Wide horizontal landscape format\n- Center: open empty space for text overlay\n- Main objects at left/right edges only\n- Smooth gradual transitions, edges fade to gradient\n\n`;
+    prompt += `=== FORBIDDEN ===\n- Any text, letters, numbers\n- Human faces, specific characters\n- Complex patterns, central objects\n${exclude ? '- ' + exclude : ''}\n\nGenerate only the image, no text.`;
+
+    // UI 업데이트
+    const progressEl = document.getElementById('aiGenProgress');
+    const barEl = document.getElementById('aiGenBar');
+    const textEl = document.getElementById('aiGenText');
+    const errorEl = document.getElementById('aiGenError');
+    progressEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    barEl.style.width = '0%';
+
+    const start = Date.now();
+    const timer = setInterval(() => {
+        const elapsed = (Date.now() - start) / 1000;
+        const pct = Math.min(90, Math.round((1 - Math.exp(-elapsed / 12)) * 90));
+        barEl.style.width = pct + '%';
+        textEl.textContent = (pct < 30 ? '프롬프트 전송 중...' : pct < 60 ? '이미지 생성 중...' : '거의 완료...') + ' ' + pct + '%';
+    }, 300);
+
+    try {
+        const res = await fetch('http://localhost:5173/api/gemini-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, referenceImage: pgRefImageData || undefined }),
+        });
+        const data = await res.json();
+        clearInterval(timer);
+
+        if (data.error) throw new Error(data.error);
+        if (!data.imageUrl) throw new Error('이미지가 생성되지 않았습니다');
+
+        // 이미지 저장
+        const filename = getFilename(device);
+
+        const saveRes = await fetch('http://localhost:5173/api/save-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ dataUrl: data.imageUrl, filename }),
+        });
+        const saveData = await saveRes.json();
+
+        barEl.style.width = '100%';
+        textEl.textContent = '완료! 100%';
+
+        // 미리보기에 표시 (확정은 아직 안 함)
+        if (saveData.path) {
+            pendingImages[device] = 'http://localhost:5173' + saveData.path;
+            const previewImg = document.getElementById(device === 'pc' ? 'aiPreviewPc' : 'aiPreviewM');
+            if (previewImg) previewImg.src = data.imageUrl; // base64 직접 표시
+            lastGenerateMode = 'manual_' + device;
+            document.getElementById('aiPreviewArea').style.display = 'block';
+            showToast(`✅ ${device === 'pc' ? 'PC' : '모바일'} 이미지 생성! 미리보기를 확인하세요.`);
+        }
+
+        setTimeout(() => { progressEl.style.display = 'none'; }, 2000);
+    } catch (err) {
+        clearInterval(timer);
+        progressEl.style.display = 'none';
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+    }
+}
+
+// ============================================
 // 에디터 탭 전환 (코드 / 미리보기)
 // ============================================
-let currentEditorTab = 'code';
+let currentEditorTab = 'preview';
 
 function switchEditorTab(tab) {
     currentEditorTab = tab;
