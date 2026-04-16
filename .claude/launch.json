@@ -4,7 +4,7 @@
     {
       "name": "event-builder",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3000", "--no-clipboard"],
+      "runtimeArgs": ["serve", "../aladin_event_builder_v2.0-main", "-l", "3000", "--no-clipboard"],
       "port": 3000
     }
   ]

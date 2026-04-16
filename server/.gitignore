@@ -1,0 +1,8 @@
+node_modules/
+images/temp/*
+!images/temp/.gitkeep
+images/published/**/*.jpg
+images/published/**/*.jpeg
+images/published/**/*.png
+images/published/**/*.webp
+*.log

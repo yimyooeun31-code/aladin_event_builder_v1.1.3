@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Aladin Monly Template Event Module Builder</title>
+<title>Aladin Monly Template Event Module Builder v2.1</title>
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
   :root {
@@ -245,7 +245,6 @@
   /* 입력 폼 컨테이너 */
   .input-container {
     background: #ffffff;
-    border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 24px;
   }
@@ -271,6 +270,232 @@
     margin-bottom: 8px;
     letter-spacing: -0.02em;
     line-height: 1.3;
+  }
+
+  /* ──────── 이미지 업로드 버튼 ──────── */
+  .input-with-upload {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .input-with-upload input[type="text"] {
+    flex: 1;
+    min-width: 0;
+  }
+  .upload-btn {
+    flex-shrink: 0;
+    padding: 0 14px;
+    height: auto;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1.5px solid var(--primary);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .upload-btn:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+  .upload-btn.uploading {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  /* 썸네일 행 내부 업로드 버튼 (컴팩트) */
+  .thumb-upload-btn {
+    flex: 0 0 auto !important;
+    padding: 0 10px !important;
+    height: 38px;
+    font-size: 14px !important;
+    min-width: 44px;
+  }
+
+  /* ──────── 업로드 모달 ──────── */
+  .upload-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .upload-modal-overlay.open {
+    display: flex;
+  }
+  .upload-modal {
+    background: #fff;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  }
+  .upload-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .upload-modal-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .upload-modal-close {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+  .upload-modal-close:hover {
+    background: #f5f5f5;
+    color: var(--text);
+  }
+  .upload-modal-body {
+    padding: 22px;
+  }
+  .upload-modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 16px 22px;
+    border-top: 1px solid var(--border);
+    background: #fafbfc;
+    border-radius: 0 0 14px 14px;
+  }
+  .upload-dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: #fafbfc;
+  }
+  .upload-dropzone:hover,
+  .upload-dropzone.dragover {
+    border-color: var(--primary);
+    background: rgba(235, 33, 124, 0.04);
+  }
+  .upload-dropzone-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+  .upload-dropzone-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .upload-dropzone-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .upload-preview {
+    display: none;
+  }
+  .upload-preview img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f5f5f5;
+    margin-bottom: 14px;
+  }
+  .upload-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 100px 100px;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .upload-form-grid > div label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .upload-form-grid input,
+  .upload-form-grid select {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    background: #fff;
+  }
+  .upload-form-grid input:focus,
+  .upload-form-grid select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .upload-final-path {
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+  .upload-status {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: none;
+  }
+  .upload-status.info { display: block; background: #eff6ff; color: #1e40af; }
+  .upload-status.success { display: block; background: #ecfdf5; color: #047857; }
+  .upload-status.error { display: block; background: #fef2f2; color: #b91c1c; }
+  .upload-btn-confirm {
+    flex: 1;
+    height: 42px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .upload-btn-confirm:hover { background: var(--primary-dark); }
+  .upload-btn-confirm:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+  }
+  .upload-btn-cancel {
+    flex: 0 0 90px;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
   }
 
   .example-box {
@@ -887,24 +1112,138 @@
     opacity: 1;
     bottom: 50px;
   }
+
+  /* ============================
+     Step 0: 템플릿 선택 오버레이
+     ============================ */
+  .tpl-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+  .tpl-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .tpl-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  .tpl-header p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+  .tpl-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .tpl-card {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .tpl-card:hover {
+    border-color: var(--primary);
+    background: var(--primary-ultra-light);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(235, 33, 124, 0.12);
+  }
+  .tpl-card .tpl-emoji {
+    font-size: 56px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .tpl-card h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .tpl-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .tpl-card .tpl-arrow {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 700;
+  }
+  @media (max-width: 700px) {
+    .tpl-cards { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
+<!-- Step 0: 템플릿 선택 풀스크린 -->
+<div id="templateSelectScreen" class="tpl-overlay">
+  <div class="tpl-header">
+    <h1>어떤 템플릿을 작업하시겠어요?</h1>
+    <p>이벤트 유형에 따라 맞는 빌더를 선택해주세요.</p>
+  </div>
+  <div class="tpl-cards">
+    <div class="tpl-card" onclick="selectTemplate('monly')">
+      <span class="tpl-emoji">📱</span>
+      <h2>모바일 온니 템플릿</h2>
+      <p>증정품, 쿠폰/적립금, 작가, 배너, 도서 리스트, 댓글 등 일반 이벤트용 템플릿입니다.</p>
+      <div class="tpl-arrow">시작하기 →</div>
+    </div>
+    <div class="tpl-card" onclick="selectTemplate('newbook')">
+      <span class="tpl-emoji">📖</span>
+      <h2>신간 알림 템플릿</h2>
+      <p>신간 출간 + 시리즈 기반 알림 이벤트용 템플릿입니다. BEM 새 디자인 시스템 적용.</p>
+      <div class="tpl-arrow">시작하기 →</div>
+    </div>
+  </div>
+</div>
+
+
 <div class="control-panel">
   <div class="cp-header" style="position:relative;">
-    <h1>Aladin Monly Template Event Module Builder</h1>
+    <h1>Aladin Monly Template Event Module Builder v2.1</h1>
     <p>작가 · 배너 · 증정품 · 쿠폰/적립금 · 도서리스트 · 댓글 통합</p>
-    <a href="guide_v1.1.3.html" target="_blank" style="position:absolute; top:24px; right:28px; display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:var(--primary); border-radius:20px; color:#fff; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">사용 가이드 <span style="font-size:15px;">→</span></a>
+    <div style="position:absolute; top:24px; right:28px; display:flex; gap:8px;">
+      <button onclick="showTemplateSelector()" style="display:inline-flex; align-items:center; gap:4px; padding:7px 14px; background:#fff; border:1px solid var(--border); border-radius:20px; color:var(--text); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='#f7f8fa'" onmouseout="this.style.background='#fff'">← 템플릿 변경</button>
+      <a href="guide_v2.0.html" target="_blank" style="display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:var(--primary); border-radius:20px; color:#fff; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">사용 가이드 <span style="font-size:15px;">→</span></a>
+    </div>
   </div>
 
-  <!-- 메인 탭 (2개) -->
-  <div class="tab-header">
+  <!-- 메인 탭: 모바일 온니 -->
+  <div class="tab-header" id="mainTabs_monly">
     <button class="tab-btn main-tab active" onclick="switchMainTab('topimage')">🖼️ 상단이미지</button>
     <button class="tab-btn main-tab" onclick="switchMainTab('content')">📦 컨텐츠</button>
   </div>
 
+  <!-- 메인 탭: 신간 알림 -->
+  <div class="tab-header" id="mainTabs_newbook" style="display:none;">
+    <button class="tab-btn main-tab active" onclick="switchNewbookTab('hero')">🎯 히어로</button>
+    <button class="tab-btn main-tab" onclick="switchNewbookTab('content')">📦 컨텐츠</button>
+  </div>
+
   <div class="cp-body">
+
+    <!-- ======== 모바일 온니 패널 ======== -->
+    <div id="panel_monly">
 
     <!-- ======== 상단이미지 메인탭 (위자드) ======== -->
     <div id="mainTab_topimage" class="main-tab-content" style="display:block;">
@@ -958,10 +1297,7 @@
             </label>
           </div>
         </div>
-        <div class="wiz-nav" style="border-top:none; margin-top:0; padding-top:0;">
-          <div></div>
-          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
-        </div>
+        <!-- wiz-nav moved to action-area -->
       </div>
 
       <!-- ===== Step 2: AI 프롬프트 생성기 ===== -->
@@ -981,91 +1317,108 @@
           </div>
         </div>
 
+
         <div class="wiz-section">
-          <div class="wiz-section-label">🎨 AI 이미지 프롬프트 생성기</div>
-          <div class="input-row">
-            <label>이벤트 주제 / 컨셉</label>
-            <input type="text" id="pg_theme" placeholder="예: 봄 외국어 학습, 추리소설 특집" value="봄 시즌 맞이 행복한 분위기의 도서 이벤트">
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <div class="input-row" style="margin-bottom:0;">
-              <label>분위기 / 톤</label>
-              <select id="pg_mood" class="main-select" style="margin-bottom:0;">
-                <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
-                <option value="시원하고 청량한">시원한 / 청량한</option>
-                <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
-                <option value="귀엽고 아기자기한">귀여운 / 아기자기한</option>
-                <option value="모던하고 깔끔한">모던 / 미니멀</option>
-                <option value="다크하고 몽환적인">다크 / 몽환적</option>
-                <option value="밝고 활기찬">밝은 / 활기찬</option>
-                <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
-              </select>
+          <div class="wiz-section-label">🎨 AI 이미지 프롬프트 생성</div>
+
+          <!-- 컨셉 입력 폼 -->
+          <div id="aiManualPanel" class="ai-concept-form">
+            <div class="input-row">
+              <label>이벤트 주제 / 컨셉</label>
+              <input type="text" id="pg_theme" placeholder="예: 봄 외국어 학습, 추리소설 특집" value="봄 시즌 맞이 행복한 분위기의 도서 이벤트">
             </div>
-            <div class="input-row" style="margin-bottom:0;">
-              <label>스타일</label>
-              <select id="pg_style" class="main-select" style="margin-bottom:0;">
-                <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
-                <option value="일러스트 스타일">일러스트</option>
-                <option value="3D 렌더링 스타일">3D 렌더링</option>
-                <option value="수채화 스타일">수채화</option>
-                <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
-                <option value="유화풍 / 회화적">유화풍 / 회화적</option>
-                <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
-              </select>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="input-row" style="margin-bottom:0;">
+                <label>분위기 / 톤</label>
+                <select id="pg_mood" class="main-select" style="margin-bottom:0;">
+                  <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
+                  <option value="시원하고 청량한">시원한 / 청량한</option>
+                  <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
+                  <option value="귀엽고 아기자기한">귀여운 / 아기자기한</option>
+                  <option value="모던하고 깔끔한">모던 / 미니멀</option>
+                  <option value="다크하고 몽환적인">다크 / 몽환적</option>
+                  <option value="밝고 활기찬">밝은 / 활기찬</option>
+                  <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
+                </select>
+              </div>
+              <div class="input-row" style="margin-bottom:0;">
+                <label>스타일</label>
+                <select id="pg_style" class="main-select" style="margin-bottom:0;">
+                  <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
+                  <option value="일러스트 스타일">일러스트</option>
+                  <option value="3D 렌더링 스타일">3D 렌더링</option>
+                  <option value="수채화 스타일">수채화</option>
+                  <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
+                  <option value="유화풍 / 회화적">유화풍 / 회화적</option>
+                  <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="input-row" style="margin-top:12px;">
-            <label>메인 컬러 / 색감</label>
-            <input type="text" id="pg_color" placeholder="예: 파스텔 연두, 따뜻한 베이지" value="밝고 따뜻한 베이지, 연한 파스텔 톤">
-          </div>
-          <div class="input-row">
-            <label>포함 요소 (선택)</label>
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="책" style="accent-color:var(--primary);"> 책</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="꽃" style="accent-color:var(--primary);"> 꽃</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="계절감 소품" style="accent-color:var(--primary);"> 계절감</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="동물" style="accent-color:var(--primary);"> 동물</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="음식/음료" style="accent-color:var(--primary);"> 음식/음료</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="문구류" style="accent-color:var(--primary);"> 문구류</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="우주/별" style="accent-color:var(--primary);"> 우주/별</label>
-              <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="자연풍경" style="accent-color:var(--primary);"> 자연풍경</label>
+            <div class="input-row" style="margin-top:12px;">
+              <label>메인 컬러 / 색감</label>
+              <input type="text" id="pg_color" placeholder="예: 파스텔 연두, 따뜻한 베이지" value="밝고 따뜻한 베이지, 연한 파스텔 톤">
             </div>
+            <div class="input-row">
+              <label>포함 요소 (선택)</label>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="책" style="accent-color:var(--primary);"> 책</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="꽃" style="accent-color:var(--primary);"> 꽃</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="계절감 소품" style="accent-color:var(--primary);"> 계절감</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="동물" style="accent-color:var(--primary);"> 동물</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="음식/음료" style="accent-color:var(--primary);"> 음식/음료</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="문구류" style="accent-color:var(--primary);"> 문구류</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="우주/별" style="accent-color:var(--primary);"> 우주/별</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;"><input type="checkbox" class="pg_element" value="자연풍경" style="accent-color:var(--primary);"> 자연풍경</label>
+              </div>
+            </div>
+            <div class="input-row">
+              <label>추가 요청 (자유 입력)</label>
+              <input type="text" id="pg_extra" placeholder="예: 벚꽃 배경, 고양이가 책 읽는 장면" value="봄꽃이 핀 배경에 책으로 꾸며진 아기자기한 디스플레이">
+            </div>
+            <div class="input-row">
+              <label>금지 요소</label>
+              <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
+            </div>
+
           </div>
-          <div class="input-row">
-            <label>추가 요청 (자유 입력)</label>
-            <input type="text" id="pg_extra" placeholder="예: 벚꽃 배경, 고양이가 책 읽는 장면" value="봄꽃이 핀 배경에 책으로 꾸며진 아기자기한 디스플레이">
-          </div>
-          <div class="input-row">
-            <label>금지 요소</label>
-            <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
-          </div>
+
+          <!-- 참조 모드 체크박스 -->
+          <label style="display:flex; align-items:center; gap:10px; margin-top:14px; padding:12px 14px; background:#faf5ff; border:1.5px solid #e9d5ff; border-radius:8px; cursor:pointer; user-select:none;">
+            <input type="checkbox" id="psUseRefMode" onchange="toggleRefMode('ps')" style="width:18px; height:18px; cursor:pointer; accent-color:#7c3aed; flex-shrink:0;">
+            <div style="flex:1;">
+              <div style="font-size:13px; font-weight:700; color:#6b21a8;">📎 첨부 이미지 활용 (참조 모드)</div>
+              <div style="font-size:11px; color:#7e22ce; margin-top:2px; line-height:1.4;">체크 시 위 컨셉 입력은 무시되고, 첨부 이미지의 분위기를 그대로 활용하는 고정 프롬프트가 복사됩니다.</div>
+            </div>
+          </label>
+
           <div style="display:flex; gap:10px; margin-top:12px;">
-            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('pc')">🖥️ PC용 복사</button>
-            <button style="flex:1; height:38px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='rgba(139,92,246,0.06)'" onclick="generatePrompt('mobile')">📱 모바일용 복사</button>
+            <button type="button" style="flex:1; height:42px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='#f9fafb'" onclick="generatePrompt('pc')">🖥️ PC용 프롬프트 복사 (1400×440)</button>
+            <button type="button" style="flex:1; height:42px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#f9fafb; color:var(--text); transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.12)'" onmouseout="this.style.background='#f9fafb'" onclick="generatePrompt('mobile')">📱 모바일용 프롬프트 복사 (750×770)</button>
           </div>
+          <div style="margin-top:8px; padding:10px 12px; background:#fff7ed; border:1px solid #fed7aa; border-radius:6px; font-size:11px; line-height:1.6; color:#9a3412;">
+            💡 복사한 프롬프트를 Gemini/ChatGPT 등에 붙여넣으세요. 참조 모드일 경우 도서 표지 등 참고 이미지를 거기서 직접 함께 첨부합니다. 생성된 이미지는 상단 📁 업로드 버튼으로 올리세요.
+          </div>
+
           <div id="promptResult" style="display:none; margin-top:12px; padding:14px; background:#111; color:#c4b5fd; border-radius:var(--radius-sm); font-family:'SF Mono','Fira Code',monospace; font-size:12px; line-height:1.7; white-space:pre-wrap; word-break:break-all; max-height:200px; overflow-y:auto;"></div>
         </div>
-
-        <div class="wiz-nav">
-          <button class="btn btn-reset" onclick="wizardPrev()">← 이전</button>
-          <button class="btn btn-add" onclick="wizardNext()">다음 →</button>
-        </div>
-      </div>
-
-      <!-- ===== Step 3: 이미지 URL 설정 + 타이틀 입력 + 코드 추가 ===== -->
-      <div id="wizStep3" class="wizard-step" style="display:none; padding:24px 28px;">
 
         <div class="wiz-section">
           <div class="wiz-section-label">📁 이미지 파일 설정</div>
           <div class="input-row">
             <label>상단 이미지 - 모바일 (750px 기준)</label>
             <div class="example-box"><span>💡</span> 현재 분기 경로가 자동 입력됩니다. 파일명만 수정하세요.</div>
-            <input type="text" id="ps_top_img_m" value="">
+            <div class="input-with-upload">
+              <input type="text" id="ps_top_img_m" value="">
+              <button type="button" class="upload-btn" onclick="openUploadModal('ps_top_img_m', '상단 이미지 모바일')" title="이미지 업로드">📁 업로드</button>
+            </div>
           </div>
           <div class="input-row">
             <label>상단 이미지 - PC (930px 기준, 없으면 모바일과 동일)</label>
             <div class="example-box"><span>💡</span> 현재 분기 경로가 자동 입력됩니다. 파일명만 수정하세요.</div>
-            <input type="text" id="ps_top_img_pc" value="">
+            <div class="input-with-upload">
+              <input type="text" id="ps_top_img_pc" value="">
+              <button type="button" class="upload-btn" onclick="openUploadModal('ps_top_img_pc', '상단 이미지 PC')" title="이미지 업로드">📁 업로드</button>
+            </div>
           </div>
           <div class="input-row" style="margin-bottom:0;">
             <label>상단 배경색 (HEX)</label>
@@ -1086,6 +1439,12 @@
             <div style="font-size:12px; color:var(--text-secondary); margin-top:4px; padding-left:26px;">체크 시 PC 화면에서 이미지 양옆이 배경색으로 자연스럽게 이어집니다.</div>
           </div>
         </div>
+
+        <!-- wiz-nav moved to action-area -->
+      </div>
+
+      <!-- ===== Step 3: 타이틀 입력 + 코드 추가 ===== -->
+      <div id="wizStep3" class="wizard-step" style="display:none; padding:24px 28px;">
 
         <!-- 텍스트 타이틀 모드일 때만 보이는 섹션 -->
         <div id="wizTitleInputSection" class="wiz-section" style="display:none;">
@@ -1151,9 +1510,7 @@
           </div>
         </div>
 
-        <div class="wiz-nav">
-          <button class="btn btn-reset" onclick="wizardPrev()" style="flex:1;">← 이전</button>
-        </div>
+        <!-- wiz-nav moved to action-area -->
       </div>
 
     </div>
@@ -1252,12 +1609,293 @@
       </div>
 
     </div>
+    </div><!-- /panel_monly -->
+
+    <!-- ======== 신간 알림 패널 ======== -->
+    <div id="panel_newbook" style="display:none;">
+      <!-- 히어로 탭 컨텐츠 -->
+      <div id="newbookTab_hero" class="main-tab-content" style="display:block; padding:28px;">
+        <label class="section-label">히어로 영역 설정</label>
+
+        <!-- AI 프롬프트 생성기 (최상단) -->
+        <div style="margin-bottom:20px; background:rgba(235,33,124,0.04); border:1px solid rgba(235,33,124,0.18); border-radius:12px; overflow:hidden;">
+          <div style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:14px 18px; background:rgba(235,33,124,0.08); border-bottom:1px solid rgba(235,33,124,0.12);" onclick="toggleNbPromptGen()">
+            <span style="font-weight:800; font-size:15px; color:var(--primary);">🎨 AI 이미지 프롬프트 생성기 (히어로 배경)</span>
+            <span class="arrow" id="nbPromptGenArrowTop">▼</span>
+          </div>
+          <div id="nbPromptGenBodyTop" style="display:none; padding:18px;">
+            <!-- 컨셉 입력 폼 -->
+            <div id="nbAiManualPanel" class="input-container ai-concept-form" style="background:#fff;">
+              <div class="input-row">
+                <label>이벤트 주제 / 컨셉</label>
+                <input type="text" id="nb_pg_theme" placeholder="예: 호랑이 빵집 시리즈 신간 알림" value="호랑이 빵집 시리즈 신간 알림, 동화책 배경">
+              </div>
+              <div class="input-row">
+                <label>분위기 / 톤</label>
+                <select id="nb_pg_mood" class="main-select" style="margin-bottom:0;">
+                  <option value="따뜻하고 감성적인">따뜻한 / 감성적</option>
+                  <option value="시원하고 청량한">시원한 / 청량한</option>
+                  <option value="고급스럽고 세련된">고급스러운 / 세련된</option>
+                  <option value="귀엽고 아기자기한" selected>귀여운 / 아기자기한</option>
+                  <option value="모던하고 깔끔한">모던 / 미니멀</option>
+                  <option value="다크하고 몽환적인">다크 / 몽환적</option>
+                  <option value="밝고 활기찬">밝은 / 활기찬</option>
+                  <option value="빈티지하고 레트로한">빈티지 / 레트로</option>
+                </select>
+              </div>
+              <div class="input-row">
+                <label>메인 컬러 / 색감</label>
+                <input type="text" id="nb_pg_color" placeholder="예: 따뜻한 베이지, 동화적 파스텔" value="따뜻한 베이지, 동화적 파스텔 톤">
+              </div>
+              <div class="input-row">
+                <label>스타일</label>
+                <select id="nb_pg_style" class="main-select" style="margin-bottom:0;">
+                  <option value="사진풍 (포토리얼리스틱)">사진풍 (포토리얼)</option>
+                  <option value="일러스트 스타일" selected>일러스트</option>
+                  <option value="3D 렌더링 스타일">3D 렌더링</option>
+                  <option value="수채화 스타일">수채화</option>
+                  <option value="플랫 디자인 / 그래픽">플랫 디자인 / 그래픽</option>
+                  <option value="유화풍 / 회화적">유화풍 / 회화적</option>
+                  <option value="포스트모더니즘 / 그래피티">포스트모더니즘</option>
+                </select>
+              </div>
+              <div class="input-row">
+                <label>추가 요청 (자유 입력)</label>
+                <input type="text" id="nb_pg_extra" placeholder="예: 빵, 한국 전통 요소, 호랑이 모티브" value="빵, 한국 전통 요소, 동화적인 호랑이 모티브">
+              </div>
+              <div class="input-row" style="margin-bottom:0;">
+                <label>금지 요소</label>
+                <input type="text" id="nb_pg_exclude" value="텍스트, 글자, 로고, 사람 얼굴">
+              </div>
+            </div>
+
+            <!-- 참조 모드 체크박스 -->
+            <label style="display:flex; align-items:center; gap:10px; margin-top:14px; padding:12px 14px; background:#faf5ff; border:1.5px solid #e9d5ff; border-radius:8px; cursor:pointer; user-select:none;">
+              <input type="checkbox" id="nbUseRefMode" onchange="toggleRefMode('nb')" style="width:18px; height:18px; cursor:pointer; accent-color:#7c3aed; flex-shrink:0;">
+              <div style="flex:1;">
+                <div style="font-size:13px; font-weight:700; color:#6b21a8;">📎 첨부 이미지 활용 (참조 모드)</div>
+                <div style="font-size:11px; color:#7e22ce; margin-top:2px; line-height:1.4;">체크 시 위 컨셉 입력은 무시되고, 첨부 이미지의 분위기를 그대로 활용하는 고정 프롬프트가 복사됩니다.</div>
+              </div>
+            </label>
+
+            <div style="display:flex; gap:10px; margin-top:12px;">
+              <button type="button" style="flex:1; height:42px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#fff; color:var(--text);" onclick="generateNbHeroPrompt('pc')">🖥️ PC용 복사 (1920×700)</button>
+              <button type="button" style="flex:1; height:42px; font-size:13px; font-weight:700; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:#fff; color:var(--text);" onclick="generateNbHeroPrompt('mobile')">📱 모바일용 복사 (750×700)</button>
+            </div>
+            <div style="margin-top:8px; padding:10px 12px; background:#fff7ed; border:1px solid #fed7aa; border-radius:6px; font-size:11px; line-height:1.6; color:#9a3412;">
+              💡 복사한 프롬프트를 Gemini/ChatGPT 등에 붙여넣으세요. 참조 모드일 경우 도서 표지 등 참고 이미지를 거기서 직접 함께 첨부합니다.
+            </div>
+            <div id="nbPromptResult" style="display:none; margin-top:12px; padding:14px; background:#111; color:#c4b5fd; border-radius:var(--radius-sm); font-family:'SF Mono','Fira Code',monospace; font-size:12px; line-height:1.7; white-space:pre-wrap; word-break:break-all; max-height:200px; overflow-y:auto;"></div>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <div class="input-row">
+            <label>책 표지 이미지 URL</label>
+            <div class="input-with-upload">
+              <input type="text" id="nb_hero_cover" value="https://image.aladin.co.kr/img/events/book/2026/02/260410_ja_cover.jpg">
+              <button type="button" class="upload-btn" onclick="openUploadModal('nb_hero_cover', '표지')" title="이미지 업로드">📁 업로드</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <label>배경 이미지 - 모바일</label>
+            <div class="input-with-upload">
+              <input type="text" id="nb_hero_bg_m" value="https://image.aladin.co.kr/img/events/book/2026/02/260410_ja_mbg.jpg">
+              <button type="button" class="upload-btn" onclick="openUploadModal('nb_hero_bg_m', '모바일배경')" title="이미지 업로드">📁 업로드</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <label>배경 이미지 - PC</label>
+            <div class="input-with-upload">
+              <input type="text" id="nb_hero_bg_pc" value="https://image.aladin.co.kr/img/events/book/2026/02/260410_ja_bg.jpg">
+              <button type="button" class="upload-btn" onclick="openUploadModal('nb_hero_bg_pc', 'PC배경')" title="이미지 업로드">📁 업로드</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <label>시리즈명 / 도서명</label>
+            <div class="example-box"><span>💡</span> {핑크강조}, /br(모바일 줄바꿈), /br2(PC 줄바꿈) 사용 가능</div>
+            <input type="text" id="nb_hero_series" value="&lt;호랑이 빵집 6&gt;">
+          </div>
+          <div class="input-row">
+            <label>이벤트명</label>
+            <input type="text" id="nb_hero_event_name" value="신간 알림+기대평 댓글 이벤트">
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <label>출간일 배지 텍스트</label>
+            <input type="text" id="nb_hero_release" value="🗓 4월 24일 판매 오픈 / 4월 27일 출간">
+          </div>
+          <div class="input-row">
+            <label>배경색 (HEX)</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="text" id="nb_hero_bg_color" value="#fdfbf7" style="flex:1;">
+              <div style="position:relative; width:36px; height:36px; flex-shrink:0;">
+                <div id="nb_hero_bg_preview" style="width:36px; height:36px; border-radius:6px; border:1px solid var(--border); background:#fdfbf7; cursor:pointer;" onclick="document.getElementById('nb_hero_bg_picker').click();"></div>
+                <input type="color" id="nb_hero_bg_picker" value="#fdfbf7" style="position:absolute; top:0; left:0; width:0; height:0; opacity:0; pointer-events:none;" oninput="document.getElementById('nb_hero_bg_color').value=this.value; document.getElementById('nb_hero_bg_preview').style.background=this.value;">
+              </div>
+              <button type="button" style="flex-shrink:0; height:36px; padding:0 12px; font-size:12px; font-weight:600; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); cursor:pointer;" onclick="extractNbHeroBgColor()">이미지에서 추출</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <label>타이틀 컬러 (HEX)</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="text" id="nb_hero_title_color" value="#0e0e0e" style="flex:1;">
+              <div style="position:relative; width:36px; height:36px; flex-shrink:0;">
+                <div id="nb_hero_title_preview" style="width:36px; height:36px; border-radius:6px; border:1px solid var(--border); background:#0e0e0e; cursor:pointer;" onclick="document.getElementById('nb_hero_title_picker').click();"></div>
+                <input type="color" id="nb_hero_title_picker" value="#0e0e0e" style="position:absolute; top:0; left:0; width:0; height:0; opacity:0; pointer-events:none;" oninput="document.getElementById('nb_hero_title_color').value=this.value; document.getElementById('nb_hero_title_preview').style.background=this.value;">
+              </div>
+            </div>
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="nb_hero_radial" checked style="width:16px; height:16px; cursor:pointer; accent-color:var(--primary);">
+              <span>중앙 레디얼 그라데이션 적용 (타이틀 가독성)</span>
+            </label>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:4px; padding-left:24px;">가운데는 불투명, 바깥쪽은 투명하게 퍼지는 효과입니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 컨텐츠 탭 (서브탭 5개) -->
+      <div id="newbookTab_content" class="main-tab-content" style="display:none;">
+        <div class="tab-header sub-tab-header">
+          <button class="tab-btn sub-tab active" onclick="switchNbSubTab('desc')">📖 책 소개</button>
+          <button class="tab-btn sub-tab" onclick="switchNbSubTab('author')">✍️ 작가</button>
+          <button class="tab-btn sub-tab" onclick="switchNbSubTab('event')">🎁 이벤트 안내</button>
+          <button class="tab-btn sub-tab" onclick="switchNbSubTab('booklist')">📚 도서</button>
+          <button class="tab-btn sub-tab" onclick="switchNbSubTab('comment')">💬 댓글</button>
+        </div>
+
+        <!-- 책 소개 -->
+        <div id="nbTab_desc" class="tab-content active" style="padding:28px;">
+          <label class="section-label">책 소개 (Quote 스타일)</label>
+          <div class="input-container">
+            <div class="input-row" style="margin-bottom:0;">
+              <label>책 소개글</label>
+              <div class="example-box"><span>💡</span> 줄바꿈 가능. 큰 따옴표(") 스타일로 표시됩니다</div>
+              <textarea id="nb_desc_text" style="min-height:140px;">마을을 위협하는 이무기를 막아라!
+호랑이 빵집이 더 강력하고 무시무시해진 캐릭터와 함께
+여섯 번째 이야기로 돌아왔습니다.
+
+신단 마을을 얼어붙게 만든 황부자 이무기!
+이무기에 맞서려고 호빵단을 꾸렸던 호 셰프 앞에
+삼족구를 찾으러 온 도깨비 왕자가 등장합니다.
+다 함께 힘을 모아 위기에 빠진 마을을 구해 낼 수 있을까요?</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 작가 (다수) -->
+        <div id="nbTab_author" class="tab-content" style="padding:28px;">
+          <label class="section-label">작가 소개 (다수 추가 가능)</label>
+          <div id="nbAuthorListContainer"></div>
+          <button type="button" class="btn-add-thumb" onclick="addNbAuthorRow()">+ 작가 추가</button>
+        </div>
+
+        <!-- 이벤트 안내 -->
+        <div id="nbTab_event" class="tab-content" style="padding:28px;">
+          <label class="section-label">이벤트 안내 박스</label>
+          <div class="input-container">
+            <div class="input-row">
+              <label>라벨 (예: EVENT)</label>
+              <input type="text" id="nb_event_label" value="EVENT">
+            </div>
+            <div class="input-row">
+              <label>설명 텍스트</label>
+              <div class="example-box"><span>💡</span> /br 사용 가능</div>
+              <textarea id="nb_event_desc" style="min-height:80px;">&lt;호랑이 빵집&gt; 시리즈 신간 알림 신청 후/br기대평 댓글 작성 시, 1,000원 적립금을 드립니다. (200명 추첨)</textarea>
+            </div>
+            <div class="input-row">
+              <label>알림 타입</label>
+              <select id="nb_event_alarm_type" class="main-select" style="margin-bottom:0;">
+                <option value="1">1. 저자 신간알리미</option>
+                <option value="2" selected>2. 시리즈 신간알리미</option>
+                <option value="3">3. 북 신간알리미</option>
+                <option value="4">4. 전자책 출간 알리미</option>
+                <option value="5">5. 출판사 신간알리미</option>
+                <option value="6">6. 분야 신간알리미</option>
+                <option value="7">7. 재출간 알리미</option>
+              </select>
+            </div>
+            <div class="input-row">
+              <label>알림 대상 ID (AlarmValue)</label>
+              <input type="text" id="nb_event_alarm_value" value="1142119">
+            </div>
+            <div class="input-row">
+              <label>알림 버튼 텍스트</label>
+              <input type="text" id="nb_event_alarm_btn" value="&lt;호랑이 빵집&gt; 시리즈 신간 알림 신청하기">
+            </div>
+            <div class="input-row" style="margin-bottom:0;">
+              <label>유의사항 (줄바꿈 구분)</label>
+              <textarea id="nb_event_info" style="min-height:80px;">· 이벤트 기간: 2026년 4월 10일 ~ 5월 10일
+· 발표 및 적립금 지급일: 2026년 5월 14일
+· 발표 시점까지 알림 상태 유지 필요</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 도서 리스트 -->
+        <div id="nbTab_booklist" class="tab-content" style="padding:28px;">
+          <label class="section-label">시리즈 도서 리스트</label>
+          <div class="input-container">
+            <div class="input-row">
+              <label>리스트 제목</label>
+              <input type="text" id="nb_bl_title" value="&lt;호랑이 빵집&gt; 시리즈">
+            </div>
+            <div class="input-row">
+              <label>더보기 링크 URL</label>
+              <input type="text" id="nb_bl_more" value="https://www.aladin.co.kr/shop/common/wseriesitem.aspx?SRID=1142119">
+            </div>
+            <div class="input-row">
+              <label>ID 타입</label>
+              <select id="nb_bl_id_type" class="main-select" style="margin-bottom:0;">
+                <option value="CID">CID (카테고리)</option>
+                <option value="BID">BID (브랜드)</option>
+                <option value="PID">PID (출판사)</option>
+                <option value="SID">SID (공급사)</option>
+                <option value="EID">EID (이벤트)</option>
+                <option value="AID">AID (저자)</option>
+                <option value="SRID" selected>SRID (시리즈)</option>
+              </select>
+            </div>
+            <div class="input-row">
+              <label>ID 값</label>
+              <input type="text" id="nb_bl_id_value" value="1142119">
+            </div>
+            <div class="input-row" style="margin-bottom:0;">
+              <label>ItemCount</label>
+              <input type="text" id="nb_bl_count" value="80">
+            </div>
+          </div>
+        </div>
+
+        <!-- 댓글 -->
+        <div id="nbTab_comment" class="tab-content" style="padding:28px;">
+          <label class="section-label">댓글 이벤트</label>
+          <div class="input-container">
+            <div class="input-row">
+              <label>이벤트 ID</label>
+              <input type="text" id="nb_comment_eid" value="307030">
+            </div>
+            <div class="input-row">
+              <label>댓글 제목</label>
+              <textarea id="nb_comment_title" style="min-height:60px;">&lt;호랑이 빵집&gt; 시리즈 신간 알림 신청 후 기대평 댓글 작성 시, &lt;br /&gt;1,000원 적립금을 드립니다. (200명 추첨)</textarea>
+            </div>
+            <div class="input-row" style="margin-bottom:0;">
+              <label>댓글 부제목</label>
+              <textarea id="nb_comment_subtitle" style="min-height:60px;">· 이벤트 기간: 2026년 4월 10일 ~ 5월 10일&lt;br /&gt;· 발표 및 적립금 지급일: 2026년 5월 14일&lt;br /&gt;· 발표 시점까지 알림 상태 유지 필요</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /panel_newbook -->
+
   </div>
 
   <div class="action-area" id="actionArea">
-    <button class="btn btn-reset" onclick="resetAll()">🗑️ 초기화</button>
+    <button class="btn btn-reset" id="wizPrevBtn" onclick="wizardPrev()" style="flex:0 0 auto; padding:0 20px; display:none;">← 이전</button>
     <button class="btn btn-add" id="contentAddBtn" onclick="addPageSetupToEditor()" style="flex:1;">✅ 상단이미지 코드 추가</button>
-    <button class="btn" id="finishBtn" onclick="finishCode()" style="flex:0 0 auto; padding:0 20px; background:#333; color:#fff;">완성 코드 내보내기</button>
+    <button class="btn" id="finishBtn" onclick="finishCode()" style="flex:0 0 auto; padding:0 20px; background:#333; color:#fff; display:none;">코드 완료하기</button>
+    <button class="btn btn-add" id="wizNextBtn" onclick="wizardNext()" style="flex:0 0 auto; padding:0 20px; background:var(--secondary);">다음 →</button>
   </div>
 </div>
 
@@ -1265,8 +1903,8 @@
 <div class="editor-panel">
   <div class="ep-header">
     <div class="ep-tab-group">
-      <button class="ep-tab-btn active" onclick="switchEditorTab('code')">코드</button>
-      <button class="ep-tab-btn" onclick="switchEditorTab('preview')">미리보기</button>
+      <button class="ep-tab-btn" onclick="switchEditorTab('code')">코드</button>
+      <button class="ep-tab-btn active" onclick="switchEditorTab('preview')">미리보기</button>
     </div>
     <div id="codeToolbar" style="display:flex; align-items:center; gap:8px;">
       <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); white-space:nowrap;">
@@ -1281,8 +1919,8 @@
     </div>
   </div>
 
-  <textarea id="finalCode" class="code-area" spellcheck="false"></textarea>
-  <div id="previewWrap" class="preview-wrap" style="display:none;">
+  <textarea id="finalCode" class="code-area" style="display:none;" spellcheck="false"></textarea>
+  <div id="previewWrap" class="preview-wrap">
     <iframe id="previewFrame" sandbox="allow-same-origin allow-scripts"></iframe>
   </div>
 </div>
@@ -1362,68 +2000,96 @@ function toggleHeader() {
 }
 
 // ============================================
-// 스크립트 템플릿
+// 스크립트 템플릿 (인스턴스별 고유 클래스 지원)
 // ============================================
-const SCRIPT_SINGLE = `
-<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>
+
+// 현재 코드에 이미 있는 giftswiper 중 가장 큰 번호 기준 다음 suffix 반환
+// 첫 번째 인스턴스는 '' (giftswiper), 두 번째부터는 '2', '3' ...
+function getNextGiftSuffix() {
+    const code = document.getElementById('finalCode')?.value || '';
+    const re = /giftswiper(\d*)/g;
+    let maxNum = 0;
+    let m;
+    while ((m = re.exec(code)) !== null) {
+        const num = m[1] === '' ? 1 : parseInt(m[1], 10);
+        if (num > maxNum) maxNum = num;
+    }
+    if (maxNum === 0) return '';      // 첫 인스턴스
+    return String(maxNum + 1);         // 다음 번호
+}
+
+// Swiper 번들 스크립트가 코드에 이미 포함되어 있는지 확인
+function isSwiperLibIncluded() {
+    const code = document.getElementById('finalCode')?.value || '';
+    return code.includes('swiper@12/swiper-bundle.min.js');
+}
+
+// 단일 증정품용 init 스크립트 생성 (suffix별 고유)
+function makeSingleGiftScript(suffix) {
+    const cls = `giftswiper${suffix}`;
+    const varName = `swiperGift${suffix || '1'}`;
+    const libInclude = isSwiperLibIncluded()
+        ? ''
+        : `\n<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>`;
+    return `${libInclude}
 <script>
     var $j183 = $j183 || jQuery.noConflict();
-    var slides;
     $j183(function ($) {
-        var swiper = new Swiper('.giftswiper', {
+        var ${varName} = new Swiper('.${cls}', {
             loop:true, speed:800,
             autoplay: { delay: 2500, disableOnInteraction: false },
-            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-            pagination: { el: '.swiper-pagination', clickable: true }
+            navigation: { nextEl: '.${cls} .swiper-button-next', prevEl: '.${cls} .swiper-button-prev' },
+            pagination: { el: '.${cls} .swiper-pagination', clickable: true }
         });
-        jQuery('.giftswiper .swiper_pause_btn').click(function(){
+        jQuery('.${cls} .swiper_pause_btn').click(function(){
             if(jQuery(this).hasClass('stop')) {
                 jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
-                swiper.autoplay.start();
+                ${varName}.autoplay.start();
             } else {
                 jQuery(this).addClass('stop').text('자동슬라이드 시작');
-                swiper.autoplay.stop();
+                ${varName}.autoplay.stop();
             }
         });
     });
 </scr`+`ipt>`;
+}
 
-const SCRIPT_FULL = `
-<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>
+// 썸네일형 증정품용 init 스크립트 생성 (suffix별 고유)
+function makeFullGiftScript(suffix) {
+    const cls = `giftswiper${suffix}`;
+    const varName = `swiperGift${suffix || '1'}`;
+    const thumbCls = `thumbnail1${suffix ? '_' + suffix : ''}`;
+    const libInclude = isSwiperLibIncluded()
+        ? ''
+        : `\n<script type="text/javascript" src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"></scr`+`ipt>`;
+    return `${libInclude}
 <script>
-    function random_index() {
-      var r_index = Math.floor(Math.random() * (jQuery('.random .swiper-slide').length));
-      return parseInt(r_index);
-    }
     var $j183 = $j183 || jQuery.noConflict();
-    var slides;
     $j183(function ($) {
-    var swiper2 = new Swiper('.giftswiper', {
-        loop:true, speed:800,
-        autoplay: { delay: 2500, disableOnInteraction: false },
-        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-        pagination: { el: '.swiper-pagination', type: "fraction" }
-    });
-    jQuery('.giftswiper .swiper_pause_btn').click(function(){
-        if(jQuery(this).hasClass('stop')) {
-            jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
-            swiper2.autoplay.start();
-        } else {
-            jQuery(this).addClass('stop').text('자동슬라이드 시작');
-            swiper2.autoplay.stop();
-        }
-    });
-    const thumbnails = ['thumbnail1', 'thumbnail2', 'thumbnail3'];
-    thumbnails.forEach(function(name) {
-        new Swiper('.' + name, {
+        var ${varName} = new Swiper('.${cls}', {
+            loop:true, speed:800,
+            autoplay: { delay: 2500, disableOnInteraction: false },
+            navigation: { nextEl: '.${cls} .swiper-button-next', prevEl: '.${cls} .swiper-button-prev' },
+            pagination: { el: '.${cls} .swiper-pagination', type: "fraction" }
+        });
+        jQuery('.${cls} .swiper_pause_btn').click(function(){
+            if(jQuery(this).hasClass('stop')) {
+                jQuery(this).removeClass('stop').text('자동슬라이드 멈춤');
+                ${varName}.autoplay.start();
+            } else {
+                jQuery(this).addClass('stop').text('자동슬라이드 시작');
+                ${varName}.autoplay.stop();
+            }
+        });
+        new Swiper('.${thumbCls}', {
             loop: false,
             freeMode: { enabled: true, sticky: true },
             slidesPerView: 'auto',
-            navigation: { nextEl: "." + name + "-next", prevEl: "." + name + "-prev" }
+            navigation: { nextEl: '.${thumbCls}-next', prevEl: '.${thumbCls}-prev' }
         });
     });
-});
 </scr`+`ipt>`;
+}
 
 // ============================================
 // 데이터 정의
@@ -1434,7 +2100,7 @@ const MODULE_DATA = {
         full: { id: 'gift_full', name: '증정품 (하단 썸네일형)', inputs: ['gift_slider_images', 'gift_condition_title', 'gift_thumbnails', 'gift_link', 'gift_info'] }
     },
     booklist: {
-        single: { id: 'booklist_single', name: '단일 도서 리스트', inputs: ['booklist_title', 'cid', 'item_count'] },
+        single: { id: 'booklist_single', name: '단일 도서 리스트', inputs: ['booklist_title', 'id_type', 'id_value', 'item_count'] },
         multiple: { id: 'booklist_multiple', name: '다중 도서 리스트 (탭 기능)', inputs: [] },
         manual: { id: 'booklist_manual', name: '직접 도서 선택 (ItemID)', inputs: ['booklist_title', 'itemid_list'] },
         random: { id: 'booklist_random', name: '랜덤 탭 (wa_RandomTab)', inputs: [] }
@@ -1473,11 +2139,15 @@ function switchTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
     document.getElementById(`tab_${tabName}`).classList.add('active');
 
+    // 탭 전환 시 편집 모드 초기화
+    editingInstanceId = null;
+    hideEditModeBanner();
+
     // 하단 버튼 상태 동기화
     const addBtn = document.getElementById('contentAddBtn');
     if (addBtn) {
-        addBtn.textContent = tabAddedState[tabName] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
-        addBtn.style.background = tabAddedState[tabName] ? 'var(--secondary)' : '';
+        addBtn.textContent = '+ 현재 탭 내용 추가';
+        addBtn.style.background = '';
     }
 }
 
@@ -1563,7 +2233,10 @@ function renderDirectInputs(category) {
                         <div class="input-row" style="margin-bottom: 0;">
                             <label style="font-size: 13px !important;">버튼 이미지 URL</label>
                             <div class="example-box"><span>💡</span> 예: ${IMG_BASE}alarm_btn.png</div>
-                            <input type="text" id="author_alarm_image" placeholder="이미지 URL 입력">
+                            <div class="input-with-upload">
+                              <input type="text" id="author_alarm_image" placeholder="이미지 URL 입력">
+                              <button type="button" class="upload-btn" onclick="openUploadModal('author_alarm_image', '알람 버튼')" title="이미지 업로드">📁 업로드</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1615,6 +2288,7 @@ function addThumbRow() {
     div.className = 'thumb-row';
     div.innerHTML = `
         <input type="text" class="thumb-url" placeholder="이미지 URL" value="${vUrl}" />
+        <button type="button" class="upload-btn thumb-upload-btn" onclick="openUploadModalForSibling(this, '.thumb-url', '증정품 썸네일')" title="이미지 업로드">📁</button>
         <input type="text" class="thumb-txt" placeholder="멘트" value="${vTxt}" />
         <input type="text" class="thumb-pop" placeholder="팝업 URL" value="${vPop}" />
         <button type="button" class="btn-del-thumb" onclick="this.parentElement.remove()">삭제</button>
@@ -1752,10 +2426,52 @@ function addTabItem() {
 }
 function reindexTabs() { document.querySelectorAll('.multi-tab-item').forEach((item, index) => { item.querySelector('span').innerText = `TAB 0${index + 1}`; }); }
 
+// id_type 드롭다운 변경 시 id_value 라벨/예시 업데이트
+const ID_TYPE_META = {
+    CID: { label: '카테고리 ID (CID)', example: '196026' },
+    BID: { label: '브랜드 ID (BID)', example: '1234' },
+    PID: { label: '출판사 ID (PID)', example: '1728' },
+    SID: { label: '공급사 ID (SID)', example: '1234' },
+    EID: { label: '이벤트 ID (EID)', example: '256501' },
+    AID: { label: '저자 ID (AID)', example: '6306681' },
+    SRID: { label: '시리즈 ID (SRID)', example: '1142119' }
+};
+function onIdTypeChange() {
+    const type = document.getElementById('id_type').value;
+    const meta = ID_TYPE_META[type] || ID_TYPE_META.CID;
+    // id_value 라벨 업데이트
+    const valueInput = document.getElementById('id_value');
+    if (valueInput) {
+        const row = valueInput.closest('.input-row');
+        if (row) {
+            const label = row.querySelector('label');
+            if (label) label.textContent = meta.label;
+            const exampleBox = row.querySelector('.example-box');
+            if (exampleBox) exampleBox.innerHTML = `<span>💡</span> 예: ${meta.example}`;
+        }
+    }
+}
+
 function getInputFieldHtml(inputType) {
     const meta = getInputMeta(inputType);
     const isTextarea = ['gift_slider_images', 'gift_thumbnails', 'gift_info', 'itemid_list', 'coupon_info', 'coupon_title', 'author_desc', 'newbook_covers', 'newbook_desc'].includes(inputType);
     const defaultVal = meta.defaultValue || '';
+
+    // id_type: 드롭다운 렌더링 (CID/BID/PID/SID/EID/AID/SRID)
+    if (inputType === 'id_type') {
+        return `<div class="input-row"><label>${meta.label}</label>
+            <select id="id_type" class="main-select" style="margin-bottom:0;" onchange="onIdTypeChange()">
+                <option value="CID">CID (카테고리 ID)</option>
+                <option value="BID">BID (브랜드 ID)</option>
+                <option value="PID">PID (출판사 ID)</option>
+                <option value="SID">SID (공급사 ID)</option>
+                <option value="EID">EID (이벤트 ID)</option>
+                <option value="AID">AID (저자 ID)</option>
+                <option value="SRID">SRID (시리즈 ID)</option>
+            </select>
+        </div>`;
+    }
+
     return `<div class="input-row"><label>${meta.label}</label>${meta.example ? `<div class="example-box"><span>💡</span> ${meta.example}</div>` : ''}${isTextarea ? `<textarea id="${inputType}" placeholder="내용을 입력하세요">${defaultVal}</textarea>` : `<input type="text" id="${inputType}" placeholder="내용을 입력하세요" value="${defaultVal}">`}</div>`;
 }
 
@@ -1783,6 +2499,8 @@ function getInputMeta(inputType) {
         gift_info: { label: '유의사항 (줄바꿈 구분)', example: '한정수량으로 조기 품절될 수 있습니다.', defaultValue: '이벤트 기간: 11월 28일 10시 ~ 선착순 한정수량\n예약판매 중인 외국도서, 업체직배송상품, 중고도서는 주문 금액에서 제외됩니다.\n이번 주문으로 발생할 예상 마일리지에서 우선 차감됩니다.\n예상 마일리지로 부족한 금액은 기존에 보유한 적립금, 마일리지 순서로 차감되며, 부족한 경우 추가 결제하시면 됩니다.\n참고서, 중고도서, 외국도서, 전자책 주문금액은 제외됩니다.' },
         booklist_title: { label: '리스트 제목', example: '추천 도서', defaultValue: '신간 추천' },
         cid: { label: 'CID', example: '196514', defaultValue: '196026' },
+        id_type: { label: 'ID 타입', defaultValue: 'CID' },
+        id_value: { label: 'ID 값', example: '196026', defaultValue: '196026' },
         item_count: { label: 'ItemCount', example: '200', defaultValue: '80' },
         itemid_list: { label: 'ItemID 목록 (쉼표)', example: '111, 222', defaultValue: '290210397, 291710358, 289175924' },
         event_id: { label: '이벤트 ID', example: '123456', defaultValue: '256501' },
@@ -1805,19 +2523,180 @@ function getInputMeta(inputType) {
     return map[inputType] || { label: inputType, example: '' };
 }
 
-const tabAddedState = {}; // 탭별 추가 여부 추적
+const tabAddedState = {}; // 탭별 추가 여부 추적 (legacy)
 
-function addToEditor() {
+// ============================================
+// 모듈 인스턴스 레지스트리 (중복 stacking 시 편집 지원)
+// ============================================
+// moduleRegistry = { 'gift_1': { category: 'gift', type: 'slider_only', values: {...}, label: '단일 증정품' }, ... }
+const moduleRegistry = {};
+const moduleInstanceCounter = {}; // { gift: 0, coupon: 0, ... }
+let editingInstanceId = null; // 현재 편집 중인 인스턴스 ID, null이면 "새로 추가" 모드
+
+function nextInstanceId(category) {
+    moduleInstanceCounter[category] = (moduleInstanceCounter[category] || 0) + 1;
+    return `${category}_${moduleInstanceCounter[category]}`;
+}
+
+function getModuleLabel(category, type) {
+    const mod = MODULE_DATA[category]?.[type];
+    return mod ? mod.name : `${category}/${type}`;
+}
+
+function getInstanceOrdinal(instanceId) {
+    // gift_3 → 3
+    const m = instanceId.match(/_(\d+)$/);
+    return m ? m[1] : '';
+}
+
+function wrapWithInstanceMarkers(instanceId, code) {
+    return `<!--__MOD__${instanceId}__-->\n${code}\n<!--__/MOD__${instanceId}__-->`;
+}
+
+function extractInstanceIdsFromCode() {
+    const code = document.getElementById('finalCode')?.value || '';
+    const ids = [];
+    const re = /<!--__MOD__([^_]+_\d+)__-->/g;
+    let m;
+    while ((m = re.exec(code)) !== null) {
+        ids.push(m[1]);
+    }
+    return ids;
+}
+
+function replaceInstanceInCode(instanceId, newWrappedCode) {
+    const codeArea = document.getElementById('finalCode');
+    const code = codeArea.value;
+    const startMarker = `<!--__MOD__${instanceId}__-->`;
+    const endMarker = `<!--__/MOD__${instanceId}__-->`;
+    const startIdx = code.indexOf(startMarker);
+    if (startIdx === -1) return false;
+    const endIdx = code.indexOf(endMarker, startIdx);
+    if (endIdx === -1) return false;
+    const endFull = endIdx + endMarker.length;
+    codeArea.value = code.substring(0, startIdx) + newWrappedCode + code.substring(endFull);
+    return true;
+}
+
+function removeInstanceFromCode(instanceId) {
+    const codeArea = document.getElementById('finalCode');
+    const code = codeArea.value;
+    const startMarker = `<!--__MOD__${instanceId}__-->`;
+    const endMarker = `<!--__/MOD__${instanceId}__-->`;
+    const startIdx = code.indexOf(startMarker);
+    if (startIdx === -1) return false;
+    const endIdx = code.indexOf(endMarker, startIdx);
+    if (endIdx === -1) return false;
+    const endFull = endIdx + endMarker.length;
+    // 마커 바로 앞/뒤의 빈 줄도 정리
+    let cutStart = startIdx;
+    let cutEnd = endFull;
+    if (code[cutStart - 1] === '\n') cutStart--;
+    if (code[cutEnd] === '\n') cutEnd++;
+    codeArea.value = code.substring(0, cutStart) + code.substring(cutEnd);
+    return true;
+}
+
+// ============================================
+// 인스턴스 편집 - 폼 값 복원 (미리보기 toolbar에서 호출)
+// ============================================
+function loadInstanceToForm(instanceId) {
+    const inst = moduleRegistry[instanceId];
+    if (!inst) return;
+    const { category, type, values } = inst;
+
+    // 1. 타입 드롭다운 설정
+    const typeSelect = document.getElementById(`${category}TypeSelect`);
+    if (typeSelect && typeSelect.value !== type) {
+        typeSelect.value = type;
+        delete typeSelect.dataset.previousValue; // renderDirectInputs가 다시 렌더링하도록
+        renderDirectInputs(category);
+    }
+
+    // 2. 일반 input 필드들 값 복원
+    const module = MODULE_DATA[category]?.[type];
+    if (module) {
+        module.inputs.forEach(inputId => {
+            const el = document.getElementById(inputId);
+            if (el && values[inputId] !== undefined) {
+                el.value = values[inputId];
+            }
+        });
+    }
+
+    // 3. 동적 썸네일 리스트 복원 (gift_full)
+    if (category === 'gift' && type === 'full' && values.gift_thumbnails) {
+        const container = document.getElementById('thumbListContainer');
+        if (container) {
+            container.innerHTML = '';
+            const lines = values.gift_thumbnails.split('\n').filter(l => l.trim());
+            lines.forEach(line => {
+                const [url, txt, pop] = line.split('|').map(s => s.trim());
+                const div = document.createElement('div');
+                div.className = 'thumb-row';
+                div.innerHTML = `
+                    <input type="text" class="thumb-url" placeholder="이미지 URL" value="${url || ''}" />
+                    <button type="button" class="upload-btn thumb-upload-btn" onclick="openUploadModalForSibling(this, '.thumb-url', '증정품 썸네일')" title="이미지 업로드">📁</button>
+                    <input type="text" class="thumb-txt" placeholder="멘트" value="${txt || ''}" />
+                    <input type="text" class="thumb-pop" placeholder="팝업 URL" value="${pop || ''}" />
+                    <button type="button" class="btn-del-thumb" onclick="this.parentElement.remove()">삭제</button>
+                `;
+                container.appendChild(div);
+            });
+            if (lines.length === 0) addThumbRow();
+        }
+    }
+
+    // 4. 배너 리스트 복원
+    if (category === 'banner' && values.bannerItems) {
+        const container = document.getElementById('bannerListContainer');
+        if (container) {
+            container.innerHTML = '';
+            values.bannerItems.forEach(item => addBannerRow(item.txt, item.url));
+        }
+    }
+
+    // 5. 다중 도서 리스트 복원
+    if (category === 'booklist' && type === 'multiple' && values.multiItems) {
+        const container = document.getElementById('multiTabContainer');
+        if (container) {
+            container.innerHTML = '';
+            values.multiItems.forEach(() => addTabItem());
+            const divs = container.querySelectorAll('.multi-tab-item');
+            values.multiItems.forEach((it, i) => {
+                const div = divs[i];
+                if (!div) return;
+                div.querySelector('.mt-title').value = it.title || '';
+                div.querySelector('.mt-link').value = it.link || '';
+                div.querySelector('.mt-cid').value = it.cid || '';
+                div.querySelector('.mt-count').value = it.count || '';
+            });
+        }
+    }
+
+    // 6. 랜덤 탭 복원
+    if (category === 'booklist' && type === 'random' && values.randomItems) {
+        const container = document.getElementById('randomTabContainer');
+        if (container) {
+            container.innerHTML = '';
+            values.randomItems.forEach(() => addRandomTabItem && addRandomTabItem());
+            const divs = container.querySelectorAll('.random-tab-item');
+            values.randomItems.forEach((it, i) => {
+                const div = divs[i];
+                if (!div) return;
+                const input = div.querySelector('.rt-ucl');
+                if (input) input.value = it.ucl || '';
+            });
+        }
+    }
+}
+
+function addToEditor(forceAppend) {
     const category = currentTab;
     const typeSelect = document.getElementById(`${category}TypeSelect`);
     const selectedType = typeSelect.value;
 
     if (!selectedType) { showToast('⚠️ 추가할 타입을 먼저 선택해주세요!'); return; }
-
-    // 수정 모드: 이전 코드 되돌리고 다시 추가
-    if (tabAddedState[category]) {
-        undoCode();
-    }
     
     // 썸네일 UI가 있다면 데이터를 합쳐서 hidden input에 넣기
     const thumbContainer = document.getElementById('thumbListContainer');
@@ -1860,24 +2739,74 @@ function addToEditor() {
         values.randomItems = items;
     }
 
-    const generatedCode = generateModuleCode(module.id, values);
     const codeArea = document.getElementById('finalCode');
     saveHistory();
-    codeArea.value += '\n' + generatedCode;
+
+    // 편집 모드인지 확인하고 suffix 결정 (swiper 클래스 재사용을 위해)
+    const isEditing = editingInstanceId && moduleRegistry[editingInstanceId] && moduleRegistry[editingInstanceId].category === category;
+    let swiperSuffix = null;
+    if (isEditing && moduleRegistry[editingInstanceId].swiperSuffix !== undefined) {
+        swiperSuffix = moduleRegistry[editingInstanceId].swiperSuffix;
+    } else if (category === 'gift') {
+        // 새 gift 모듈: 먼저 suffix 계산해서 레지스트리에 저장
+        swiperSuffix = getNextGiftSuffix();
+    }
+
+    // gift 모듈인 경우 suffix를 generateModuleCode에 전달 (thread-local)
+    window.__forcedSwiperSuffix = swiperSuffix;
+    const generatedCode = generateModuleCode(module.id, values);
+    window.__forcedSwiperSuffix = null;
+
+    // 편집 모드: 기존 인스턴스 코드 교체
+    if (isEditing) {
+        const instanceId = editingInstanceId;
+        const wrapped = wrapWithInstanceMarkers(instanceId, generatedCode);
+        const ok = replaceInstanceInCode(instanceId, wrapped);
+        if (ok) {
+            // 레지스트리 업데이트 (type도 바뀌었을 수 있음)
+            moduleRegistry[instanceId] = {
+                category,
+                type: selectedType,
+                values: JSON.parse(JSON.stringify(values)),
+                label: getModuleLabel(category, selectedType),
+                swiperSuffix: moduleRegistry[instanceId].swiperSuffix
+            };
+            showToast(`✅ [${module.name}] 수정 완료`);
+        } else {
+            codeArea.value += '\n' + wrapped;
+            moduleRegistry[instanceId] = {
+                category, type: selectedType, values: JSON.parse(JSON.stringify(values)),
+                label: getModuleLabel(category, selectedType),
+                swiperSuffix: moduleRegistry[instanceId].swiperSuffix
+            };
+            showToast(`⚠️ 마커를 찾지 못해 끝에 추가됐습니다.`);
+        }
+        // 수정 완료 후 편집 모드 자동 종료
+        editingInstanceId = null;
+        hideEditModeBanner();
+    } else {
+        // 새 인스턴스 추가
+        const instanceId = nextInstanceId(category);
+        const wrapped = wrapWithInstanceMarkers(instanceId, generatedCode);
+        codeArea.value += '\n' + wrapped;
+        moduleRegistry[instanceId] = {
+            category,
+            type: selectedType,
+            values: JSON.parse(JSON.stringify(values)),
+            label: getModuleLabel(category, selectedType),
+            swiperSuffix: swiperSuffix
+        };
+        tabAddedState[category] = true;
+        showToast(`✅ [${module.name}] 코드가 추가되었습니다.`);
+    }
+
     codeArea.scrollTop = codeArea.scrollHeight;
 
     // 버튼 상태 전환
     const addBtn = document.getElementById('contentAddBtn');
-    if (!tabAddedState[category]) {
-        tabAddedState[category] = true;
-        showToast(`✅ [${module.name}] 코드가 추가되었습니다.`);
-    } else {
-        showToast(`✅ [${module.name}] 코드가 수정되었습니다.`);
-    }
-    // 현재 탭이 추가된 상태면 버튼 텍스트 변경
     if (addBtn) {
-        addBtn.textContent = tabAddedState[currentTab] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
-        addBtn.style.background = tabAddedState[currentTab] ? 'var(--secondary)' : '';
+        addBtn.textContent = editingInstanceId ? '🔄 이 모듈 수정하기' : '+ 현재 탭 내용 추가';
+        addBtn.style.background = editingInstanceId ? 'var(--secondary)' : '';
     }
 
     // 미리보기 탭이 활성화 상태면 자동 갱신
@@ -2066,16 +2995,22 @@ ${commentEnd}
         const giftLink = v.gift_link || '#';
         const infos = parseTextLines(v.gift_info);
         const slideHtml = slides.map(s => `            <div class="swiper-slide"><img src="${s.url}" alt="${s.alt}" width="100%"></div>`).join('\n');
-        
+
+        // 편집 중이면 기존 suffix 재사용, 아니면 새로 계산
+        const suffix = window.__forcedSwiperSuffix !== null && window.__forcedSwiperSuffix !== undefined
+            ? window.__forcedSwiperSuffix
+            : getNextGiftSuffix();
+        const swiperCls = `giftswiper${suffix}`;
+
         // zoom_btn: 팝업 URL이 있으면 swiper 안쪽 끝에 배치
         const zoomBtnHtml = popupUrl
             ? `\n            <div class="zoom_btn">\n                <a href="${popupUrl}" target="_blank" title="새 창 열림" data-event-popup="scrollbars=yes,width=720,height=800">자세히보기</a>\n            </div>`
             : '';
 
-        return `<!--증정품 섹션-->
+        return `<!--증정품 섹션${suffix ? ' ' + suffix : ''}-->
         <section>
             <!-- 슬라이드 -->
-            <div class="swiper giftswiper">
+            <div class="swiper ${swiperCls}">
                 <div class="swiper-wrapper">
 ${slideHtml}
                 </div>
@@ -2107,14 +3042,17 @@ ${infos.map(i => `                            <li>${i}</li>`).join('\n')}
             </div>
             <!--// 증정 조건-->
         </section>
-        <!--// 증정품 섹션-->
-${SCRIPT_SINGLE}`;
+        <!--// 증정품 섹션${suffix ? ' ' + suffix : ''}-->
+${makeSingleGiftScript(suffix)}`;
     }
     if (modId === 'gift_full') {
         const slides = parseLines(v.gift_slider_images);
         const thumbs = parseLines(v.gift_thumbnails, true);
         const infos = parseTextLines(v.gift_info);
-        return '<!--증정품 (썸네일형)-->\n' + createGiftHtml(slides, thumbs, v.gift_condition_title, v.gift_link, infos) + '\n<!--증정품 (썸네일형) //-->\n' + SCRIPT_FULL;
+        const suffix = window.__forcedSwiperSuffix !== null && window.__forcedSwiperSuffix !== undefined
+            ? window.__forcedSwiperSuffix
+            : getNextGiftSuffix();
+        return `<!--증정품 (썸네일형)${suffix ? ' ' + suffix : ''}-->\n` + createGiftHtml(slides, thumbs, v.gift_condition_title, v.gift_link, infos, suffix) + `\n<!--증정품 (썸네일형) //${suffix ? ' ' + suffix : ''}-->\n` + makeFullGiftScript(suffix);
     }
     if (modId === 'booklist_manual') {
         const title = v.booklist_title || '추천 도서';
@@ -2177,10 +3115,12 @@ const listsHtml = items.map((item, idx) => {
         return tabHtml + '\n' + listsHtml + '\n';
     }
 if (modId === 'booklist_single') {
+        const idAttr = v.id_type || 'CID';
+        const idVal = v.id_value || v.cid || '';
         return `<div class="monly_booklist_wrap">
     <div class="list_tit">${v.booklist_title}</div>
     <div class="booklist">
-        <uc1:wa_item_info_list runat="server" CID="${v.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${v.item_count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2"/>
+        <uc1:wa_item_info_list runat="server" ${idAttr}="${idVal}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${v.item_count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2"/>
     </div>
 </div>
 `;
@@ -2239,7 +3179,11 @@ function parseTitleText(text) {
 }
 function parseLines(text, isThumb=false) { if (!text) return []; return text.split('\n').map(l => l.trim()).filter(l => l).map(l => { const p = l.split('|').map(x=>x.trim()); return isThumb ? { url: p[0], text: p[1], popup: p[2] } : { url: p[0], alt: p[1]||'' }; }); }
 
-function createGiftHtml(slides, thumbs, title, link, infos) {
+function createGiftHtml(slides, thumbs, title, link, infos, suffix) {
+    suffix = suffix || '';
+    const swiperCls = `giftswiper${suffix}`;
+    const thumbCls = `thumbnail1${suffix ? '_' + suffix : ''}`;
+
     const slideHtml = slides.map(s => `            <div class="swiper-slide"><img src="${s.url}" alt="${s.alt}"/></div>`).join('\n');
 
     let bottomHtml = '';
@@ -2256,13 +3200,13 @@ function createGiftHtml(slides, thumbs, title, link, infos) {
             <h2 class="sr-only">증정품 목록과 증정조건</h2>
             <p><span class="b-txt">${title || '증정 조건'}</span></p>
             <div class="thumbnail_wrap">
-                <div class="swiper-container thumbnail_swiper thumbnail1">
+                <div class="swiper-container thumbnail_swiper ${thumbCls}">
                     <div class="swiper-wrapper">
 ${thumbHtml}
                     </div>
                 </div>
-                <div class="thumbnail-button-next thumbnail1-next"></div>
-                <div class="thumbnail-button-prev thumbnail1-prev"></div>
+                <div class="thumbnail-button-next ${thumbCls}-next"></div>
+                <div class="thumbnail-button-prev ${thumbCls}-prev"></div>
             </div>
             ${link ? `<a href="${link}" class="pink_big_btn">대상도서 모두 보기</a>` : ''}
             ${infos && infos.length ? `<div class="monly_info_box">
@@ -2276,7 +3220,7 @@ ${infos.map(i=>`                        <li>${i}</li>`).join('\n')}
         </div>`;
     }
 
-    return `    <div class="swiper giftswiper">
+    return `    <div class="swiper ${swiperCls}">
         <div class="swiper-wrapper">
 ${slideHtml}
         </div>
@@ -2320,10 +3264,33 @@ function resetAll() {
         }
     });
     
+    // 신간 알림 작가 컨테이너 초기화
+    const nbAuthorContainer = document.getElementById('nbAuthorListContainer');
+    if (nbAuthorContainer) nbAuthorContainer.innerHTML = '';
+
     // 코드 에디터 초기화
     const headerOn = document.getElementById('headerToggle').checked;
     document.getElementById('finalCode').value = headerOn ? DEFAULT_HEADER : '';
-    
+
+    // 신간 알림 스타일 블록 삽입 플래그 리셋
+    newbookStyleInjected = false;
+
+    // 탭 추가 상태 + 인스턴스 레지스트리 리셋
+    Object.keys(tabAddedState).forEach(k => delete tabAddedState[k]);
+    Object.keys(moduleRegistry).forEach(k => delete moduleRegistry[k]);
+    Object.keys(moduleInstanceCounter).forEach(k => delete moduleInstanceCounter[k]);
+    editingInstanceId = null;
+    hideEditModeBanner();
+    const addBtn = document.getElementById('contentAddBtn');
+    if (addBtn) {
+        addBtn.textContent = '+ 현재 탭 내용 추가';
+        addBtn.style.background = '';
+    }
+
+    // 템플릿 선택 화면 다시 표시
+    currentTemplate = null;
+    document.getElementById('templateSelectScreen').style.display = 'flex';
+
     showToast('🗑️ 초기화되었습니다.');
 }
 // ============================================
@@ -2443,6 +3410,13 @@ function wizardShowStep(step) {
         document.getElementById('wizArrow' + i).classList.toggle('done', i < step);
     }
 
+    // 하단 이전/다음/완료 버튼 표시 제어
+    const prevBtn = document.getElementById('wizPrevBtn');
+    const nextBtn = document.getElementById('wizNextBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    if (prevBtn) prevBtn.style.display = step === 1 ? 'none' : '';
+    if (nextBtn) nextBtn.style.display = step === 3 ? 'none' : '';
+    if (finishBtn) finishBtn.style.display = step === 3 ? '' : 'none';
 }
 
 function wizardNext() {
@@ -2467,6 +3441,572 @@ function wizardPrev() {
 
 let currentMainTab = 'topimage';
 
+// ============================================
+// 템플릿 선택 & 신간 알림 탭
+// ============================================
+let currentTemplate = null;
+let newbookStyleInjected = false;
+let currentNewbookTab = 'hero';
+let currentNbSubTab = 'desc';
+
+function selectTemplate(name) {
+    currentTemplate = name;
+    document.getElementById('templateSelectScreen').style.display = 'none';
+    document.getElementById('panel_monly').style.display = name === 'monly' ? 'block' : 'none';
+    document.getElementById('panel_newbook').style.display = name === 'newbook' ? 'block' : 'none';
+    document.getElementById('mainTabs_monly').style.display = name === 'monly' ? 'flex' : 'none';
+    document.getElementById('mainTabs_newbook').style.display = name === 'newbook' ? 'flex' : 'none';
+
+    // 헤더 제목 변경
+    const h1 = document.querySelector('.cp-header h1');
+    const p = document.querySelector('.cp-header p');
+    if (name === 'monly') {
+        h1.textContent = 'Aladin Monly Template Event Module Builder v2.1';
+        p.textContent = '작가 · 배너 · 증정품 · 쿠폰/적립금 · 도서리스트 · 댓글 통합';
+    } else {
+        h1.textContent = 'Aladin New Book Alert Template Builder v2.1';
+        p.textContent = '히어로 · 책 소개 · 작가 · 이벤트 안내 · 시리즈 도서 · 댓글';
+    }
+
+    // 하단 액션 버튼 상태 조정
+    updateActionArea();
+
+    // 신간 알림 기본 작가 1명 자동 추가
+    if (name === 'newbook') {
+        const authorContainer = document.getElementById('nbAuthorListContainer');
+        if (authorContainer && authorContainer.children.length === 0) {
+            addNbAuthorRow();
+        }
+    }
+}
+
+function showTemplateSelector() {
+    document.getElementById('templateSelectScreen').style.display = 'flex';
+}
+
+function updateActionArea() {
+    const addBtn = document.getElementById('contentAddBtn');
+    const prevBtn = document.getElementById('wizPrevBtn');
+    const nextBtn = document.getElementById('wizNextBtn');
+
+    if (currentTemplate === 'newbook') {
+        // 신간 알림은 위자드 없이 바로 탭 내용 추가 방식
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (addBtn) {
+            addBtn.textContent = currentNewbookTab === 'hero'
+                ? '🎯 히어로 코드 추가'
+                : '+ 현재 탭 내용 추가';
+            addBtn.style.background = '';
+            addBtn.onclick = addNewbookToEditor;
+            addBtn.style.flex = '1';
+            addBtn.style.display = 'flex';
+        }
+    }
+}
+
+function switchNewbookTab(tab) {
+    currentNewbookTab = tab;
+    document.querySelectorAll('#mainTabs_newbook .main-tab').forEach(btn => btn.classList.remove('active'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+
+    document.getElementById('newbookTab_hero').style.display = tab === 'hero' ? 'block' : 'none';
+    document.getElementById('newbookTab_content').style.display = tab === 'content' ? 'block' : 'none';
+
+    updateActionArea();
+}
+
+function switchNbSubTab(sub) {
+    currentNbSubTab = sub;
+    document.querySelectorAll('#newbookTab_content .sub-tab').forEach(btn => btn.classList.remove('active'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+
+    ['desc', 'author', 'event', 'booklist', 'comment'].forEach(t => {
+        document.getElementById('nbTab_' + t).classList.toggle('active', t === sub);
+    });
+}
+
+// 신간 알림 작가 동적 추가
+function addNbAuthorRow() {
+    const container = document.getElementById('nbAuthorListContainer');
+    const idx = container.children.length + 1;
+    const div = document.createElement('div');
+    div.className = 'nb-author-item';
+    div.style.cssText = 'background:#fff; border:1px solid var(--border); padding:16px; border-radius:var(--radius-sm); margin-bottom:10px;';
+    div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <strong style="font-size:14px; color:var(--primary);">작가 ${idx}</strong>
+            ${idx > 1 ? `<button type="button" onclick="this.closest('.nb-author-item').remove()" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:12px;">삭제</button>` : ''}
+        </div>
+        <div class="input-row">
+            <label style="font-size:13px;">역할</label>
+            <input type="text" class="nb-auth-role" placeholder="예: 글, 그림, 글·그림" value="글">
+        </div>
+        <div class="input-row">
+            <label style="font-size:13px;">이름</label>
+            <input type="text" class="nb-auth-name" value="서지원">
+        </div>
+        <div class="input-row">
+            <label style="font-size:13px;">저자 ID (AuthorId)</label>
+            <input type="text" class="nb-auth-id" value="289310">
+        </div>
+        <div class="input-row" style="margin-bottom:0;">
+            <label style="font-size:13px;">소개글</label>
+            <textarea class="nb-auth-bio" style="min-height:80px;">강릉에서 태어나 한양대학교를 졸업하고 〈문학과 비평〉에 소설로 등단했습니다. 지식과 교양을 유쾌한 입담과 기발한 상상력으로 전하는 이야기꾼입니다.</textarea>
+        </div>
+    `;
+    container.appendChild(div);
+}
+
+// ============================================
+// 신간 알림 코드 생성 함수들 (BEM 새 디자인)
+// ============================================
+function buildNewbookStyleBlock() {
+    return `<style>
+/* 신간 알림 템플릿 디자인 토큰 */
+:root {
+    --ds-palette-ink: #0e0e0e;
+    --ds-palette-paper: #ffffff;
+    --ds-palette-muted: #6b7280;
+    --ds-palette-line: #eeeeee;
+    --ds-palette-surface: #f5f5f5;
+    --ds-text-sm: 14px;
+    --ds-text-base: 16px;
+    --ds-text-md: 18px;
+    --ds-text-lg: 20px;
+    --ds-text-xl: 24px;
+    --ds-text-2xl: 28px;
+    --ds-space-xs: 8px;
+    --ds-space-sm: 16px;
+    --ds-space-md: 24px;
+    --ds-space-lg: 32px;
+    --ds-space-xl: 48px;
+    --ds-radius-sm: 12px;
+    --ds-radius-md: 20px;
+    --ds-radius-lg: 30px;
+    --ds-radius-pill: 999px;
+    --theme-bg: #12394e;
+    --theme-text: #ffffff;
+    --theme-pink: #EB217C;
+}
+
+/* 히어로 */
+.new-book-hero { position: relative; background-repeat: no-repeat; background-position: top center; background-size: 100%; padding: var(--ds-space-xl) var(--ds-space-md); overflow: hidden; }
+.new-book-hero--radial::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse at center, var(--hero-bg-color, #fdfbf7) 0%, var(--hero-bg-color, #fdfbf7) 15%, rgba(255,255,255,0) 65%); pointer-events: none; z-index: 0; }
+.new-book-hero > * { position: relative; z-index: 1; }
+.new-book-hero__title-wrap { text-align: center; padding: var(--ds-space-md) 0 var(--ds-space-sm); }
+.new-book-hero__series { font-size: 48px; font-weight: 800; color: var(--hero-title-color, var(--ds-palette-ink)); letter-spacing: -0.02em; line-height: 1.2; }
+.new-book-hero__event-name { font-size: 15px; font-weight: 400; color: var(--hero-title-color, var(--ds-palette-muted)); opacity: 0.75; margin-top: 10px; letter-spacing: 0.01em; }
+.new-book-hero__cover { display: block; margin: var(--ds-space-lg) auto; max-width: 300px; width: 72%; box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.2); border-radius: var(--ds-radius-sm); transform: perspective(800px) rotateY(-4deg); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.new-book-hero__cover:hover { transform: perspective(800px) rotateY(0deg) scale(1.03); box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 12px 30px rgba(0,0,0,0.25); }
+.new-book-hero__release { display: flex; align-items: center; justify-content: center; width: fit-content; margin: var(--ds-space-md) auto 0; font-size: var(--ds-text-base); font-weight: 800; color: var(--ds-palette-ink); background-color: #fde64b; padding: 12px 28px; border-radius: var(--ds-radius-pill); box-shadow: 0 8px 20px rgba(253, 230, 75, 0.4); letter-spacing: -0.02em; line-height: 1; }
+
+/* 책 소개 */
+.new-book-desc { position: relative; max-width: 720px; margin: var(--ds-space-xl) auto; background: transparent; padding: var(--ds-space-lg) var(--ds-space-md); text-align: center; }
+.new-book-desc::before { content: '\\201C'; display: block; font-size: 80px; color: #fde64b; line-height: 0.5; font-family: serif; margin-bottom: var(--ds-space-sm); }
+.new-book-desc__text { font-size: var(--ds-text-base); font-weight: 700; line-height: 2; color: var(--theme-bg); word-break: keep-all; }
+
+/* 저자 */
+.author-section { max-width: 720px; margin: 0 auto; padding: 0 var(--ds-space-md); }
+.author-card { border-bottom: 1px solid var(--ds-palette-line); padding: var(--ds-space-lg) 0; }
+.author-card:last-child { border-bottom: none; }
+.author-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--ds-space-sm); }
+.author-card__name { font-size: var(--ds-text-base); font-weight: 700; }
+.author-card__btns { display: flex; gap: var(--ds-space-xs); }
+.author-card__btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border: 1px solid var(--ds-palette-ink); border-radius: var(--ds-radius-sm); font-size: var(--ds-text-sm); font-weight: 600; line-height: 1; color: var(--ds-palette-ink); background: transparent; text-decoration: none; white-space: nowrap; transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
+.author-card__btn:hover { background-color: var(--ds-palette-ink); color: var(--ds-palette-paper); }
+.author-card__btn--primary { background: var(--theme-pink); border-color: var(--theme-pink); color: var(--ds-palette-paper); }
+.author-card__btn--primary:hover { background: #D41A6F; border-color: #D41A6F; color: var(--ds-palette-paper); }
+.author-card__text { font-size: var(--ds-text-sm); line-height: 1.8; color: var(--ds-palette-muted); word-break: keep-all; }
+
+/* 이벤트 */
+.event-section { background: var(--ds-palette-surface); border: 1px solid var(--ds-palette-line); padding: var(--ds-space-xl) var(--ds-space-md); margin: var(--ds-space-xl) var(--ds-space-md); border-radius: var(--ds-radius-lg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); word-break: keep-all; text-align: center; }
+.event-section__inner { max-width: 720px; margin: 0 auto; }
+.event-section__label { display: inline-block; background: transparent; color: var(--ds-palette-ink); border: 1.5px solid var(--ds-palette-ink); font-size: var(--ds-text-sm); font-weight: 800; padding: 4px 14px; border-radius: var(--ds-radius-pill); margin-bottom: var(--ds-space-sm); letter-spacing: 1px; }
+.event-section__desc { font-size: var(--ds-text-md); font-weight: 700; color: var(--ds-palette-ink); line-height: 1.6; margin-bottom: var(--ds-space-md); }
+.event-section__info { font-size: var(--ds-text-sm); color: var(--ds-palette-muted); line-height: 1.8; margin: var(--ds-space-lg) auto 0; background: rgba(0, 0, 0, 0.04); padding: var(--ds-space-sm) var(--ds-space-md); border-radius: var(--ds-radius-sm); display: block; text-align: left; max-width: fit-content; }
+.event-section__btns { display: flex; flex-direction: column; gap: var(--ds-space-xs); }
+.event-btn { display: flex; align-items: center; justify-content: center; padding: 18px 24px; border-radius: var(--ds-radius-pill); font-size: var(--ds-text-base); font-weight: 700; line-height: 1; text-decoration: none; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+.event-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(236, 72, 153, 0.25); }
+.event-btn--primary { background: var(--theme-pink); color: var(--ds-palette-paper); }
+.event-btn--secondary { background: var(--ds-palette-paper); color: var(--theme-pink); border: 1px solid var(--theme-pink); }
+.event-btn--secondary:hover { background: #fdf2f8; border-color: var(--theme-pink); }
+
+/* 시리즈 도서 */
+.series-section { padding: var(--ds-space-lg) var(--ds-space-md) var(--ds-space-xl); }
+.series-section__header { display: flex; justify-content: space-between; align-items: center; max-width: 720px; margin: 0 auto var(--ds-space-md); }
+.series-section__title { font-size: var(--ds-text-lg); font-weight: 700; }
+.series-section__more { font-size: var(--ds-text-sm); color: var(--ds-palette-muted); text-decoration: none; }
+.series-section__list { max-width: 720px; margin: 0 auto; }
+
+/* 댓글 */
+.comment-section { padding: var(--ds-space-xl) var(--ds-space-md); background: var(--ds-palette-surface); border-top: 1px solid var(--ds-palette-line); }
+.comment-section__inner { max-width: 720px; margin: 0 auto; }
+
+/* 반응형 - PC (750px+) */
+@media (min-width: 750px) {
+    .new-book-hero { background-size: cover; padding: 80px var(--ds-space-lg) 60px; }
+    .new-book-hero__title-wrap { max-width: 720px; margin: 0 auto; padding: var(--ds-space-lg) 0 var(--ds-space-md); }
+    .new-book-hero__series { font-size: 56px; }
+    .new-book-hero__event-name { font-size: 16px; }
+    .new-book-hero__cover { max-width: 320px; width: 28%; }
+    .new-book-hero__release { font-size: var(--ds-text-md); padding: 14px 32px; }
+    .new-book-desc { padding: var(--ds-space-xl) 48px; margin-top: 60px; }
+    .new-book-desc__text { font-size: var(--ds-text-lg); }
+    .author-section { padding: 0 var(--ds-space-lg); }
+    .event-section { margin: var(--ds-space-xl) auto; max-width: 720px; padding: var(--ds-space-xl) var(--ds-space-lg); }
+    .event-section__btns { flex-direction: row; }
+    .event-btn { flex: 1; }
+    .series-section__header { padding-bottom: var(--ds-space-sm); border-bottom: 2px solid var(--ds-palette-ink); }
+}
+</style>`;
+}
+
+// ============================================
+// 신간 알림 히어로 - 배경색/타이틀 컬러/프롬프트 연동
+// ============================================
+// 히어로 프롬프트 생성기에 첨부된 참고 이미지들 (data URL + name)
+function toggleNbPromptGen() {
+    const body = document.getElementById('nbPromptGenBodyTop') || document.getElementById('nbPromptGenBody');
+    const arrow = document.getElementById('nbPromptGenArrowTop') || document.getElementById('nbPromptGenArrow');
+    if (!body) return;
+    const isOpen = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
+function generateNbHeroPrompt(device) {
+    // 참조 모드 체크 — 고정 템플릿 복사
+    const useRef = document.getElementById('nbUseRefMode')?.checked;
+    if (useRef) {
+        const sizeStr = device === 'pc' ? '1920x700' : '750x700';
+        const prompt = buildReferencePrompt(sizeStr);
+        const resultDiv = document.getElementById('nbPromptResult');
+        resultDiv.textContent = prompt;
+        resultDiv.style.display = 'block';
+        navigator.clipboard.writeText(prompt).then(() => {
+            showToast(`✅ ${device === 'pc' ? 'PC (1920×700)' : '모바일 (750×700)'} 참조 프롬프트 복사 — 이미지를 함께 첨부하세요.`);
+        }).catch(() => showToast('📋 아래 프롬프트를 직접 복사해주세요.'));
+        return;
+    }
+
+    const sizeInfo = device === 'pc'
+        ? '1920x700 사이즈의 가로형 히어로 배경 이미지'
+        : '750x700 사이즈의 모바일 히어로 배경 이미지';
+
+    const theme = document.getElementById('nb_pg_theme').value.trim() || '신간 도서 이벤트';
+    const mood = document.getElementById('nb_pg_mood').value;
+    const color = document.getElementById('nb_pg_color').value.trim() || '자연스러운 톤';
+    const style = document.getElementById('nb_pg_style').value;
+    const extra = document.getElementById('nb_pg_extra').value.trim();
+    const exclude = document.getElementById('nb_pg_exclude').value.trim();
+
+    let prompt = `${sizeInfo}.\n`;
+    prompt += `주제: ${theme}.\n`;
+    prompt += `${mood} 분위기, ${color} 톤 중심 컬러.\n`;
+    prompt += `${style}.\n`;
+    if (extra) prompt += `${extra}.\n`;
+    prompt += '\n온라인 서점 신간 알림 이벤트 히어로 배경용.\n';
+    prompt += '중앙에 큰 시리즈명과 책 표지가 올라갈 예정이므로, 가운데 영역은 부드럽게 비워두고 주요 요소는 좌우 가장자리에 배치.\n';
+    prompt += '중앙 가독성을 위해 가운데가 밝고 단순하게, 바깥으로 갈수록 분위기 있는 배경 구성.\n';
+    if (exclude) prompt += `금지 요소: ${exclude}.\n`;
+
+    prompt += '\n※ 후처리 프롬프트:\n';
+    prompt += '- 이미지 중앙 부분은 텍스트 오버레이를 고려하여 최대한 심플하게.\n';
+    prompt += '- 좌우 양 끝으로 주요 오브젝트 배치.\n';
+    prompt += '- 밝기/대비 조정 후 사용.';
+
+    const resultDiv = document.getElementById('nbPromptResult');
+    resultDiv.textContent = prompt + '\n\n💡 ChatGPT/Gemini/Midjourney에 붙여넣고, 필요시 도서 표지/무드보드를 거기서 직접 첨부하세요.';
+    resultDiv.style.display = 'block';
+
+    navigator.clipboard.writeText(prompt).then(() => {
+        showToast(`✅ ${device === 'pc' ? 'PC (1920×700)' : '모바일 (750×700)'} 프롬프트 복사 완료`);
+    }).catch(() => {
+        showToast('📋 아래 프롬프트를 직접 복사해주세요.');
+    });
+}
+
+// 히어로 배경 이미지에서 색상 추출
+function extractNbHeroBgColor() {
+    const imgUrl = document.getElementById('nb_hero_bg_pc').value.trim() || document.getElementById('nb_hero_bg_m').value.trim();
+    if (!imgUrl) {
+        showToast('배경 이미지 URL을 먼저 입력해주세요.');
+        return;
+    }
+    const fullUrl = imgUrl.startsWith('//') ? 'https:' + imgUrl : imgUrl;
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        const samples = [];
+        const points = [
+            [0, 0], [img.width-1, 0],
+            [0, img.height-1], [img.width-1, img.height-1],
+            [Math.floor(img.width/2), 0], [Math.floor(img.width/2), img.height-1],
+            [0, Math.floor(img.height/2)], [img.width-1, Math.floor(img.height/2)]
+        ];
+        points.forEach(([x, y]) => {
+            try {
+                const pixel = ctx.getImageData(x, y, 1, 1).data;
+                samples.push([pixel[0], pixel[1], pixel[2]]);
+            } catch(e) {}
+        });
+
+        if (samples.length === 0) {
+            showToast('색상을 추출할 수 없습니다. CORS 제한일 수 있습니다.');
+            return;
+        }
+        const avg = samples.reduce((acc, [r, g, b]) => {
+            acc[0] += r; acc[1] += g; acc[2] += b;
+            return acc;
+        }, [0, 0, 0]).map(v => Math.round(v / samples.length));
+
+        const hex = '#' + avg.map(v => v.toString(16).padStart(2, '0')).join('');
+        document.getElementById('nb_hero_bg_color').value = hex;
+        document.getElementById('nb_hero_bg_preview').style.background = hex;
+        document.getElementById('nb_hero_bg_picker').value = hex;
+        showToast('✅ 배경색 추출 완료: ' + hex);
+    };
+    img.onerror = function() {
+        showToast('이미지를 불러올 수 없습니다. URL을 확인해주세요.');
+    };
+    img.src = fullUrl;
+}
+
+// 히어로 배경색/타이틀 컬러 텍스트 입력 ↔ 컬러피커 동기화
+document.addEventListener('input', function(e) {
+    if (e.target.id === 'nb_hero_bg_color') {
+        const v = e.target.value;
+        const preview = document.getElementById('nb_hero_bg_preview');
+        const picker = document.getElementById('nb_hero_bg_picker');
+        if (preview) preview.style.background = v;
+        if (picker && /^#[0-9a-fA-F]{6}$/.test(v)) picker.value = v;
+    }
+    if (e.target.id === 'nb_hero_title_color') {
+        const v = e.target.value;
+        const preview = document.getElementById('nb_hero_title_preview');
+        const picker = document.getElementById('nb_hero_title_picker');
+        if (preview) preview.style.background = v;
+        if (picker && /^#[0-9a-fA-F]{6}$/.test(v)) picker.value = v;
+    }
+});
+
+function buildNewbookHero() {
+    const series = parseTitleText(document.getElementById('nb_hero_series').value) || document.getElementById('nb_hero_series').value;
+    const eventName = parseTitleText(document.getElementById('nb_hero_event_name').value) || document.getElementById('nb_hero_event_name').value;
+    const cover = document.getElementById('nb_hero_cover').value.trim();
+    const bgM = document.getElementById('nb_hero_bg_m').value.trim();
+    const bgPC = document.getElementById('nb_hero_bg_pc').value.trim();
+    const release = document.getElementById('nb_hero_release').value.trim();
+    const bgColor = (document.getElementById('nb_hero_bg_color')?.value || '#fdfbf7').trim();
+    const titleColor = (document.getElementById('nb_hero_title_color')?.value || '#0e0e0e').trim();
+    const useRadial = document.getElementById('nb_hero_radial')?.checked !== false;
+
+    const radialClass = useRadial ? ' new-book-hero--radial' : '';
+    const inlineStyle = `background-color: ${bgColor}; background-image: url(${bgM}); --hero-bg-color: ${bgColor}; --hero-title-color: ${titleColor};`;
+
+    return `<!-- 이벤트 시작 -->
+<article class="event-wrap">
+
+    <!-- 히어로 영역 -->
+    <header class="new-book-hero${radialClass}" style="${inlineStyle}">
+        <style>
+            @media (min-width: 750px) {
+                .new-book-hero { background-image: url(${bgPC}) !important; }
+            }
+        </style>
+        <div class="new-book-hero__title-wrap">
+            <div class="new-book-hero__series">${series}</div>
+            <div class="new-book-hero__event-name">${eventName}</div>
+        </div>
+        <img class="new-book-hero__cover" src="${cover}" alt="${series.replace(/<[^>]+>/g, '')}" />
+        <div class="new-book-hero__release">${release}</div>
+    </header>
+
+`;
+}
+
+function buildNewbookDesc() {
+    const text = document.getElementById('nb_desc_text').value.trim()
+        .split('\n').map(l => l.trim()).join('<br />\n        ');
+    return `    <!-- 책 소개 -->
+    <section class="new-book-desc">
+        <p class="new-book-desc__text">
+        ${text}
+        </p>
+    </section>
+
+`;
+}
+
+function buildNewbookAuthors() {
+    const rows = document.querySelectorAll('#nbAuthorListContainer .nb-author-item');
+    const cards = Array.from(rows).map(row => {
+        const role = row.querySelector('.nb-auth-role').value.trim();
+        const name = row.querySelector('.nb-auth-name').value.trim();
+        const aid = row.querySelector('.nb-auth-id').value.trim();
+        const bio = row.querySelector('.nb-auth-bio').value.trim();
+        const authorUrl = aid ? `https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${aid}` : '#';
+        return `        <div class="author-card">
+            <div class="author-card__header">
+                <h3 class="author-card__name">${role} · ${name}</h3>
+                <div class="author-card__btns">
+                    <a href="${authorUrl}" class="author-card__btn">저자 파일</a>
+                    <uc1:alarm runat="server" AlarmType="1" AlarmValue="${aid}" AlarmButton="<a href='javascript:void(0)' class='author-card__btn author-card__btn--primary'>신간 알리미</a>" />
+                </div>
+            </div>
+            <p class="author-card__text">${bio}</p>
+        </div>`;
+    }).join('\n');
+
+    return `    <!-- 저자 소개 -->
+    <section class="author-section">
+${cards}
+    </section>
+
+`;
+}
+
+function buildNewbookEventSection() {
+    const label = document.getElementById('nb_event_label').value.trim();
+    const desc = document.getElementById('nb_event_desc').value.trim()
+        .replace(/\/br/g, '<br />');
+    const alarmType = document.getElementById('nb_event_alarm_type').value;
+    const alarmValue = document.getElementById('nb_event_alarm_value').value.trim();
+    const alarmBtn = document.getElementById('nb_event_alarm_btn').value.trim();
+    const info = document.getElementById('nb_event_info').value.trim()
+        .split('\n').map(l => l.trim()).join('<br />\n            ');
+
+    return `    <!-- 이벤트 안내 -->
+    <section class="event-section">
+        <div class="event-section__inner">
+            <span class="event-section__label">${label}</span>
+            <p class="event-section__desc">${desc}</p>
+            <div class="event-section__btns">
+                <uc1:alarm runat="server" AlarmType="${alarmType}" AlarmValue="${alarmValue}" AlarmButton="<a href='javascript:void(0)' class='event-btn event-btn--primary'>${alarmBtn}</a>" />
+                <a href="#comment" class="event-btn event-btn--secondary">댓글 작성하러 가기</a>
+            </div>
+            <p class="event-section__info">
+            ${info}
+            </p>
+        </div>
+    </section>
+
+`;
+}
+
+function buildNewbookBooklist() {
+    const title = document.getElementById('nb_bl_title').value.trim();
+    const moreLink = document.getElementById('nb_bl_more').value.trim();
+    const idType = document.getElementById('nb_bl_id_type').value;
+    const idValue = document.getElementById('nb_bl_id_value').value.trim();
+    const count = document.getElementById('nb_bl_count').value.trim() || '80';
+
+    return `    <!-- 시리즈 도서 목록 -->
+    <section class="series-section">
+        <div class="series-section__header">
+            <h3 class="series-section__title">${title}</h3>
+            <a href="${moreLink}" class="series-section__more">+ 모두보기</a>
+        </div>
+        <div class="series-section__list">
+            <uc1:wa_item_info_list runat="server" ${idType}="${idValue}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="${count}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2" StockStatus="0"/>
+        </div>
+    </section>
+
+`;
+}
+
+function buildNewbookComment() {
+    const eid = document.getElementById('nb_comment_eid').value.trim();
+    const title = document.getElementById('nb_comment_title').value.trim();
+    const subtitle = document.getElementById('nb_comment_subtitle').value.trim();
+
+    return `    <!-- 댓글 -->
+    <section class="comment-section" id="comment">
+        <div class="comment-section__inner">
+            <a name="comment" id="comment"></a>
+            <uc1:EventComment ID="ucEventComment_${Math.floor(Math.random()*1000)}" runat="server"
+                EventId="${eid}"
+                IsOpen="1"
+                PageCount="20"
+                SubGroupId="0"
+                AdminEmail="edalba2@aladin.co.kr"
+                Title="${title}"
+                SubTitle="${subtitle}" />
+        </div>
+    </section>
+
+`;
+}
+
+// 신간 알림 코드 추가 디스패처
+function addNewbookToEditor() {
+    const codeArea = document.getElementById('finalCode');
+    saveHistory();
+
+    // BEM 스타일 블록 1회 자동 삽입
+    if (!newbookStyleInjected) {
+        codeArea.value += '\n' + buildNewbookStyleBlock() + '\n';
+        newbookStyleInjected = true;
+    }
+
+    let generatedCode = '';
+    let moduleName = '';
+
+    if (currentNewbookTab === 'hero') {
+        generatedCode = buildNewbookHero();
+        moduleName = '히어로';
+    } else {
+        // 컨텐츠 탭 - 서브탭에 따라
+        switch (currentNbSubTab) {
+            case 'desc':
+                generatedCode = buildNewbookDesc();
+                moduleName = '책 소개';
+                break;
+            case 'author':
+                generatedCode = buildNewbookAuthors();
+                moduleName = '작가 소개';
+                break;
+            case 'event':
+                generatedCode = buildNewbookEventSection();
+                moduleName = '이벤트 안내';
+                break;
+            case 'booklist':
+                generatedCode = buildNewbookBooklist();
+                moduleName = '시리즈 도서';
+                break;
+            case 'comment':
+                generatedCode = buildNewbookComment();
+                moduleName = '댓글';
+                break;
+        }
+    }
+
+    if (!generatedCode) return;
+
+    codeArea.value += '\n' + generatedCode;
+    codeArea.scrollTop = codeArea.scrollHeight;
+
+    // 진행중 주석 (이미 있으면 유지, 없으면 추가)
+    if (!codeArea.value.includes('⚠️ 콘텐츠를 모두 추가한 후')) {
+        codeArea.value += '\n<!-- ⚠️ 콘텐츠를 모두 추가한 후 [코드 완료하기] 버튼을 눌러주세요 -->\n';
+    }
+
+    // 코드 완료 버튼 표시
+    const finishBtn = document.getElementById('finishBtn');
+    if (finishBtn) finishBtn.style.display = 'flex';
+
+    if (currentEditorTab === 'preview') updatePreview();
+    showToast(`✅ [${moduleName}] 코드가 추가되었습니다.`);
+}
+
 function switchMainTab(tab) {
     currentMainTab = tab;
     // 메인 탭 버튼 전환
@@ -2479,13 +4019,15 @@ function switchMainTab(tab) {
 
     // 하단 버튼 텍스트 전환
     const addBtn = document.getElementById('contentAddBtn');
+
     if (tab === 'topimage') {
         addBtn.textContent = topImageAdded ? '🔄 수정하기' : '✅ 상단이미지 코드 추가';
         addBtn.style.background = topImageAdded ? 'var(--secondary)' : '';
         addBtn.onclick = addPageSetupToEditor;
     } else {
-        addBtn.textContent = tabAddedState[currentTab] ? '🔄 수정하기' : '+ 현재 탭 내용 추가';
-        addBtn.style.background = tabAddedState[currentTab] ? 'var(--secondary)' : '';
+        // 편집 중이면 "🔄 이 모듈 수정하기", 아니면 "+ 현재 탭 내용 추가"
+        addBtn.textContent = editingInstanceId ? '🔄 이 모듈 수정하기' : '+ 현재 탭 내용 추가';
+        addBtn.style.background = editingInstanceId ? 'var(--secondary)' : '';
         addBtn.onclick = addToEditor;
     }
 }
@@ -2740,8 +4282,13 @@ function finishCode() {
     codeArea.value = code;
     codeArea.scrollTop = codeArea.scrollHeight;
 
-    // 마무리 버튼 숨기기
-    document.getElementById('finishBtn').style.display = 'none';
+    // 마무리 버튼 비활성화
+    document.querySelectorAll('[onclick="finishCode()"]').forEach(btn => {
+        btn.textContent = '✅ 완료됨';
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+    });
 
     if (currentEditorTab === 'preview') updatePreview();
     showToast('✅ 코드 마무리 완료! 닫기 태그가 추가되었습니다.');
@@ -2884,7 +4431,52 @@ function onPgTypeChange() {
     // 타입 변경 시 특별히 할 일 없음 (프롬프트 생성 시 반영)
 }
 
+// 참조 모드 고정 프롬프트 템플릿 (사이즈만 동적)
+function buildReferencePrompt(sizeStr) {
+    return `Size: ${sizeStr} 전체 배경 이미지.
+Concept: 첨부파일의 분위기를 반영한 테마.
+Style: 첨부된 이미지의 색감과 화풍을 계승할 것.
+배경 확장: 참조 이미지의 배경 요소(예: 자연물, 건축물, 또는 추상적인 배경 그래픽)만을 활용하여 캔버스 전체를 자연스럽게 채웁니다.
+Layout: 중앙에는 텍스트가 위치해야 하므로 반드시 넓은 빈 공간(Empty Space)을 유지할 것. 주요 오브젝트는 좌우측 가장자리에 배치.
+Object Placement: 좌우측 가장자리에 주요 오브젝트를 과하지 않게 배치.
+Negative Prompt: 텍스트 **절대 금지**, 인물, 구체적인 캐릭터, 복잡한 패턴, 중앙 오브젝트 금지.
+Post-Processing: 좌우 끝은 자연스럽게 흐려지는 그라데이션 효과.`;
+}
+
+// 참조 모드 토글 — 컨셉 폼 disable + 시각적 표시
+function toggleRefMode(prefix) {
+    // prefix: 'ps' (Monly) or 'nb' (Newbook)
+    const checkboxId = prefix === 'ps' ? 'psUseRefMode' : 'nbUseRefMode';
+    const formId = prefix === 'ps' ? 'aiManualPanel' : 'nbAiManualPanel';
+    const isOn = document.getElementById(checkboxId).checked;
+    const form = document.getElementById(formId);
+    if (!form) return;
+    if (isOn) {
+        form.style.opacity = '0.45';
+        form.style.pointerEvents = 'none';
+        form.style.filter = 'grayscale(0.4)';
+    } else {
+        form.style.opacity = '';
+        form.style.pointerEvents = '';
+        form.style.filter = '';
+    }
+}
+
 function generatePrompt(device) {
+    // 참조 모드 체크 — 고정 템플릿 복사
+    const useRef = document.getElementById('psUseRefMode')?.checked;
+    if (useRef) {
+        const sizeStr = device === 'pc' ? '1400x440' : '750x770';
+        const prompt = buildReferencePrompt(sizeStr);
+        const resultDiv = document.getElementById('promptResult');
+        resultDiv.textContent = prompt;
+        resultDiv.style.display = 'block';
+        navigator.clipboard.writeText(prompt).then(() => {
+            showToast(`✅ ${device === 'pc' ? 'PC' : '모바일'} 참조 프롬프트 복사 — 이미지를 함께 첨부하세요.`);
+        }).catch(() => showToast('📋 아래 프롬프트를 직접 복사해주세요.'));
+        return;
+    }
+
     const theme = document.getElementById('pg_theme').value.trim() || '도서 이벤트';
     const mood = document.getElementById('pg_mood').value;
     const color = document.getElementById('pg_color').value.trim() || '자연스러운 톤';
@@ -2970,9 +4562,12 @@ function generatePrompt(device) {
 }
 
 // ============================================
+// 참조 이미지 업로드 + AI 이미지 생성
+// ============================================
+// ============================================
 // 에디터 탭 전환 (코드 / 미리보기)
 // ============================================
-let currentEditorTab = 'code';
+let currentEditorTab = 'preview';
 
 function switchEditorTab(tab) {
     currentEditorTab = tab;
@@ -3027,12 +4622,16 @@ function updatePreview() {
     html = html.replace(/<uc1:wa_coupondown_btn[^>]*?Price="([^"]*)"[^>]*\/?>/gi,
         '<a href="javascript:void(0);" style="text-decoration:none;"><span style="font-size:76px; font-family:NanumSquare,sans-serif; color:#e62e8b; font-weight:300; letter-spacing:-3px; position:absolute; left:40px; top:116px;">$1</span></a>');
 
-    // alarm - AlarmButton 추출 (이미지 버튼 포함)
+    // alarm - AlarmButton 추출 (이미지 버튼 / <a> 래핑 / 텍스트 모두 처리)
     html = html.replace(/<uc1:alarm\s[^>]*?AlarmButton="([^"]*)"[^>]*?\/?>/gi, function(match, btnText) {
-        if (btnText.includes('img')) {
-            return btnText.replace(/'/g, '"');
+        // 작은따옴표를 큰따옴표로 복원 (AlarmButton 속성 안에서 사용된 경우)
+        const restored = btnText.replace(/'/g, '"');
+        // 이미 <a>나 <img> 태그가 포함되어 있으면 그대로 출력
+        if (restored.includes('<a ') || restored.includes('<img')) {
+            return restored;
         }
-        return '<a href="javascript:void(0);">' + btnText + '</a>';
+        // 단순 텍스트면 <a>로 감싸기
+        return '<a href="javascript:void(0);">' + restored + '</a>';
     });
     // 남은 uc1:alarm 태그 (AlarmButton 없는 경우) 제거
     html = html.replace(/<uc1:alarm[^>]*\/?>/gi, '');
@@ -3098,13 +4697,33 @@ setTimeout(function() {
 <style>
   body { margin: 0; padding: 0; }
   img { max-width: 100%; height: auto; }
-  /* 사이트 기본 CSS의 파란색 오버라이드 방지 */
-  .event_container h1, .event_container h2, .event_container h3, .event_container h4,
-  .event_container p, .event_container span:not(.t_pink):not(.b-txt), .event_container li { color: inherit; }
-  .event_container a { color: inherit; }
+  /* 사이트 기본 CSS의 파란색 오버라이드 방지
+     - class 없는 순수 요소만 inherit 처리 (mOnly.css 스타일은 건드리지 않음) */
+  .event_container h1:not([class]), .event_container h2:not([class]),
+  .event_container h3:not([class]), .event_container h4:not([class]),
+  .event_container p:not([class]), .event_container li:not([class]),
+  .event_container span:not([class]) { color: inherit; }
+  /* 링크는 알라딘 버튼 클래스 예외 */
+  .event_container a:not(.event-btn--primary):not(.event-btn--secondary):not(.author-card__btn):not(.author-card__btn--primary):not(.pink_big_btn):not(.series-section__more) { color: inherit; }
+  /* 알라딘 CSS 버튼은 원래 컬러 유지 */
+  .event_container .pink_big_btn { color: #fff !important; }
+  .event_container .btn a { color: inherit; }
   .event_container { color: #333; }
-  .event_container .t_pink { color: #eb217c !important; }
+  /* 핑크 강조 텍스트 */
+  .event_container .t_pink,
+  .event_container h1 .t_pink, .event_container h2 .t_pink,
+  .event_container h3 .t_pink, .event_container h4 .t_pink,
+  .event_container p .t_pink, .event_container li .t_pink,
+  .event_container div .t_pink { color: #eb217c !important; }
   .event_container .b-txt { font-weight: 700; }
+  /* 신간 알림 이벤트 버튼 */
+  .event_container .event-btn--primary { color: #fff !important; text-decoration: none; }
+  .event_container .event-btn--secondary { color: #EB217C !important; text-decoration: none; }
+  /* 신간 알림 저자 카드 버튼 */
+  .event_container .author-card__btn { color: #0e0e0e !important; text-decoration: none; }
+  .event_container .author-card__btn:hover { color: #fff !important; background-color: #0e0e0e; }
+  .event_container .author-card__btn--primary,
+  .event_container .author-card__btn--primary:hover { color: #fff !important; text-decoration: none; }
   /* 작가 소개 버튼 영역 스타일 */
   .event_container .monly_author_info .info_top .btn a {
     display: inline-block;
@@ -3131,7 +4750,414 @@ ${html}
 </body>
 </html>`;
 
-    document.getElementById('previewFrame').srcdoc = fullHtml;
+    const iframe = document.getElementById('previewFrame');
+    iframe.onload = () => setupPreviewOverlay();
+    iframe.srcdoc = fullHtml;
+}
+
+// ============================================
+// 미리보기 오버레이 — 섹션 선택/편집/이동/삭제 UI
+// ============================================
+
+// iframe의 <!--__MOD__id__--> ... <!--__/MOD__id__--> 마커 사이 top-level element들을
+// data-instance-id="id" 속성으로 태그한다. (DOM 계층은 건드리지 않음 → CSS 깨지지 않음)
+// instanceElements 맵에 각 인스턴스의 element 목록을 저장.
+function markInstanceElements(doc) {
+    const root = doc.getElementById('container') || doc.body;
+    if (!root) return {};
+
+    const walker = doc.createTreeWalker(root, NodeFilter.SHOW_COMMENT);
+    const markers = [];
+    let node;
+    while ((node = walker.nextNode())) {
+        const s = node.nodeValue.match(/^__MOD__([^_]+_\d+)__$/);
+        if (s) markers.push({ type: 'start', id: s[1], node });
+        const e = node.nodeValue.match(/^__\/MOD__([^_]+_\d+)__$/);
+        if (e) markers.push({ type: 'end', id: e[1], node });
+    }
+
+    const instanceElements = {};
+    for (let i = 0; i < markers.length; i++) {
+        if (markers[i].type !== 'start') continue;
+        const id = markers[i].id;
+        const endIdx = markers.findIndex((m, idx) => idx > i && m.type === 'end' && m.id === id);
+        if (endIdx === -1) continue;
+        const startNode = markers[i].node;
+        const endNode = markers[endIdx].node;
+        if (startNode.parentNode !== endNode.parentNode) continue;
+
+        const elements = [];
+        let curr = startNode.nextSibling;
+        while (curr && curr !== endNode) {
+            if (curr.nodeType === 1) { // Element node only
+                curr.setAttribute('data-instance-id', id);
+                elements.push(curr);
+            }
+            curr = curr.nextSibling;
+        }
+        instanceElements[id] = elements;
+    }
+    return instanceElements;
+}
+
+// 인스턴스에 속한 모든 요소들의 bounding rect 합집합 계산
+function getInstanceUnionRect(elements) {
+    if (!elements || !elements.length) return null;
+    let top = Infinity, left = Infinity, right = -Infinity, bottom = -Infinity;
+    elements.forEach(el => {
+        if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.tagName === 'LINK') return;
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) return;
+        top = Math.min(top, rect.top);
+        left = Math.min(left, rect.left);
+        right = Math.max(right, rect.right);
+        bottom = Math.max(bottom, rect.bottom);
+    });
+    if (top === Infinity) return null;
+    return { top, left, right, bottom, width: right - left, height: bottom - top };
+}
+
+function setupPreviewOverlay() {
+    const iframe = document.getElementById('previewFrame');
+    const doc = iframe.contentDocument;
+    if (!doc || !doc.body) return;
+
+    // 1. 마커 사이 top-level element에 data-instance-id 속성 부여
+    //    (DOM 계층을 건드리지 않음 → mOnly.css selector 깨짐 X)
+    const instanceElements = markInstanceElements(doc);
+    if (Object.keys(instanceElements).length === 0) return;
+
+    // 2. 오버레이 CSS 주입 (body 하위 fixed 요소만 추가, 기존 레이아웃 불변)
+    const style = doc.createElement('style');
+    style.setAttribute('data-mod-overlay', '1');
+    style.textContent = `
+        .__mod-outline {
+            position: fixed;
+            pointer-events: none;
+            border: 2px solid #EB217C;
+            border-radius: 4px;
+            box-shadow: 0 0 0 4px rgba(235, 33, 124, 0.15);
+            display: none;
+            z-index: 99998;
+            box-sizing: border-box;
+        }
+        .__mod-toolbar {
+            position: fixed;
+            display: none;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #111;
+            border-radius: 12px;
+            z-index: 99999;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            font-size: 16px;
+            color: #fff;
+            align-items: center;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+        }
+        .__mod-toolbar .__mod-label {
+            padding: 0 14px 0 6px;
+            font-weight: 700;
+            max-width: 320px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+        .__mod-toolbar button {
+            border: none;
+            background: #333;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            transition: background 0.15s;
+            line-height: 1;
+            min-width: 48px;
+        }
+        .__mod-toolbar button:hover { background: #EB217C; }
+        .__mod-toolbar button.__mod-btn-danger:hover { background: #dc2626; }
+    `;
+    doc.head.appendChild(style);
+
+    // 3. 공용 outline box + toolbar 1개씩 iframe body에 생성
+    const outline = doc.createElement('div');
+    outline.className = '__mod-outline';
+    doc.body.appendChild(outline);
+
+    const toolbar = doc.createElement('div');
+    toolbar.className = '__mod-toolbar';
+    toolbar.innerHTML = `
+        <span class="__mod-label"></span>
+        <button type="button" data-action="up" title="위로 이동">⬆</button>
+        <button type="button" data-action="down" title="아래로 이동">⬇</button>
+        <button type="button" data-action="edit" title="수정">✏️ 수정</button>
+        <button type="button" data-action="delete" class="__mod-btn-danger" title="삭제">🗑</button>
+    `;
+    doc.body.appendChild(toolbar);
+
+    // 4. 호버 상태 관리
+    let hoveredId = null;
+    let hideTimer = null;
+
+    function showOverlayFor(id) {
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+        const elements = instanceElements[id];
+        if (!elements) return;
+        const rect = getInstanceUnionRect(elements);
+        if (!rect) return;
+        const inst = moduleRegistry[id];
+        if (!inst) return;
+
+        hoveredId = id;
+
+        // outline 배치
+        outline.style.top = rect.top + 'px';
+        outline.style.left = rect.left + 'px';
+        outline.style.width = rect.width + 'px';
+        outline.style.height = rect.height + 'px';
+        outline.style.display = 'block';
+
+        // toolbar 라벨 및 타겟 ID 갱신
+        toolbar.querySelector('.__mod-label').textContent = `📦 ${inst.label}`;
+        toolbar.dataset.targetId = id;
+
+        // toolbar 배치 (섹션 우상단)
+        toolbar.style.visibility = 'hidden';
+        toolbar.style.display = 'flex';
+        const tbWidth = toolbar.offsetWidth;
+        toolbar.style.left = Math.max(0, rect.right - tbWidth) + 'px';
+        toolbar.style.top = Math.max(10, rect.top) + 'px';
+        toolbar.style.visibility = 'visible';
+    }
+
+    function scheduleHide() {
+        if (hideTimer) return;
+        hideTimer = setTimeout(() => {
+            outline.style.display = 'none';
+            toolbar.style.display = 'none';
+            hoveredId = null;
+            hideTimer = null;
+        }, 150);
+    }
+
+    function cancelHide() {
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    }
+
+    // 5. 각 인스턴스의 모든 요소에 mouseenter/leave 리스너 부착
+    Object.entries(instanceElements).forEach(([id, elements]) => {
+        elements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if (hoveredId !== id) showOverlayFor(id);
+                else cancelHide();
+            });
+            el.addEventListener('mouseleave', (e) => {
+                // 같은 인스턴스의 다른 요소로 이동하는 경우는 유지
+                const related = e.relatedTarget;
+                if (related && related.closest && related.closest('[data-instance-id="' + id + '"]')) return;
+                scheduleHide();
+            });
+        });
+    });
+
+    // toolbar 자체에 hover 시 숨김 취소
+    toolbar.addEventListener('mouseenter', cancelHide);
+    toolbar.addEventListener('mouseleave', scheduleHide);
+
+    // 6. toolbar 버튼 클릭
+    toolbar.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const action = btn.getAttribute('data-action');
+            const id = toolbar.dataset.targetId;
+            if (!id) return;
+            if (action === 'edit') editInstanceFromPreview(id);
+            else if (action === 'delete') deleteInstanceFromPreview(id);
+            else if (action === 'up') moveInstanceFromPreview(id, -1);
+            else if (action === 'down') moveInstanceFromPreview(id, 1);
+        });
+    });
+
+    // 7. 스크롤 시 오버레이 위치 갱신
+    const win = doc.defaultView;
+    win.addEventListener('scroll', () => {
+        if (hoveredId && outline.style.display === 'block') {
+            showOverlayFor(hoveredId);
+        }
+    }, { passive: true, capture: true });
+}
+
+// ============================================
+// 미리보기 액션 핸들러
+// ============================================
+function editInstanceFromPreview(id) {
+    const inst = moduleRegistry[id];
+    if (!inst) return;
+
+    // 적절한 탭으로 전환 (이 과정에서 editingInstanceId가 null로 리셋됨)
+    switchToCategoryTab(inst.category);
+
+    // 그 다음 편집 상태 설정
+    editingInstanceId = id;
+    loadInstanceToForm(id);
+
+    const addBtn = document.getElementById('contentAddBtn');
+    if (addBtn) {
+        addBtn.textContent = '🔄 이 모듈 수정하기';
+        addBtn.style.background = 'var(--secondary)';
+    }
+
+    showEditModeBanner(inst);
+    showToast(`✏️ [${inst.label}] 좌측 폼에 값을 불러왔습니다`);
+}
+
+// 편집 모드 배너 — 현재 편집 중임을 알려주고 취소 버튼 제공
+function showEditModeBanner(inst) {
+    let banner = document.getElementById('editModeBanner');
+    if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'editModeBanner';
+        banner.style.cssText = 'position:sticky; top:0; z-index:100; margin:0 0 14px 0; padding:12px 16px; background:linear-gradient(135deg, #fdf2f8 0%, #fef3c7 100%); border:1px solid #fbcfe8; border-radius:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 2px 8px rgba(235,33,124,0.08);';
+    }
+    banner.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+            <span style="font-size:18px;">✏️</span>
+            <div style="min-width:0;">
+                <div style="font-size:13px; font-weight:800; color:#9f1239; line-height:1.3;">편집 모드</div>
+                <div style="font-size:12px; color:#881337; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${inst.label} 수정 중 · 값 변경 후 하단 "🔄 이 모듈 수정하기" 클릭</div>
+            </div>
+        </div>
+        <button type="button" onclick="cancelEditMode()" style="flex-shrink:0; height:32px; padding:0 12px; border:1px solid #fbcfe8; border-radius:6px; background:#fff; color:#9f1239; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">× 편집 취소</button>
+    `;
+    // 현재 활성 tab-content의 맨 앞에 삽입
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab && banner.parentElement !== activeTab) {
+        activeTab.insertBefore(banner, activeTab.firstChild);
+    } else if (!banner.parentElement && activeTab) {
+        activeTab.insertBefore(banner, activeTab.firstChild);
+    }
+}
+
+function hideEditModeBanner() {
+    const banner = document.getElementById('editModeBanner');
+    if (banner) banner.remove();
+}
+
+function cancelEditMode() {
+    editingInstanceId = null;
+    hideEditModeBanner();
+    const addBtn = document.getElementById('contentAddBtn');
+    if (addBtn) {
+        addBtn.textContent = '+ 현재 탭 내용 추가';
+        addBtn.style.background = '';
+    }
+    showToast('✅ 편집 취소됨 — 현재 폼 값으로 새 모듈을 추가할 수 있습니다');
+}
+
+function deleteInstanceFromPreview(id) {
+    const inst = moduleRegistry[id];
+    if (!inst) return;
+    if (!confirm(`"${inst.label}" 을(를) 삭제하시겠습니까?`)) return;
+
+    saveHistory();
+    removeInstanceFromCode(id);
+    delete moduleRegistry[id];
+
+    // 편집 중이던 인스턴스면 편집 모드 해제
+    if (editingInstanceId === id) {
+        editingInstanceId = null;
+        hideEditModeBanner();
+        const addBtn = document.getElementById('contentAddBtn');
+        if (addBtn) {
+            addBtn.textContent = '+ 현재 탭 내용 추가';
+            addBtn.style.background = '';
+        }
+    }
+
+    // 남은 인스턴스 없으면 tabAddedState 해제
+    const remaining = Object.values(moduleRegistry).filter(i => i.category === inst.category);
+    if (remaining.length === 0) delete tabAddedState[inst.category];
+
+    updatePreview();
+    showToast('🗑 삭제되었습니다.');
+}
+
+function moveInstanceFromPreview(id, direction) {
+    const codeArea = document.getElementById('finalCode');
+    const code = codeArea.value;
+    const startMarker = `<!--__MOD__${id}__-->`;
+    const endMarker = `<!--__/MOD__${id}__-->`;
+
+    const myStart = code.indexOf(startMarker);
+    if (myStart === -1) return;
+    const myEndIdx = code.indexOf(endMarker, myStart);
+    if (myEndIdx === -1) return;
+    const myEnd = myEndIdx + endMarker.length;
+    const myBlock = code.substring(myStart, myEnd);
+
+    if (direction < 0) {
+        // 위로: 이전 인스턴스 찾기 (역순 탐색)
+        const before = code.substring(0, myStart);
+        const allPrev = [...before.matchAll(/<!--__MOD__([^_]+_\d+)__-->[\s\S]*?<!--__\/MOD__\1__-->/g)];
+        if (allPrev.length === 0) { showToast('⚠️ 이미 맨 위입니다.'); return; }
+        const lastPrev = allPrev[allPrev.length - 1];
+        const prevStart = lastPrev.index;
+        const prevEnd = prevStart + lastPrev[0].length;
+        const prevBlock = code.substring(prevStart, prevEnd);
+
+        saveHistory();
+        const newCode =
+            code.substring(0, prevStart) +
+            myBlock +
+            code.substring(prevEnd, myStart) +
+            prevBlock +
+            code.substring(myEnd);
+        codeArea.value = newCode;
+    } else {
+        // 아래로: 다음 인스턴스 찾기
+        const after = code.substring(myEnd);
+        const nextMatch = after.match(/<!--__MOD__([^_]+_\d+)__-->[\s\S]*?<!--__\/MOD__\1__-->/);
+        if (!nextMatch) { showToast('⚠️ 이미 맨 아래입니다.'); return; }
+        const nextStart = myEnd + nextMatch.index;
+        const nextEnd = nextStart + nextMatch[0].length;
+        const nextBlock = code.substring(nextStart, nextEnd);
+
+        saveHistory();
+        const newCode =
+            code.substring(0, myStart) +
+            nextBlock +
+            code.substring(myEnd, nextStart) +
+            myBlock +
+            code.substring(nextEnd);
+        codeArea.value = newCode;
+    }
+
+    updatePreview();
+    showToast(direction < 0 ? '⬆ 위로 이동' : '⬇ 아래로 이동');
+}
+
+// Monly 콘텐츠 탭 또는 신간 알림 탭으로 전환
+function switchToCategoryTab(category) {
+    // 현재 템플릿에 따라 다르게 동작
+    if (currentTemplate === 'monly') {
+        // Monly 컨텐츠 메인 탭이 아니면 전환
+        const contentMainTab = Array.from(document.querySelectorAll('.main-tab')).find(b => b.textContent.includes('컨텐츠'));
+        if (contentMainTab && !contentMainTab.classList.contains('active')) {
+            contentMainTab.click();
+        }
+        // 서브 탭 클릭
+        const subTab = document.querySelector(`.sub-tab[onclick*="'${category}'"]`);
+        if (subTab) subTab.click();
+    } else if (currentTemplate === 'newbook') {
+        // 신간 알림 템플릿은 콘텐츠 탭으로 이동
+        const contentMainTab = document.querySelector('#mainTabs_newbook .main-tab:nth-child(2)');
+        if (contentMainTab) contentMainTab.click();
+    }
 }
 
 // ============================================
@@ -3178,5 +5204,297 @@ function showToast(message) {
 }
 </script>
 <div id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     이미지 업로드 모달 (공용)
+     ═══════════════════════════════════════ -->
+<div id="uploadModalOverlay" class="upload-modal-overlay" onclick="if(event.target===this)closeUploadModal()">
+  <div class="upload-modal">
+    <div class="upload-modal-header">
+      <h3 id="uploadModalTitle">📁 이미지 업로드</h3>
+      <button type="button" class="upload-modal-close" onclick="closeUploadModal()">×</button>
+    </div>
+    <div class="upload-modal-body">
+
+      <!-- 1단계: 드롭존 -->
+      <div id="uploadDropzone" class="upload-dropzone" onclick="document.getElementById('uploadFileInput').click()">
+        <div class="upload-dropzone-icon">📤</div>
+        <div class="upload-dropzone-text">클릭해서 파일 선택 또는 드래그</div>
+        <div class="upload-dropzone-hint">JPG, PNG, WEBP · 최대 20MB</div>
+        <input type="file" id="uploadFileInput" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleUploadFileSelected(event)">
+      </div>
+
+      <!-- 2단계: 미리보기 + 폼 -->
+      <div id="uploadPreview" class="upload-preview">
+        <img id="uploadPreviewImg" src="" alt="preview">
+        <div class="upload-form-grid">
+          <div>
+            <label>파일명 (확장자 포함)</label>
+            <input type="text" id="uploadFilename" placeholder="260410_event_bg.jpg">
+          </div>
+          <div>
+            <label>연도</label>
+            <input type="text" id="uploadYear" value="">
+          </div>
+          <div>
+            <label>분기</label>
+            <select id="uploadQuarter">
+              <option value="01">01 (1~3월)</option>
+              <option value="02">02 (4~6월)</option>
+              <option value="03">03 (7~9월)</option>
+              <option value="04">04 (10~12월)</option>
+            </select>
+          </div>
+        </div>
+        <div class="upload-final-path" id="uploadFinalPath"></div>
+      </div>
+
+      <div id="uploadStatus" class="upload-status"></div>
+    </div>
+
+    <div class="upload-modal-footer">
+      <button type="button" class="upload-btn-cancel" onclick="closeUploadModal()">취소</button>
+      <button type="button" id="uploadConfirmBtn" class="upload-btn-confirm" onclick="confirmUploadPublish()" disabled>업로드 확정</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// 이미지 업로드 모달 로직
+// ═══════════════════════════════════════
+const UPLOAD_SERVER = 'http://localhost:5173';
+
+window.uploadState = {
+    targetInput: null,
+    tempId: null,
+    ext: null,
+    previewUrl: null
+};
+
+/**
+ * 이미지 업로드 모달 열기
+ * @param {string|HTMLElement} target - 입력 필드의 ID 문자열 또는 HTMLElement 직접 참조
+ * @param {string} labelHint - 모달 제목에 표시할 힌트
+ */
+function openUploadModal(target, labelHint) {
+    const inputEl = typeof target === 'string' ? document.getElementById(target) : target;
+    if (!inputEl) {
+        console.error('openUploadModal: target input not found', target);
+        return;
+    }
+    window.uploadState = { targetInput: inputEl, tempId: null, ext: null, previewUrl: null };
+    document.getElementById('uploadModalTitle').textContent = `📁 이미지 업로드${labelHint ? ' - ' + labelHint : ''}`;
+    document.getElementById('uploadDropzone').style.display = '';
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('uploadFilename').value = '';
+    document.getElementById('uploadFinalPath').textContent = '';
+    document.getElementById('uploadStatus').className = 'upload-status';
+    document.getElementById('uploadStatus').textContent = '';
+    document.getElementById('uploadConfirmBtn').disabled = true;
+
+    // 연도/분기 기본값 (오늘 기준)
+    const now = new Date();
+    document.getElementById('uploadYear').value = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const q = month <= 3 ? '01' : month <= 6 ? '02' : month <= 9 ? '03' : '04';
+    document.getElementById('uploadQuarter').value = q;
+
+    document.getElementById('uploadModalOverlay').classList.add('open');
+}
+
+function closeUploadModal() {
+    document.getElementById('uploadModalOverlay').classList.remove('open');
+}
+
+/**
+ * 동적으로 생성된 행(썸네일, 배너 등) 내부 버튼에서 호출
+ * 버튼 기준으로 같은 행에서 selector에 해당하는 input을 찾아 모달 연결
+ */
+function openUploadModalForSibling(btn, selector, labelHint) {
+    const row = btn.closest('.thumb-row, .input-with-upload, .input-row, tr, li, .nb-author-item') || btn.parentElement;
+    const input = row ? row.querySelector(selector) : null;
+    if (!input) {
+        showToast('⚠️ 대상 입력 필드를 찾을 수 없습니다.');
+        return;
+    }
+    openUploadModal(input, labelHint);
+}
+
+async function handleUploadFileSelected(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    await uploadFileToTemp(file);
+    event.target.value = '';
+}
+
+async function uploadFileToTemp(file) {
+    const statusEl = document.getElementById('uploadStatus');
+    statusEl.className = 'upload-status info';
+    statusEl.textContent = '📤 업로드 중...';
+
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const res = await fetch(`${UPLOAD_SERVER}/api/upload`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `업로드 실패 (${res.status})`);
+        }
+
+        const data = await res.json();
+        window.uploadState.tempId = data.tempId;
+        window.uploadState.ext = data.ext;
+        window.uploadState.previewUrl = data.previewUrl;
+
+        // 미리보기 표시
+        document.getElementById('uploadDropzone').style.display = 'none';
+        document.getElementById('uploadPreview').style.display = 'block';
+        document.getElementById('uploadPreviewImg').src = `${UPLOAD_SERVER}${data.previewUrl}`;
+
+        // 파일명 기본값 (원본 이름에서 확장자 분리)
+        const origName = file.name;
+        const dotIdx = origName.lastIndexOf('.');
+        const baseName = dotIdx > 0 ? origName.substring(0, dotIdx) : origName;
+        const ext = dotIdx > 0 ? origName.substring(dotIdx).toLowerCase() : data.ext;
+        // 공백/특수문자 제거
+        const sanitized = baseName.replace(/[^\p{L}\p{N}_\- ]/gu, '_').replace(/\s+/g, '_');
+        document.getElementById('uploadFilename').value = `${sanitized}${ext}`;
+
+        updateUploadFinalPath();
+        document.getElementById('uploadConfirmBtn').disabled = false;
+        statusEl.className = 'upload-status success';
+        statusEl.textContent = `✅ 임시 업로드 완료 (${(file.size / 1024).toFixed(1)} KB)`;
+    } catch (err) {
+        console.error(err);
+        statusEl.className = 'upload-status error';
+        statusEl.textContent = `❌ ${err.message}`;
+        if (err.message.includes('Failed to fetch')) {
+            statusEl.textContent = '❌ 로컬 서버(localhost:5173)에 연결할 수 없습니다. server 폴더에서 `npm start`를 실행했는지 확인해주세요.';
+        }
+    }
+}
+
+function updateUploadFinalPath() {
+    const filename = document.getElementById('uploadFilename').value.trim();
+    const year = document.getElementById('uploadYear').value.trim();
+    const quarter = document.getElementById('uploadQuarter').value;
+    const pathEl = document.getElementById('uploadFinalPath');
+    if (filename && year && quarter) {
+        pathEl.innerHTML =
+            `저장 위치: <b>//image.aladin.co.kr/img/events/book/${year}/${quarter}/${filename}</b><br>` +
+            `네트워크: <b>\\\\192.168.15.155\\Image\\img\\events\\book\\${year}\\${quarter}\\${filename}</b>`;
+    } else {
+        pathEl.textContent = '';
+    }
+}
+
+// 폼 입력 변경 시 최종 경로 미리보기 갱신
+document.addEventListener('input', function(e) {
+    if (e.target.id === 'uploadFilename' || e.target.id === 'uploadYear') {
+        updateUploadFinalPath();
+    }
+});
+document.addEventListener('change', function(e) {
+    if (e.target.id === 'uploadQuarter') {
+        updateUploadFinalPath();
+    }
+});
+
+async function confirmUploadPublish() {
+    const { targetInput, tempId, ext } = window.uploadState;
+    if (!tempId) return;
+
+    const filename = document.getElementById('uploadFilename').value.trim();
+    const year = document.getElementById('uploadYear').value.trim();
+    const quarter = document.getElementById('uploadQuarter').value;
+
+    if (!filename) {
+        showToast('⚠️ 파일명을 입력해주세요.');
+        return;
+    }
+    if (!/^\d{4}$/.test(year)) {
+        showToast('⚠️ 연도는 4자리 숫자로 입력해주세요.');
+        return;
+    }
+
+    const statusEl = document.getElementById('uploadStatus');
+    const confirmBtn = document.getElementById('uploadConfirmBtn');
+    confirmBtn.disabled = true;
+    statusEl.className = 'upload-status info';
+    statusEl.textContent = '💾 서버에 저장 중...';
+
+    try {
+        const res = await fetch(`${UPLOAD_SERVER}/api/publish`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tempId, ext, filename, year, quarter })
+        });
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `저장 실패 (${res.status})`);
+        }
+
+        const data = await res.json();
+
+        // 대상 input에 최종 URL 자동 입력
+        if (targetInput) {
+            targetInput.value = data.webUrl;
+            // 이벤트 트리거 (다른 로직이 감지할 수 있도록)
+            targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+            targetInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        const renamedMsg = data.wasRenamed ? ` (중복으로 ${data.finalName}으로 리네임됨)` : '';
+        const fallbackMsg = data.fallbackUsed ? ' ⚠️ 네트워크 저장 실패 - 로컬 백업만 저장됨' : '';
+        showToast(`✅ 업로드 완료${renamedMsg}${fallbackMsg}`);
+
+        setTimeout(() => closeUploadModal(), 500);
+    } catch (err) {
+        console.error(err);
+        statusEl.className = 'upload-status error';
+        statusEl.textContent = `❌ ${err.message}`;
+        confirmBtn.disabled = false;
+    }
+}
+
+// 드래그앤드롭
+(function setupUploadDropzone() {
+    const dz = document.getElementById('uploadDropzone');
+    if (!dz) return;
+    ['dragenter', 'dragover'].forEach(ev => {
+        dz.addEventListener(ev, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            dz.classList.add('dragover');
+        });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+        dz.addEventListener(ev, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            dz.classList.remove('dragover');
+        });
+    });
+    dz.addEventListener('drop', async e => {
+        const file = e.dataTransfer.files && e.dataTransfer.files[0];
+        if (file) await uploadFileToTemp(file);
+    });
+})();
+
+// ESC로 닫기
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('uploadModalOverlay').classList.contains('open')) {
+        closeUploadModal();
+    }
+});
+</script>
+
 </body>
 </html>

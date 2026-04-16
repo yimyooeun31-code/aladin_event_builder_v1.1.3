@@ -4,7 +4,28 @@
       "Bash(npm list:*)",
       "Bash(npm install:*)",
       "Bash(node create_doc.js)",
-      "Bash(npm init:*)"
+      "Bash(npm init:*)",
+      "Bash(start \"\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/1Q_OKR_대시보드.html\")",
+      "Bash(start \"\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/2Q_OKR_대시보드.html\")",
+      "Bash(start \"\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/index.html\")",
+      "Bash(cp //10.10.11.70/NewWeb/events/tools/aladin_event_builder_v1.1.2.html C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/aladin_event_builder_v1.1.2.html)",
+      "Bash(ls C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/*.html)",
+      "Read(//c/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/.claude/**)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s http://localhost:5173/api/health)",
+      "Bash(cd /tmp)",
+      "Bash(curl -s -X POST http://localhost:5173/api/upload -F \"file=@test-upload.png\")",
+      "Bash(curl -s -X POST http://localhost:5173/api/publish -H \"Content-Type: application/json\" -d '{\"tempId\":\"e2273d43c85f59cc\",\"ext\":\".png\",\"filename\":\"260410_test_upload.png\",\"year\":\"2026\",\"quarter\":\"02\"}')",
+      "Bash(tee /tmp/upload2.json)",
+      "Bash(node -e \"console.log\\(JSON.parse\\(require\\('fs'\\).readFileSync\\('/tmp/upload2.json'\\)\\).tempId\\)\")",
+      "Bash(curl -s -X POST http://localhost:5173/api/publish -H 'Content-Type: application/json' -d '{\"tempId\":\"__TRACKED_VAR__\",\"ext\":\".png\",\"filename\":\"260410_test_upload.png\",\"year\":\"2026\",\"quarter\":\"02\"}')",
+      "Bash(curl -s -X POST http://localhost:5173/api/publish -H \"Content-Type: application/json\" -d '{\"tempId\":\"9870d57c13f1d32f\",\"ext\":\".png\",\"filename\":\"260410_test_upload.png\",\"year\":\"2026\",\"quarter\":\"02\"}')",
+      "Bash(rm -f \"//192.168.15.155/Image/img/events/book/2026/02/260410_test_upload.png\" \"//192.168.15.155/Image/img/events/book/2026/02/260410_test_upload_v2.png\")",
+      "Bash(rm -f /tmp/test-upload.png)",
+      "Read(///192.168.15.155/Image/img/events/book/2026/**)",
+      "Read(//c/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/server/**)",
+      "Bash(cp \"C:/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/aladin_event_builder_v2.1.html\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/\")",
+      "Bash(cp -r \"C:/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/server\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/\")"
     ]
   }
 }
