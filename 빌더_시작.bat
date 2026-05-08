@@ -39,16 +39,21 @@ if not exist node_modules (
     echo.
 )
 
-:: ── 4. 빌더 HTML 파일 자동으로 브라우저에서 열기 ─────
+:: ── 4. 이미지 업로드 서버 백그라운드로 먼저 시작 ──────
+echo  [서버] 이미지 업로드 서버 시작 중...
+start "Aladin Upload Server" cmd /k "cd /d "%~dp0server" && npm start"
+
+:: ── 5. 서버 뜨는 시간 잠깐 대기 ─────────────────────
+timeout /t 2 /nobreak >nul
+
+:: ── 6. 빌더 HTML을 브라우저에서 열기 ─────────────────
 echo  [시작] 브라우저에서 빌더를 여는 중...
-start "" "%~dp0aladin_event_builder_v2.1.html"
+explorer "%~dp0aladin_event_builder_v2.1.html"
 
-:: ── 5. 이미지 업로드 서버 시작 (포트 5173) ───────────
-echo  [서버] 이미지 업로드 서버 시작 (http://localhost:5173)
 echo.
-echo  ※ 이 창을 닫으면 이미지 업로드 기능이 중단됩니다.
-echo  ※ 빌더 사용 중에는 창을 최소화해두세요.
+echo  ╔══════════════════════════════════════╗
+echo  ║  서버가 별도 창에서 실행 중입니다.   ║
+echo  ║  이 창은 닫아도 됩니다.              ║
+echo  ╚══════════════════════════════════════╝
 echo.
-npm start
-
-pause
+timeout /t 3 /nobreak >nul
