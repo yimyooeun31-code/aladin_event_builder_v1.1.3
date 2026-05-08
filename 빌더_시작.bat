@@ -22,10 +22,14 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
-:: ── 2. 서버 폴더로 이동 ───────────────────────────────
-cd /d "%~dp0server"
+:: ── 2. 경로 변수 저장 ─────────────────────────────────
+set "ROOT_DIR=%~dp0"
+set "SERVER_DIR=%~dp0server"
+set "HTML_FILE=%~dp0aladin_event_builder_v2.1.html"
 
-:: ── 3. node_modules 없으면 자동 설치 ─────────────────
+:: ── 3. 서버 폴더에서 npm install ──────────────────────
+cd /d "%SERVER_DIR%"
+
 if not exist node_modules (
     echo  [설치] npm 패키지 설치 중... 잠시만 기다려주세요.
     echo.
@@ -39,16 +43,16 @@ if not exist node_modules (
     echo.
 )
 
-:: ── 4. 이미지 업로드 서버 백그라운드로 먼저 시작 ──────
+:: ── 4. 서버 별도 창으로 시작 (npm install 포함) ───────
 echo  [서버] 이미지 업로드 서버 시작 중...
-start "Aladin Upload Server" cmd /k "cd /d "%~dp0server" && npm start"
+start "Aladin Upload Server" cmd /k "cd /d "%SERVER_DIR%" && if not exist node_modules npm install && npm start"
 
-:: ── 5. 서버 뜨는 시간 잠깐 대기 ─────────────────────
+:: ── 5. 서버 뜰 때까지 잠깐 대기 ──────────────────────
 timeout /t 2 /nobreak >nul
 
-:: ── 6. 빌더 HTML을 브라우저에서 열기 ─────────────────
+:: ── 6. 브라우저에서 빌더 열기 ─────────────────────────
 echo  [시작] 브라우저에서 빌더를 여는 중...
-explorer "%~dp0aladin_event_builder_v2.1.html"
+explorer "%HTML_FILE%"
 
 echo.
 echo  ╔══════════════════════════════════════╗
