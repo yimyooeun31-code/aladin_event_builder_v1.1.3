@@ -39,31 +39,11 @@ start "Aladin Upload Server" cmd /k "cd /d "%SERVER_DIR%" && if not exist node_m
 :: Wait for server
 ping 127.0.0.1 -n 3 >nul
 
-:: Open builder - try Chrome locations
-echo [OPEN] Opening builder in Chrome...
+:: Open builder via PowerShell (most reliable)
+echo [OPEN] Opening builder...
+powershell -command "Start-Process '%HTML_FILE%'"
 
-set "CHROME1=C:\Program Files\Google\Chrome\Application\chrome.exe"
-set "CHROME2=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-set "CHROME3=%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"
-
-if exist "%CHROME1%" (
-    start "" "%CHROME1%" "%HTML_FILE%"
-    goto done
-)
-if exist "%CHROME2%" (
-    start "" "%CHROME2%" "%HTML_FILE%"
-    goto done
-)
-if exist "%CHROME3%" (
-    start "" "%CHROME3%" "%HTML_FILE%"
-    goto done
-)
-
-:: Chrome not found - use default browser
-echo [INFO] Chrome not found, using default browser...
-start "" "%HTML_FILE%"
-
-:done
+echo.
 echo  Server is running in the other window.
 echo  You can close this window.
 echo.
