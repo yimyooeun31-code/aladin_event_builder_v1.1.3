@@ -33,17 +33,37 @@ if not exist node_modules (
     )
 )
 
-:: Start server in new window (with install fallback)
+:: Start server in new window
 start "Aladin Upload Server" cmd /k "cd /d "%SERVER_DIR%" && if not exist node_modules npm install && npm start"
 
-:: Wait 2 seconds
+:: Wait for server
 ping 127.0.0.1 -n 3 >nul
 
-:: Open builder in browser
-echo [OPEN] Opening builder...
-explorer "%HTML_FILE%"
+:: Open builder - try Chrome locations
+echo [OPEN] Opening builder in Chrome...
 
-echo.
+set "CHROME1=C:\Program Files\Google\Chrome\Application\chrome.exe"
+set "CHROME2=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+set "CHROME3=%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"
+
+if exist "%CHROME1%" (
+    start "" "%CHROME1%" "%HTML_FILE%"
+    goto done
+)
+if exist "%CHROME2%" (
+    start "" "%CHROME2%" "%HTML_FILE%"
+    goto done
+)
+if exist "%CHROME3%" (
+    start "" "%CHROME3%" "%HTML_FILE%"
+    goto done
+)
+
+:: Chrome not found - use default browser
+echo [INFO] Chrome not found, using default browser...
+start "" "%HTML_FILE%"
+
+:done
 echo  Server is running in the other window.
 echo  You can close this window.
 echo.
