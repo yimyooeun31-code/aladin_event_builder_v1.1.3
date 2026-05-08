@@ -23,7 +23,18 @@ const app = express();
 // ─────────────────────────────────────────────
 // Middleware
 // ─────────────────────────────────────────────
-app.use(cors({ origin: config.corsOrigins }));
+// 로컬 개발 서버: file:// 직접 열기(Origin: null) 포함 모두 허용
+app.use(cors({
+    origin: function (origin, callback) {
+        // origin이 없거나(curl 등), null이거나, 허용 목록에 있으면 통과
+        if (!origin || origin === 'null' || config.corsOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS 차단: ' + origin));
+        }
+    },
+    credentials: false
+}));
 app.use(express.json({ limit: '50mb' }));
 
 // ─────────────────────────────────────────────

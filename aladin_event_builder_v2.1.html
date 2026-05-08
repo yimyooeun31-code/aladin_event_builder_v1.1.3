@@ -1916,6 +1916,9 @@
     </div>
     <div id="previewToolbar" style="display:none; align-items:center; gap:8px;">
       <button class="copy-btn" id="undoBtnPreview" onclick="undoCode(); updatePreview();" style="display:none; background:#FFF5FA; color:var(--primary); border-color:var(--primary);">↩ 되돌리기</button>
+      <span style="font-size:12px; color:var(--text-secondary); margin-left:4px;">미리보기:</span>
+      <button class="copy-btn" id="previewModePcBtn" onclick="setPreviewMode('pc')" style="background:var(--primary); color:#fff; border-color:var(--primary);">🖥 PC</button>
+      <button class="copy-btn" id="previewModeMobileBtn" onclick="setPreviewMode('mobile')" style="background:#fff; color:var(--text-secondary);">📱 모바일</button>
     </div>
   </div>
 
@@ -4123,32 +4126,21 @@ function _buildPageSetupCode(topImgM, pcImg, topBg, mode, style, pcImgWidth) {
 
     const useFade = document.getElementById('ps_gradient_fade')?.checked;
     const pcSize = pcImgWidth + 'px auto';
-    const fadeCSS = useFade ? `
-    .${topClass}::before,
-    .${topClass}::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        width: 25%;
-        height: 100%;
-        z-index: 1;
-        pointer-events: none;
-    }
-    .${topClass}::before {
-        left: 0;
-        background: linear-gradient(to right, ${topBg}, transparent);
-    }
-    .${topClass}::after {
-        right: 0;
-        background: linear-gradient(to left, ${topBg}, transparent);
-    }` : '';
+    // 모바일 URL 미입력 시 PC URL로 폴백
+    const mImgCode = topImgM || pcImg;
+    // 그라데이션: calc(50% ± px)로 이미지 중심 기준 고정 → 어떤 해상도에서도 이미지 끝에 맞음
+    const halfW2 = Math.round(pcImgWidth / 2);
+    const fadeW2 = Math.round(pcImgWidth * 0.125);
+    const pcBg2 = useFade
+        ? `linear-gradient(to right, ${topBg} calc(50% - ${halfW2}px), transparent calc(50% - ${halfW2 - fadeW2}px), transparent calc(50% + ${halfW2 - fadeW2}px), ${topBg} calc(50% + ${halfW2}px)), url(${pcImg}) ${topBg} no-repeat center top / ${pcSize}`
+        : `url(${pcImg}) ${topBg} no-repeat center top / ${pcSize}`;
 
     const code = `
 <style>
-.${topClass} {background: url(${topImgM}) ${topBg} no-repeat center top / 100% auto; position: relative;}
+.${topClass} {background: url(${mImgCode}) ${topBg} no-repeat center top / 100% auto; position: relative;}
 
 @media screen and (min-width: 750px) {
-    .${topClass} {background: url(${pcImg}) ${topBg} no-repeat center top / ${pcSize};}${fadeCSS}
+    .${topClass} {background: ${pcBg2};}
 }
 </style>
 
@@ -4193,31 +4185,26 @@ function generateTopCode(topClass, topInClass, imgM, imgPC, bg, extraCss, titleS
     const titPosition = 'bottom';
     const useFade = document.getElementById('ps_gradient_fade')?.checked;
     const pcSize = pcImgWidth + 'px auto';
-    const fadeCSS = useFade ? `
-    .${topClass}::before,
-    .${topClass}::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        width: 25%;
-        height: 100%;
-        z-index: 1;
-        pointer-events: none;
-    }
-    .${topClass}::before { left: 0; background: linear-gradient(to right, ${bg}, transparent); }
-    .${topClass}::after { right: 0; background: linear-gradient(to left, ${bg}, transparent); }` : '';
+    // 모바일 URL 미입력 시 PC URL로 폴백
+    const mImgCode = imgM || imgPC;
+    // 그라데이션: calc(50% ± px)로 이미지 중심 기준 고정 → 어떤 해상도에서도 이미지 끝에 맞음
+    const halfW = Math.round(pcImgWidth / 2);
+    const fadeW = Math.round(pcImgWidth * 0.125); // 이미지 너비의 12.5% (1920px → 240px)
+    const pcBg = useFade
+        ? `linear-gradient(to right, ${bg} calc(50% - ${halfW}px), transparent calc(50% - ${halfW - fadeW}px), transparent calc(50% + ${halfW - fadeW}px), ${bg} calc(50% + ${halfW}px)), url(${imgPC}) ${bg} no-repeat center top / ${pcSize}`
+        : `url(${imgPC}) ${bg} no-repeat center top / ${pcSize}`;
 
     const code = `
 <style>
 .${topClass} {background: ${bg}; height: auto; position: relative;}
-.${topInClass} {background: url(${imgM}) ${bg} no-repeat center top / 100% auto; height: 380px; text-align:center; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; box-sizing:border-box;' : ''}}
+.${topInClass} {background: url(${mImgCode}) ${bg} no-repeat center top / 100% auto; height: 380px; text-align:center; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; box-sizing:border-box;' : ''}}
 .${topClass} .monly_top_tit h2 {font-size: 32px; line-height: 1.2; color: ${titleColor}; padding:40px 0 15px 0;}
 .${topClass} .monly_top_tit p {font-size: 16px; font-weight: bold; display: inline-block; height: 30px; border-radius: 15px; line-height: 32px; padding: 0 10px; border: 1px solid; margin: 0; color: ${titleColor};}
 ${extraCss}
 
 @media screen and (min-width: 750px) {
     .${topClass} {background: none; height: auto; margin-top: 0px;}
-    .${topInClass} {background: url(${imgPC}) ${bg} no-repeat center top / ${pcSize}; height: 440px; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; padding-bottom:40px; box-sizing:border-box;' : ''}}${fadeCSS}
+    .${topInClass} {background: ${pcBg}; height: 440px; ${(style==='top3'||style==='top4') ? 'display:flex; align-items:center; justify-content:center; padding-bottom:40px; box-sizing:border-box;' : ''}}
     .${topClass} .monly_top_tit h2 {font-size: 47px;}
     .${topClass} .monly_top_tit p {font-size: 19px; height: 40px; border-radius: 25px; line-height: 42px; padding: 0 30px;}
 }
@@ -4568,6 +4555,22 @@ function generatePrompt(device) {
 // 에디터 탭 전환 (코드 / 미리보기)
 // ============================================
 let currentEditorTab = 'preview';
+let previewMode = 'pc'; // 기본값: PC 미리보기
+
+function setPreviewMode(mode) {
+    previewMode = mode;
+    const pcBtn = document.getElementById('previewModePcBtn');
+    const mBtn = document.getElementById('previewModeMobileBtn');
+    if (pcBtn && mBtn) {
+        pcBtn.style.background = mode === 'pc' ? 'var(--primary)' : '#fff';
+        pcBtn.style.color = mode === 'pc' ? '#fff' : 'var(--text-secondary)';
+        pcBtn.style.borderColor = mode === 'pc' ? 'var(--primary)' : 'var(--border)';
+        mBtn.style.background = mode === 'mobile' ? 'var(--primary)' : '#fff';
+        mBtn.style.color = mode === 'mobile' ? '#fff' : 'var(--text-secondary)';
+        mBtn.style.borderColor = mode === 'mobile' ? 'var(--primary)' : 'var(--border)';
+    }
+    updatePreview();
+}
 
 function switchEditorTab(tab) {
     currentEditorTab = tab;
@@ -4664,7 +4667,7 @@ function updatePreview() {
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="${previewMode === 'mobile' ? 'width=device-width, initial-scale=1.0' : 'width=1200'}">
 <link href="https://www.aladin.co.kr/ucl_editor/events/css/mOnly.css?ver=${ts}" rel="stylesheet">
 <link href="https://www.aladin.co.kr/ucl_editor/events/css/template_v2.css?ver=${ts}" rel="stylesheet">
 <link href="https://www.aladin.co.kr/ucl_editor/css/swiper-bundle.min.css" rel="stylesheet">
