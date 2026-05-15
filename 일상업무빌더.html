@@ -928,8 +928,13 @@ function hmNext() {
 }
 
 function hmPrev() {
-  if (hmStep === 1) { go('hero'); }
-  else hmShowStep(hmStep - 1);
+  if (hmStep === 1) {
+    // 위자드 취소 시 진입 전 코드 복원
+    document.getElementById('finalCode').value = _savedCode;
+    _savedCode = '';
+    if (outTab === 'preview') refreshPrev();
+    go('hero');
+  } else hmShowStep(hmStep - 1);
 }
 
 function selTStyle(style) {
@@ -989,7 +994,15 @@ function nbShowStep(n) {
 }
 
 function nbNext() { if (nbStep < 2) nbShowStep(nbStep + 1); }
-function nbPrev() { if (nbStep === 1) { go('hero'); } else nbShowStep(nbStep - 1); }
+function nbPrev() {
+  if (nbStep === 1) {
+    // 위자드 취소 시 진입 전 코드 복원
+    document.getElementById('finalCode').value = _savedNbCode;
+    _savedNbCode = '';
+    if (outTab === 'preview') refreshPrev();
+    go('hero');
+  } else nbShowStep(nbStep - 1);
+}
 
 function selectNbCoverMode(mode, el) {
   nbCoverMode = mode;
