@@ -49,7 +49,7 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 .s-div { height:1px; background:var(--border); margin:0 24px; flex-shrink:0; }
 
 /* 스텝 바디 */
-.s-body { flex:1; overflow-y:auto; padding:20px 24px 24px; }
+.s-body { flex:1; overflow-y:auto; padding:20px 24px 24px; position:relative; }
 .s-body::-webkit-scrollbar { width:4px; }
 .s-body::-webkit-scrollbar-thumb { background:#ddd; border-radius:4px; }
 
@@ -558,17 +558,17 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
 
         <!-- NB Step 1: 이미지 & 배경 -->
         <div class="s-step on" id="nbStep1">
-          <!-- 커버 스타일 토글 -->
+          <!-- 커버 스타일 -->
           <div class="field">
             <label class="field-label">커버 스타일</label>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <label class="wizard-radio-card active" id="nbCoverSingle" onclick="selectNbCoverMode('single',this)">
-                <input type="radio" name="nbCoverMode" value="single" checked style="display:none;">
-                🖼️ 단일 표지
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+                <input type="radio" name="nbCoverMode" value="single" id="nbCoverSingleRd" checked onchange="selectNbCoverMode(this.value)">
+                단일 표지
               </label>
-              <label class="wizard-radio-card" id="nbCoverMulti" onclick="selectNbCoverMode('multi',this)">
-                <input type="radio" name="nbCoverMode" value="multi" style="display:none;">
-                📚 여러 권
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+                <input type="radio" name="nbCoverMode" value="multi" id="nbCoverMultiRd" onchange="selectNbCoverMode(this.value)">
+                여러 권
               </label>
             </div>
           </div>
@@ -576,30 +576,28 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
           <div class="field" id="nbSingleCoverWrap">
             <label class="field-label">도서 표지 URL</label>
             <div class="url-row">
-              <input type="text" id="hn_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_img.jpg" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'hn_tcv'); nbLivePreview();">
+              <input type="text" id="hn_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'hn_tcv'); nbLivePreview();">
               <img class="url-th" id="hn_tcv" src="" alt="">
             </div>
           </div>
           <!-- 여러 권 표지 -->
           <div class="field" id="nbMultiCoverWrap" style="display:none;">
-            <label class="field-label">표지 URL <span style="font-weight:400; color:var(--text3);">줄바꿈으로 구분 (최대 4권)</span></label>
-            <textarea id="hn_cv_multi" rows="5" oninput="nbLivePreview();">//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg</textarea>
+            <label class="field-label" style="margin-bottom:10px;">표지 목록 <span style="font-weight:400; color:var(--text3);">(최대 4권)</span></label>
+            <div id="nbMultiList" style="display:flex; flex-direction:column; gap:8px;"></div>
+            <button type="button" id="nbAddCoverBtn" onclick="addCoverRow('nb')" style="margin-top:10px; width:100%; height:36px; background:#fff; border:1.5px dashed var(--border); border-radius:var(--r-sm); font-size:13px; color:var(--text3); cursor:pointer;">+ 표지 추가</button>
           </div>
           <!-- 배경 -->
           <div class="field">
             <label class="field-label">배경 이미지 — 모바일</label>
             <div class="url-row">
-              <input type="text" id="hn_bgm" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'hn_tm'); nbLivePreview();">
+              <input type="text" id="hn_bgm" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'hn_tm'); nbLivePreview();">
               <img class="url-th" id="hn_tm" src="" alt="">
             </div>
           </div>
           <div class="field">
             <label class="field-label">배경 이미지 — PC</label>
             <div class="url-row">
-              <input type="text" id="hn_bgpc" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'hn_tpc'); nbLivePreview();">
+              <input type="text" id="hn_bgpc" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'hn_tpc'); nbLivePreview();">
               <img class="url-th" id="hn_tpc" src="" alt="">
             </div>
           </div>
@@ -615,16 +613,16 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
         <div class="s-step" id="nbStep2">
           <div class="field">
             <label class="field-label">태그라인 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
-            <input type="text" id="hn_tag" value="신간 알림 + 기대평 댓글 이벤트" placeholder="린드그렌상 한국인 최초 수상" oninput="nbLivePreview();">
+            <input type="text" id="hn_tag" value="어드벤처 과학 탐구 만화" placeholder="린드그렌상 한국인 최초 수상" oninput="nbLivePreview();">
           </div>
           <div class="field">
             <label class="field-label">시리즈명 / 도서명</label>
-            <input type="text" id="hn_ser" value="&lt;자신을 찾는 자세로&gt;" placeholder="{별똥별이} 떨어지는 그곳에서" oninput="nbLivePreview();">
+            <input type="text" id="hn_ser" value="&lt;어스플러스&gt; 시리즈" placeholder="{별똥별이} 떨어지는 그곳에서" oninput="nbLivePreview();">
             <div class="field-hint">{텍스트} = 핑크 강조 &nbsp;·&nbsp; /br = 줄바꿈</div>
           </div>
           <div class="field">
             <label class="field-label">이벤트명 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
-            <input type="text" id="hn_evt" value="신간 알림 + 기대평 댓글 이벤트" placeholder="신간 알림 + 기대평 댓글 이벤트" oninput="nbLivePreview();">
+            <input type="text" id="hn_evt" value="신간 알림 + 기대평 이벤트" placeholder="신간 알림 + 기대평 댓글 이벤트" oninput="nbLivePreview();">
           </div>
           <div class="field">
             <label class="field-label">타이틀 색상 (HEX)</label>
@@ -657,36 +655,40 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
         <div class="s-step on" id="nfStep1">
           <div class="field">
             <label class="field-label">커버 스타일</label>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <label class="wizard-radio-card active" id="nfCoverSingle" onclick="selectNfCoverMode('single',this)"><input type="radio" name="nfCoverMode" value="single" checked style="display:none;">🖼️ 단일 표지</label>
-              <label class="wizard-radio-card" id="nfCoverMulti" onclick="selectNfCoverMode('multi',this)"><input type="radio" name="nfCoverMode" value="multi" style="display:none;">📚 여러 권</label>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+                <input type="radio" name="nfCoverMode" value="single" id="nfCoverSingleRd" checked onchange="selectNfCoverMode(this.value)">
+                단일 표지
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+                <input type="radio" name="nfCoverMode" value="multi" id="nfCoverMultiRd" onchange="selectNfCoverMode(this.value)">
+                여러 권
+              </label>
             </div>
           </div>
           <div class="field" id="nfSingleCoverWrap">
             <label class="field-label">도서 표지 URL</label>
             <div class="url-row">
-              <input type="text" id="nf_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_img.jpg" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'nf_tcv'); nfLivePreview();">
+              <input type="text" id="nf_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'nf_tcv'); nfLivePreview();">
               <img class="url-th" id="nf_tcv" src="" alt="">
             </div>
           </div>
           <div class="field" id="nfMultiCoverWrap" style="display:none;">
-            <label class="field-label">표지 URL <span style="font-weight:400; color:var(--text3);">줄바꿈으로 구분 (최대 4권)</span></label>
-            <textarea id="nf_cv_multi" rows="4" oninput="nfLivePreview();">//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg
-//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg</textarea>
+            <label class="field-label" style="margin-bottom:10px;">표지 목록 <span style="font-weight:400; color:var(--text3);">(최대 4권)</span></label>
+            <div id="nfMultiList" style="display:flex; flex-direction:column; gap:8px;"></div>
+            <button type="button" id="nfAddCoverBtn" onclick="addCoverRow('nf')" style="margin-top:10px; width:100%; height:36px; background:#fff; border:1.5px dashed var(--border); border-radius:var(--r-sm); font-size:13px; color:var(--text3); cursor:pointer;">+ 표지 추가</button>
           </div>
           <div class="field">
             <label class="field-label">배경 이미지 — 모바일</label>
             <div class="url-row">
-              <input type="text" id="nf_bgm" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tm'); nfLivePreview();">
+              <input type="text" id="nf_bgm" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tm'); nfLivePreview();">
               <img class="url-th" id="nf_tm" src="" alt="">
             </div>
           </div>
           <div class="field">
             <label class="field-label">배경 이미지 — PC</label>
             <div class="url-row">
-              <input type="text" id="nf_bgpc" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tpc'); nfLivePreview();">
+              <input type="text" id="nf_bgpc" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tpc'); nfLivePreview();">
               <img class="url-th" id="nf_tpc" src="" alt="">
             </div>
           </div>
@@ -1085,19 +1087,96 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
         <div class="s-head">
           <div class="s-head-row">
             <button class="back-btn" onclick="go('home')" style="margin-bottom:0;">← 뒤로</button>
-            <button class="reset-field-btn" onclick="resetScreen('booklist')">🔄 초기화</button>
+            <button class="reset-field-btn" onclick="resetScreen('booklist'); blSwitchType('');">🔄 초기화</button>
           </div>
           <div class="s-title">도서 리스트</div>
           <div class="s-desc">큐레이션 도서 목록 섹션을 생성합니다.</div>
         </div>
         <div class="s-div"></div>
         <div class="s-body">
-          <div class="field"><label class="field-label">섹션 제목 (선택)</label><input type="text" id="bl_sec" placeholder="이달의 추천 도서"></div>
-          <div class="f-sec" style="margin-top:16px">
-            <div class="f-sec-title">도서 목록</div>
-            <div class="dyn-list" id="bl-list"></div>
-            <button class="btn-add" onclick="addBook()">+ 도서 추가</button>
+
+          <!-- 타입 선택 -->
+          <div class="f-sec">
+            <div class="f-sec-title">도서 리스트 타입 선택</div>
+            <div class="field">
+              <select id="bl_type" onchange="blSwitchType(this.value)" style="width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:var(--r); font-size:14px; background:#fff; cursor:pointer; appearance:auto;">
+                <option value="">-- 타입을 선택하세요 --</option>
+                <option value="1">1. 단일 도서 리스트 (자동)</option>
+                <option value="2">2. 다중 도서 리스트 (탭 기능)</option>
+                <option value="3">3. 직접 도서 선택 (ItemID 입력)</option>
+                <option value="4">4. 랜덤 탭 (wa_RandomTab)</option>
+              </select>
+            </div>
           </div>
+
+          <!-- Type 1: 단일 CID 자동 -->
+          <div id="bl-type1" style="display:none;">
+            <div class="f-sec">
+              <div class="f-sec-title">단일 도서 리스트 설정</div>
+              <div class="field"><label class="field-label">섹션 타이틀 <span style="font-weight:400;color:var(--text3);">(선택)</span></label><input type="text" id="bl1_title" value="주목할 만한 도서" placeholder="주목할 만한 도서"></div>
+              <div class="field"><label class="field-label">CID <span style="font-weight:400;color:var(--text3);">카테고리 ID</span></label><input type="text" id="bl1_cid" value="196514" placeholder="196514"></div>
+              <div class="field"><label class="field-label">정렬 방식</label>
+                <select id="bl1_sort" style="width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:var(--r); font-size:14px; background:#fff; appearance:auto;">
+                  <option value="2">발행일순 (Sort=2)</option>
+                  <option value="7">추천순 (Sort=7)</option>
+                  <option value="1">판매량순 (Sort=1)</option>
+                  <option value="3">평점순 (Sort=3)</option>
+                </select>
+              </div>
+              <div class="field"><label class="field-label">최대 표시 권수</label><input type="text" id="bl1_cnt" value="200" placeholder="200"></div>
+              <div class="field"><label class="field-label">커버 타입</label>
+                <select id="bl1_cover" style="width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:var(--r); font-size:14px; background:#fff; appearance:auto;">
+                  <option value="4">중형 (CoverType=4)</option>
+                  <option value="5">소형 (CoverType=5)</option>
+                  <option value="1">대형 (CoverType=1)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Type 2: 다중 탭 -->
+          <div id="bl-type2" style="display:none;">
+            <div class="f-sec">
+              <div class="f-sec-title">탭 목록</div>
+              <div class="field-hint" style="margin-bottom:12px;">탭 이름과 CID를 입력하세요.</div>
+              <div class="dyn-list" id="bl2-tab-list"></div>
+              <button class="btn-add" onclick="addBlTab()">+ 탭 추가</button>
+            </div>
+          </div>
+
+          <!-- Type 3: 직접 ItemID 입력 -->
+          <div id="bl-type3" style="display:none;">
+            <div class="f-sec">
+              <div class="f-sec-title">도서 직접 선택</div>
+              <div class="field"><label class="field-label">섹션 타이틀 <span style="font-weight:400;color:var(--text3);">(선택)</span></label><input type="text" id="bl3_title" value="주목할 만한 도서" placeholder="주목할 만한 도서"></div>
+              <div class="dyn-list" id="bl3-item-list"></div>
+              <button class="btn-add" onclick="addBlItem()">+ 도서 추가</button>
+            </div>
+          </div>
+
+          <!-- Type 4: 랜덤 탭 (wa_RandomTab) -->
+          <div id="bl-type4" style="display:none;">
+            <div class="f-sec">
+              <div class="f-sec-title">랜덤 탭 설정</div>
+              <div class="field-hint" style="margin-bottom:12px;">탭마다 별도 서브파일(.ascx)이 생성됩니다. 메인 파일 삽입 코드 + 서브파일 코드가 함께 출력됩니다.</div>
+              <div class="field">
+                <label class="field-label">기본 파일명 <span style="font-weight:400;color:var(--text3);">서브파일 이름 기반 (예: 2026_book_type1)</span></label>
+                <input type="text" id="bl4_basename" value="2026_book_type1" placeholder="2026_book_type1">
+                <div class="field-hint">→ 2026_book_type1_1.ascx, 2026_book_type1_2.ascx ... 로 생성됩니다.</div>
+              </div>
+              <div class="field">
+                <label class="field-label">이벤트 ID <span style="font-weight:400;color:var(--text3);">wevent.aspx?EventId=</span></label>
+                <input type="text" id="bl4_eventid" value="" placeholder="258106">
+              </div>
+              <div class="field">
+                <label class="field-label">앵커 ID <span style="font-weight:400;color:var(--text3);">(기본: dw)</span></label>
+                <input type="text" id="bl4_anchor" value="dw" placeholder="dw">
+              </div>
+              <div class="dyn-list" id="bl4-tab-list"></div>
+              <button class="btn-add" onclick="addBlRandTab()">+ 탭 추가</button>
+            </div>
+          </div>
+
         </div>
         <div class="s-actions"><button class="btn-gen" onclick="gen('booklist')">⚡ 코드 생성 후 추가</button></div>
       </div>
@@ -1123,6 +1202,26 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
   </div>
 </div>
 <div id="toast"></div>
+
+<!-- 랜덤탭 파일 생성 모달 -->
+<div id="randTabModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; overflow-y:auto; padding:40px 20px;">
+  <div style="max-width:680px; margin:0 auto; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+    <!-- 헤더 -->
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); background:#fafafa;">
+      <div>
+        <div style="font-size:16px; font-weight:800; color:#1a1a1a;">🗂 랜덤탭 파일 생성 가이드</div>
+        <div style="font-size:12px; color:#999; margin-top:3px;">각 섹션을 복사해서 해당 파일에 붙여넣으세요.</div>
+      </div>
+      <button onclick="closeRandTabModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#999; line-height:1; padding:4px 8px;">✕</button>
+    </div>
+    <!-- 파일 섹션 목록 -->
+    <div id="randTabSections" style="padding:24px; display:flex; flex-direction:column; gap:20px;"></div>
+    <!-- 닫기 -->
+    <div style="padding:16px 24px; border-top:1px solid var(--border); text-align:right; background:#fafafa;">
+      <button onclick="closeRandTabModal()" style="padding:10px 28px; background:#333; color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer;">닫기</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ─ 화면 전환
@@ -1159,17 +1258,18 @@ function updateGenBtnState(screenId) {
   if (!screen) return;
   const actions = screen.querySelector('.s-actions');
   if (!actions) return;
-  // "다른 모듈 추가하기" 버튼이 있으면 제거 (재진입 시 리셋)
+  // "다른 모듈 추가하기" 버튼 및 완료 오버레이 제거 (재진입 시 리셋)
   const moreRow = actions.querySelector('.add-more-btn')?.parentElement;
   if (moreRow) moreRow.remove();
+  screen.querySelector('.done-overlay')?.remove();
   const genBtn = actions.querySelector('.btn-gen');
   if (!genBtn) return;
   genBtn.style.display = '';
   genBtn.style.pointerEvents = '';
   genBtn.style.background = '';
   // 인스턴스 마커 또는 기존 마커로 코드에 있는지 체크
-  const hasInCode = hasModuleInCode(key) || Object.values(moduleRegistry).some(r => r.key === key);
-  if (hasInCode && document.getElementById('finalCode').value.includes('<!--__MOD__')) {
+  // 수정 모드: 사용자가 명시적으로 ✏️ 버튼을 눌러 editingInstId가 세팅된 경우만
+  if (editingInstId && moduleRegistry[editingInstId]?.key === key) {
     genBtn.textContent = '✏️ 코드 수정 적용';
     genBtn.style.background = '#3B4A9F';
     genBtn.style.color = '#fff';
@@ -1185,8 +1285,8 @@ let hmStep = 1;
 let hmTitleStyle = 'top6';
 
 function goHeroM() {
-  // 진입 전 기존 코드 저장 (livePreview가 덮어쓰기 전에)
-  _savedCode = document.getElementById('finalCode').value;
+  // live preview 오염 방지: committedCode(실제 추가된 코드)만 저장
+  _savedCode = committedCode;
   hmStep = 1;
   hmTitleStyle = 'top6';
   document.querySelectorAll('.tsty-card').forEach(c => c.classList.remove('sel'));
@@ -1245,13 +1345,22 @@ let nbStep = 1;
 let nbCoverMode = 'single';
 
 function goHeroNb() {
-  _savedNbCode = document.getElementById('finalCode').value; // 기존 코드 저장
+  _savedNbCode = committedCode; // live preview 오염 방지: 실제 추가된 코드만 저장
   nbStep = 1;
   nbCoverMode = 'single';
-  document.getElementById('nbCoverSingle')?.classList.add('active');
-  document.getElementById('nbCoverMulti')?.classList.remove('active');
+  const nbRdSingle = document.getElementById('nbCoverSingleRd');
+  if (nbRdSingle) nbRdSingle.checked = true;
   document.getElementById('nbSingleCoverWrap').style.display = '';
   document.getElementById('nbMultiCoverWrap').style.display = 'none';
+  // 멀티 표지 목록 샘플 초기화
+  const _nbList = document.getElementById('nbMultiList');
+  if (_nbList && !_nbList.children.length) {
+    ['//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png',
+     '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png',
+     '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg',
+     '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg'
+    ].forEach(u => addCoverRow('nb', u));
+  }
   hist = hist.filter(h => h !== 'hero-nb');
   hist.push('hero-nb');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
@@ -1281,17 +1390,22 @@ let _savedNbfCode = '', nfqi = 0, nfai = 0;
 const NF_TITLES = { 1:'이미지 & 배경', 2:'타이틀 텍스트', 3:'책 소개', 4:'추천의 말', 5:'작가 소개', 6:'이벤트 안내' };
 
 function goNbFull() {
-  _savedNbfCode = document.getElementById('finalCode').value;
+  _savedNbfCode = committedCode; // live preview 오염 방지
   nfStep = 1; nfCoverMode = 'single'; nfQuoteOn = true; nfAuthorOn = true; nfEventOn = true;
-  document.getElementById('nfCoverSingle')?.classList.add('active');
-  document.getElementById('nfCoverMulti')?.classList.remove('active');
+  const nfRdSingle = document.getElementById('nfCoverSingleRd');
+  if (nfRdSingle) nfRdSingle.checked = true;
   document.getElementById('nfSingleCoverWrap').style.display = '';
   document.getElementById('nfMultiCoverWrap').style.display = 'none';
-  // 초기 동적 목록 생성 (없으면 1개씩 추가)
+  document.getElementById('nfMultiList').innerHTML = '';
+  // 초기 동적 목록 생성 (없으면 샘플 데이터로 채움)
   const ql = document.getElementById('nf-quote-list');
   const al = document.getElementById('nf-author-list');
-  if (!ql.children.length) addNfQuote();
-  if (!al.children.length) addNfAuthor();
+  if (!ql.children.length && !al.children.length) {
+    loadNfSample();
+  } else {
+    if (!ql.children.length) addNfQuote();
+    if (!al.children.length) addNfAuthor();
+  }
   hist = hist.filter(h => h !== 'nb-full');
   hist.push('nb-full');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
@@ -1310,7 +1424,7 @@ function goNbFull() {
 function nfRenderDots() {
   const wrap = document.getElementById('nfDotWrap');
   if (!wrap) return;
-  const labels = { 1:'이미지', 2:'텍스트', 3:'책소개', 4:'추천', 5:'작가', 6:'이벤트' };
+  const labels = { 1:'이미지', 2:'타이틀', 3:'책소개', 4:'추천', 5:'작가', 6:'이벤트' };
   const skipMap = { 4:!nfQuoteOn, 5:!nfAuthorOn, 6:!nfEventOn };
   wrap.innerHTML = '';
   for (let i = 1; i <= 6; i++) {
@@ -1382,12 +1496,11 @@ function nfPrev() {
   }
 }
 
-function selectNfCoverMode(mode, el) {
+function selectNfCoverMode(mode) {
   nfCoverMode = mode;
-  document.querySelectorAll('[id^="nfCover"]').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
   document.getElementById('nfSingleCoverWrap').style.display = mode === 'single' ? '' : 'none';
-  document.getElementById('nfMultiCoverWrap').style.display = mode === 'multi' ? '' : 'none';
+  document.getElementById('nfMultiCoverWrap').style.display  = mode === 'multi'  ? '' : 'none';
+  if (mode === 'multi' && !document.querySelectorAll('#nfMultiList .cover-row').length) addCoverRow('nf');
   nfLivePreview();
 }
 
@@ -1398,6 +1511,7 @@ function nfToggleSection(key) {
   nfRenderDots();
   // 현재 스텝의 다음 버튼 텍스트 재계산
   nfShowStep(nfStep);
+  nfLivePreview();
 }
 
 function addNfQuote() {
@@ -1417,6 +1531,13 @@ function addNfQuote() {
       <input type="text" class="nfq-source" placeholder="엑소쌤 ㅡ 꾸그 1위 / 과학 커뮤니케이터" oninput="nfLivePreview();">
     </div>`;
   list.appendChild(item);
+}
+
+function addNfQuoteFilled(text, source) {
+  addNfQuote();
+  const items = document.querySelectorAll('#nf-quote-list .dyn-item');
+  const last = items[items.length - 1];
+  if (last) { last.querySelector('.nfq-text').value = text; last.querySelector('.nfq-source').value = source; }
 }
 
 function addNfAuthor() {
@@ -1450,6 +1571,112 @@ function addNfAuthor() {
       <textarea class="nfa-bio" rows="3" oninput="nfLivePreview();" placeholder="한국일보 신춘문예 당선..."></textarea>
     </div>`;
   list.appendChild(item);
+}
+
+function addNfAuthorFilled(role, name, id, photo, bio) {
+  addNfAuthor();
+  const items = document.querySelectorAll('#nf-author-list .dyn-item');
+  const last = items[items.length - 1];
+  if (last) {
+    last.querySelector('.nfa-role').value = role;
+    last.querySelector('.nfa-name').value = name;
+    last.querySelector('.nfa-id').value = id;
+    last.querySelector('.nfa-photo').value = photo;
+    last.querySelector('.nfa-bio').value = bio;
+  }
+}
+
+// ── 도서 리스트 타입 전환
+function blSwitchType(val) {
+  ['1','2','3','4'].forEach(n => {
+    document.getElementById('bl-type'+n).style.display = val === n ? '' : 'none';
+  });
+  if (val === '2' && !document.getElementById('bl2-tab-list').children.length) { addBlTab(); addBlTab(); }
+  if (val === '3' && !document.getElementById('bl3-item-list').children.length) { addBlItem(); }
+  if (val === '4' && !document.getElementById('bl4-tab-list').children.length) { addBlRandTab(); addBlRandTab(); }
+}
+
+function addBlTab() {
+  const list = document.getElementById('bl2-tab-list');
+  const n = list.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'dyn-item';
+  div.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
+  div.innerHTML = `
+    <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+      <div class="field"><label class="field-label" style="font-size:12px;">탭 이름</label><input type="text" class="bl2-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
+      <div class="field"><label class="field-label" style="font-size:12px;">CID</label><input type="text" class="bl2-tab-cid" value="196514" placeholder="196514"></div>
+    </div>
+    <div class="field"><label class="field-label" style="font-size:12px;">더보기 URL <span style="font-weight:400;color:#aaa;">(선택, 없으면 # 처리)</span></label><input type="text" class="bl2-tab-url" placeholder="https://www.aladin.co.kr/shop/..."></div>`;
+  list.appendChild(div);
+}
+
+function addBlItem() {
+  const list = document.getElementById('bl3-item-list');
+  const div = document.createElement('div');
+  div.className = 'dyn-item';
+  div.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
+  div.innerHTML = `
+    <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
+    <div class="field"><label class="field-label" style="font-size:12px;">ItemID</label><input type="text" class="bl3-item-id" value="870950" placeholder="870950"></div>`;
+  list.appendChild(div);
+}
+
+function addBlRandTab() {
+  const list = document.getElementById('bl4-tab-list');
+  const n = list.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'dyn-item';
+  div.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
+  div.innerHTML = `
+    <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <div class="field"><label class="field-label" style="font-size:12px;">탭 이름</label><input type="text" class="bl4-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
+      <div class="field"><label class="field-label" style="font-size:12px;">CID</label><input type="text" class="bl4-tab-cid" value="196514" placeholder="196514"></div>
+    </div>`;
+  list.appendChild(div);
+}
+
+function loadNfSample() {
+  // ── 히어로 배경
+  document.getElementById('nf_bgm').value = '//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png';
+  const radial = document.getElementById('nf_radial');
+  if (radial) radial.checked = true;
+  // ── 멀티 표지 모드로 전환
+  document.getElementById('nfCoverMultiRd').checked = true;
+  document.getElementById('nfMultiList').innerHTML = '';
+  const _demoCovers = [
+    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png',
+    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png',
+    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg',
+    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg',
+  ];
+  _demoCovers.forEach(url => addCoverRow('nf', url));
+  selectNfCoverMode('multi');
+  // ── 타이틀
+  document.getElementById('nf_tag').value = '어드벤처 과학 탐구 만화';
+  document.getElementById('nf_ser').value = '<어스플러스> 시리즈';
+  document.getElementById('nf_evt').value = '신간 알림 + 기대평 이벤트';
+  document.getElementById('nf_tc').value = '#ffffff';
+  // ── 책 소개
+  document.getElementById('nf_label').value = 'COMING SOON';
+  document.getElementById('nf_date').value = '2026. 05. 20 (수) 출간 예정';
+  document.getElementById('nf_alarm_id').value = '6306681';
+  document.getElementById('nf_alarm_btn').value = '신간 알림 신청하기';
+  document.getElementById('nf_hl').value = '부모 세대는 단순 암기식으로 어렵게 접한 과학. 특히 어려웠던 화학의 원소 개념!';
+  document.getElementById('nf_body').value = '원소는 과학과 멀어지는 원인이 되기도 하지만 과학의 재미에 푹 빠지는 요인이 되기도 합니다.\n초등~중등 교과에서 다루는 다양한 원소들의 특성을 그대로 담은 원소캐릭터 \'엘리킹\'과 매력적인 캐릭터들이 전개해 나가는 <어스플러스>로 과학이 점점 더 재밌어집니다.\n실제 지구의 지질학적 역사를 그대로 재현한 탄탄한 배경에 물.화.생.지 네 과목을 통째로 담은 흥미로운 스토리까지! 묵직한 교과 연계 내용에도 3회독, 4회독 반복해서 볼 수밖에 없는 이유, 직접 확인해 보세요.';
+  // ── 추천의 말 (2개)
+  addNfQuoteFilled('아이들의 뇌 구조와 호기심을 완벽하게 저격한 책', '엑소쌤 ㅡ 꾸그 1위 / 과학 커뮤니케이터');
+  addNfQuoteFilled('스스로 묻게 만드는 과학적 사고의 출발점', "이은경 ㅡ '슬기로운 초등생활' 대표");
+  // ── 만든 사람들 (2명)
+  addNfAuthorFilled('글', '이돌돌', '6306681',
+    'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg',
+    '고려대학교 지구환경과학과에서 이학학사 및 석사 학위를, 미국 조지아텍 환경공학과에서 공학석사 학위를 받았으며, 두 아이의 아빠가 된 후 아이들에게 통합과학적 지식을 어떻게 하면 재미있고 효율적으로 전달할지 고민한 끝에 《어스플러스》를 집필하게 되었다.');
+  addNfAuthorFilled('그림', '박정기', '6306681',
+    'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg',
+    '한성대학교 시각디자인과를 졸업한 후 대원출판사 영챔프에서 다양한 단편 그림을 그렸으며, 현재는 웹툰 직업 체험 강사로 활동 중이다. 평소 학생들을 만나고 그림 그리는 것을 좋아해 《어스플러스》 작업을 즐겁게 담당하였다.');
+  // ── 이벤트 안내 (기본값 이미 HTML에 있으므로 생략, nf_e_comment는 체크 상태 유지)
 }
 
 function nfLivePreview() {
@@ -1486,12 +1713,63 @@ function nbPrev() {
   } else nbShowStep(nbStep - 1);
 }
 
-function selectNbCoverMode(mode, el) {
+// ── 표지 동적 목록 헬퍼 (nb/nf 공용) ──────────────────────────────
+function addCoverRow(prefix, url='') {
+  const list = document.getElementById(prefix + 'MultiList');
+  if (!list) return;
+  const count = list.querySelectorAll('.cover-row').length;
+  if (count >= 4) return;
+  const idx = count + 1;
+  const dispUrl = url.startsWith('//') ? 'https:' + url : url;
+  const row = document.createElement('div');
+  row.className = 'cover-row';
+  row.style.cssText = 'display:flex; align-items:center; gap:8px;';
+  row.innerHTML = `
+    <span style="font-size:12px; color:var(--text3); width:42px; flex-shrink:0; text-align:right;">표지 ${idx}</span>
+    <input type="text" class="cover-url" value="${url}" placeholder="//image.aladin.co.kr/..." oninput="coverUrlInput(this,'${prefix}')" style="flex:1; min-width:0;">
+    <img class="cover-th" src="${dispUrl}" alt="" style="width:28px; height:40px; object-fit:cover; border-radius:3px; flex-shrink:0;${url ? '' : ' display:none;'}">
+    <button type="button" onclick="removeCoverRow(this,'${prefix}')" style="flex-shrink:0; width:28px; height:28px; background:none; border:1.5px solid var(--border); border-radius:6px; cursor:pointer; font-size:12px; color:var(--text3); line-height:1; padding:0;">✕</button>`;
+  list.appendChild(row);
+  updateCoverAddBtn(prefix);
+}
+
+function removeCoverRow(btn, prefix) {
+  btn.closest('.cover-row').remove();
+  updateCoverLabels(prefix);
+  updateCoverAddBtn(prefix);
+  (prefix === 'nb' ? nbLivePreview : nfLivePreview)();
+}
+
+function coverUrlInput(inp, prefix) {
+  const th = inp.parentElement.querySelector('.cover-th');
+  let url = inp.value.trim();
+  if (!url) { th.style.display = 'none'; }
+  else {
+    th.style.display = '';
+    th.src = url.startsWith('//') ? 'https:' + url : url;
+  }
+  (prefix === 'nb' ? nbLivePreview : nfLivePreview)();
+}
+
+function updateCoverLabels(prefix) {
+  document.querySelectorAll('#' + prefix + 'MultiList .cover-row').forEach((row, i) => {
+    const span = row.querySelector('span');
+    if (span) span.textContent = '표지 ' + (i + 1);
+  });
+}
+
+function updateCoverAddBtn(prefix) {
+  const count = document.querySelectorAll('#' + prefix + 'MultiList .cover-row').length;
+  const btn = document.getElementById(prefix + 'AddCoverBtn');
+  if (btn) btn.style.display = count >= 4 ? 'none' : '';
+}
+// ─────────────────────────────────────────────────────────────────
+
+function selectNbCoverMode(mode) {
   nbCoverMode = mode;
-  document.querySelectorAll('[id^="nbCover"]').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
   document.getElementById('nbSingleCoverWrap').style.display = mode === 'single' ? '' : 'none';
   document.getElementById('nbMultiCoverWrap').style.display  = mode === 'multi'  ? '' : 'none';
+  if (mode === 'multi' && !document.querySelectorAll('#nbMultiList .cover-row').length) addCoverRow('nb');
   nbLivePreview();
 }
 
@@ -1594,6 +1872,7 @@ function stx(pi, ti, vi) { const v=document.getElementById(pi).value; document.g
 // ─ 실시간 코드 미리보기
 let _savedCode = '';    // hero-m 진입 전 코드 저장
 let _savedNbCode = '';  // hero-nb 진입 전 코드 저장
+let committedCode = ''; // gen()으로 실제 추가된 코드만 저장 (live preview 오염 방지)
 
 function _hmBuildCode() {
   const bgm  = G('hm_bgm');
@@ -1857,7 +2136,7 @@ const GEN = {
     // 커버 HTML
     let coverHtml = '';
     if (nbCoverMode === 'multi') {
-      const urls = (G('hn_cv_multi')||'').split('\n').map(u=>u.trim()).filter(u=>u);
+      const urls = Array.from(document.querySelectorAll('#nbMultiList .cover-url')).map(i=>i.value.trim()).filter(u=>u);
       coverHtml = `            <div class="alanb2-books-panorama">\n` +
         urls.map(u=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${u}" alt="도서 표지"/></div></div>`).join('\n') +
         `\n            </div>`;
@@ -1867,8 +2146,10 @@ const GEN = {
     }
 
     return `<!--히어로 이미지 (신간알림 스타일)-->
+<article class="event-wrap">
 <style>
 .alanb-wide-container { width: 100%; font-family: 'Pretendard', -apple-system, sans-serif; color: #333; background-color: #fff; }
+.event-wrap .alanb-wide-container { color: inherit; }
 .alanb-hero-section {
     position: relative; display: flex; align-items: center; justify-content: center;
     background-image: ${bgValM};
@@ -1936,7 +2217,184 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}         
     }
   }).join('\n'); return `<!--작가 소개-->\n<section class="author-section">\n${cards}\n</section>\n<!--// 작가 소개-->`; },
   banner(){ const list=Array.from(document.querySelectorAll('#bn-list .dyn-item')).map(i=>`                <li><a href="${i.querySelector('.bn-link').value.trim()}"><img src="${i.querySelector('.bn-img').value.trim()}" alt="${i.querySelector('.bn-alt').value.trim()}"></a></li>`).join('\n'); return `<!--배너 링크-->\n<section>\n    <h2 class="sr-only">알라딘 주요 이벤트 링크 모음</h2>\n    <div class="monly_basic_banner">\n        <ul>\n${list}\n        </ul>\n    </div>\n</section>\n<!--// 배너 링크-->`; },
-  booklist(){ const sec=G('bl_sec'),th2=sec?`    <h2 class="booklist-title">${sec}</h2>\n`:''; const list=Array.from(document.querySelectorAll('#bl-list .dyn-item')).map(i=>{ const img=i.querySelector('.bl-img').value.trim(),tit=i.querySelector('.bl-tit').value.trim(),lk=i.querySelector('.bl-link').value.trim(); return `            <li><a href="${lk}"><img src="${img}" alt="${tit}"><p class="book_name">${tit}</p></a></li>`; }).join('\n'); return `<!--도서 리스트-->\n<section class="monly_booklist">\n${th2}    <ul class="booklist_grid">\n${list}\n    </ul>\n</section>\n<!--// 도서 리스트-->`; },
+  booklist(){
+    const type = G('bl_type') || '';
+    if (!type) { toast('⚠️ 타입을 먼저 선택하세요.'); return null; }
+
+    if (type === '1') {
+      // 단일 도서 리스트 (자동 CID)
+      const title = G('bl1_title') || '';
+      const cid   = G('bl1_cid') || '196514';
+      const sort  = document.getElementById('bl1_sort')?.value || '2';
+      const cnt   = G('bl1_cnt') || '200';
+      const cover = document.getElementById('bl1_cover')?.value || '4';
+      const th2   = title ? `    <h2 class="list_tit">${title}</h2>\n` : '';
+      return `<!--도서 리스트-->
+<section class="monly_booklist_wrap">
+${th2}    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${cid}" PagingView="false" CoverType="${cover}" LType="2" IsPbookDCRate="true" ItemCount="${cnt}" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="${sort}"/>
+    </div>
+</section>
+<!--// 도서 리스트-->`;
+    }
+
+    if (type === '2') {
+      // 다중 도서 리스트 (스와이퍼 앵커 탭)
+      const tabs = Array.from(document.querySelectorAll('#bl2-tab-list .dyn-item')).map((el, i) => ({
+        name: el.querySelector('.bl2-tab-name')?.value.trim() || `탭${i+1}`,
+        cid:  el.querySelector('.bl2-tab-cid')?.value.trim()  || '196514',
+        url:  el.querySelector('.bl2-tab-url')?.value.trim()  || '#',
+        id:   `tab${i+1}`
+      }));
+      if (!tabs.length) { toast('⚠️ 탭을 1개 이상 추가하세요.'); return null; }
+
+      const slideHtml = tabs.map((t,i) =>
+        `                <div class="swiper-slide${i===0?' on':''}"><a href="#${t.id}">${t.name}</a></div>`
+      ).join('\n');
+
+      const sectionsHtml = tabs.map(t => `    <!--도서 목록-->
+    <a id="${t.id}"></a>
+    <section class="monly_booklist_wrap">
+        <h2 class="list_tit">
+            <a href="${t.url}">${t.name}<span>+모두보기</span></a>
+        </h2>
+        <div class="booklist">
+            <uc1:wa_item_info_list runat="server" CID="${t.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="80" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="false" IsBasketTool="1" BorderType="0" Sort="2"/>
+        </div>
+    </section>
+    <!--// 도서 목록-->`).join('\n\n');
+
+      return `<!--탭-->
+    <nav class="monly_swiper_tab_wrap">
+        <div class="swiper-container monly_swiper_tab AnchorTab">
+            <div class="swiper-wrapper">
+${slideHtml}
+            </div>
+        </div>
+        <div class="thumbnail-button-next"></div>
+        <div class="thumbnail-button-prev"></div>
+    </nav>
+    <!--// 탭-->
+
+${sectionsHtml}`;
+    }
+
+    if (type === '3') {
+      // 직접 도서 선택 (ItemID)
+      const title = G('bl3_title') || '';
+      const items = Array.from(document.querySelectorAll('#bl3-item-list .dyn-item')).map((el, i) => {
+        const id = el.querySelector('.bl3-item-id')?.value.trim() || '870950';
+        const authorType = i === 0 ? '1' : '0';
+        const priceType  = i === 0 ? '0' : '3';
+        return `                <li><uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="${authorType}" CoverType="4" PriceType="${priceType}" BorderType="0" TitleType="1" TitleCut="50" /></li>`;
+      });
+      if (!items.length) { toast('⚠️ 도서를 1개 이상 추가하세요.'); return null; }
+      const th2 = title ? `    <h2 class="list_tit">${title}</h2>\n` : '';
+      return `<!--도서 리스트-->
+<section class="monly_booklist_wrap">
+${th2}    <div class="booklist">
+            <!-- ItemId 목록 시작 -->
+            <ul class="booklist_item">
+${items.join('\n')}
+            </ul>
+            <!-- ItemId 목록 끝 -->
+        </div>
+</section>
+<!--// 도서 리스트-->`;
+    }
+
+    if (type === '4') {
+      // 랜덤 탭 (wa_RandomTab) — 메인 코드 + 서브파일 코드 분리 출력
+      const basename  = G('bl4_basename') || '2026_book_type1';
+      const eventId   = G('bl4_eventid')  || '';
+      const anchor    = G('bl4_anchor')   || 'dw';
+      const tabs = Array.from(document.querySelectorAll('#bl4-tab-list .dyn-item')).map((el, i) => ({
+        name: el.querySelector('.bl4-tab-name')?.value.trim() || `탭${i+1}`,
+        cid:  el.querySelector('.bl4-tab-cid')?.value.trim()  || '196514',
+        idx:  i + 1
+      }));
+      if (!tabs.length) { toast('⚠️ 탭을 1개 이상 추가하세요.'); return null; }
+
+      // 탭 href 생성
+      const tabHref = (idx) => eventId
+        ? `/events/wevent.aspx?EventId=${eventId}&idx=${idx}#${anchor}`
+        : `#${anchor}`;
+
+      // 메인 파일 삽입 코드
+      const subFileNames = tabs.map((_,i) => `${basename}_${i+1}`).join(',');
+      const mainCode = `<!--// 랜덤탭 (메인 이벤트 파일에 삽입) -->
+<a name="${anchor}" id="${anchor}"></a>
+<uc1:wa_RandomTab runat="server" RandomUcl="${subFileNames}" NotRandomIndex="" />`;
+
+      // 서브파일 코드 (탭마다 active 위치가 다름)
+      const subFiles = tabs.map((activeTab, fileIdx) => {
+        const slideHtml = tabs.map(t =>
+          `            <div class="swiper-slide${t.idx === activeTab.idx ? ' on' : ''}"><a href="${tabHref(t.idx)}">${t.name}</a></div>`
+        ).join('\n');
+        return `\n\n<!-- ====== 서브파일 ${fileIdx+1}: ${basename}_${fileIdx+1}.ascx ====== -->
+<!--탭-->
+<nav class="monly_swiper_tab_wrap">
+    <div class="swiper-container monly_swiper_tab RandomTab">
+        <div class="swiper-wrapper">
+${slideHtml}
+        </div>
+    </div>
+</nav>
+<!--탭-->
+
+<!--도서 목록-->
+<section class="monly_booklist_wrap randomlist">
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${activeTab.cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="200" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="true" IsBasketTool="1" BorderType="0" Sort="5" />
+    </div>
+</section>
+<!--도서 목록 //-->`;
+      }).join('');
+
+      // 모달로 파일별 분리 출력
+      const sections = [{ title: '① 메인 이벤트 파일에 삽입', code: mainCode }];
+      tabs.forEach((_, i) => {
+        const subCode = `<%@ Control Language="c#" AutoEventWireup="true" %>
+
+<%@ Import namespace="Aladdin.FrameWork" %>
+<%@ Import namespace="Aladdin.AppBlock" %>
+<%@ Import namespace="System.Data" %>
+<%@ Import namespace="Aladdin.AppBlock.Blog2.Paper" %>
+
+<%@ Register TagPrefix="uc1" TagName="wa_item_info_list" Src="~/ucl/itemview/list/wa_item_info_list.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info" Src="~/ucl/itemview/wa_item_info.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_coupondown_btn" Src="~/ucl/coupon/wa_coupondown_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_comment" Src="~/ucl_editor/events/wa_events_comment.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_RandomTab" Src="~/ucl_editor/events/wa_RandomTab.ascx" %>
+<%@ Register Src="/ucl/events/eventComment/wa_events_comment_v2.ascx" TagName="TrackbackEventComment" TagPrefix="uc1" %>
+<%@ Register TagPrefix="uc1" TagName="wa_event_MyReviewList" Src="/ucl/events/wa_event_MyReviewList.ascx" %>
+<meta http-equiv="Content-Type" content="text/html;charset=EUC-KR">
+
+<!--탭-->
+<nav class="monly_swiper_tab_wrap">
+    <div class="swiper-container monly_swiper_tab RandomTab">
+        <div class="swiper-wrapper">
+${tabs.map(t => `            <div class="swiper-slide${t.idx === i+1 ? ' on' : ''}"><a href="${tabHref(t.idx)}">${t.name}</a></div>`).join('\n')}
+        </div>
+    </div>
+</nav>
+<!--탭-->
+
+<!--도서 목록-->
+<section class="monly_booklist_wrap randomlist">
+    <div class="booklist">
+        <uc1:wa_item_info_list runat="server" CID="${tabs[i].cid}" PagingView="false" CoverType="4" LType="2" IsPbookDCRate="true" ItemCount="200" SimpleCnt="5" AuthorType="1" PriceType="1" Couponview="true" IsBasketTool="1" BorderType="0" Sort="5" />
+    </div>
+</section>
+<!--도서 목록 //-->`;
+        sections.push({ title: `${['②','③','④','⑤','⑥','⑦','⑧'][i]} ${basename}_${i+1}.ascx`, code: subCode, filename: `${basename}_${i+1}.ascx` });
+      });
+      window._pendingRandTabMainCode = mainCode; // gen()에서 finalCode에 추가용
+      openRandTabModal(sections);
+      return '__randtab__';
+    }
+    return null;
+  },
 
   nbf(){
     // ── 1. 히어로 값
@@ -1957,7 +2415,7 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}         
     // 커버 HTML
     let coverHtml = '';
     if (nfCoverMode === 'multi') {
-      const urls = (G('nf_cv_multi')||'').split('\n').map(u=>u.trim()).filter(u=>u);
+      const urls = Array.from(document.querySelectorAll('#nfMultiList .cover-url')).map(i=>i.value.trim()).filter(u=>u);
       const cnt = Math.min(urls.length, 4);
       coverHtml = `            <div class="alanb2-books-panorama" data-count="${cnt}">\n` +
         urls.slice(0,4).map(u=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${u}" alt="도서 표지"/></div></div>`).join('\n') +
@@ -2094,6 +2552,7 @@ ${infoLines}
     const pcOverride = bgValPC ? `\n/* PC 대응 */\n@media screen and (min-width: 750px) {\n    .alanb-hero-section { background-image: ${bgValPC} !important; }\n}` : '';
     const css = `<style>
 .monly_basic_event { padding: 0 !important; width: 100%; }
+.alanb-hero-title .tt1, .alanb-hero-title .tt2, .alanb-hero-text { margin: 0; }
 ${bgValM ? `.alanb-hero-section { background-image: ${bgValM}; }` : ''}${pcOverride}
 </style>`;
 
@@ -2115,12 +2574,13 @@ ${bgValM ? `.alanb-hero-section { background-image: ${bgValM}; }` : ''}${pcOverr
 <link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/swiper@12/swiper-bundle.min.css">
 <link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/newbook.css">
 <link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/mOnly.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>">
-<script type="text/javascript" src="/ucl_editor/events/js/mOnly.js?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>"></script>`;
+<script type="text/javascript" src="/ucl_editor/events/js/mOnly.js?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>"><\/script>`;
 
     return `${header}
 
 <!--신간알림 이벤트 풀세트-->
 ${css}
+<article class="event-wrap">
     <div class="alanb-wide-container">
         <div class="alanb-hero-section">
             <div class="alanb-hero-inner">
@@ -2156,6 +2616,7 @@ ${quotesHtml}${authorsHtml}
     </div>
     <!-- /alanb-wide-container -->
 ${eventHtml}
+</article>
 <!--// 신간알림 이벤트 풀세트-->`;
   }
 };
@@ -2280,9 +2741,142 @@ function replaceModuleInCode(key, newCode) {
 
 let editingInstId = null; // 수정 모드일 때 인스턴스 ID
 
+// ─ 랜덤탭 멀티파일 모달
+function openRandTabModal(sections) {
+  const container = document.getElementById('randTabSections');
+  container.innerHTML = '';
+  sections.forEach((sec, idx) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:#f8f8f8; border:1px solid #e4e4e4; border-radius:12px; overflow:hidden;';
+    // 서브파일(filename 있음)은 저장 버튼, 메인 삽입(filename 없음)은 복사 버튼
+    const actionBtn = sec.filename
+      ? `<button onclick="saveEucKrAscx(this,'${sec.filename}',${idx})"
+           style="padding:5px 16px; background:#3B4A9F; color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">
+           📥 .ascx 저장
+         </button>`
+      : `<button onclick="copyRandTabSection(this,${idx})"
+           style="padding:5px 14px; background:#EB217C; color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">
+           복사
+         </button>`;
+    div.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#f0f0f0; border-bottom:1px solid #e4e4e4;">
+        <div style="font-size:13px; font-weight:800; color:#1a1a1a;">${sec.title}</div>
+        ${actionBtn}
+      </div>
+      <textarea id="randTabCode_${idx}" readonly
+        style="display:block; width:100%; min-height:160px; max-height:320px; padding:14px 16px; font-size:12px; font-family:'Noto Sans KR',monospace; background:#f8f8f8; border:none; resize:vertical; line-height:1.6; color:#333; outline:none;"
+      ></textarea>`;
+    container.appendChild(div);
+    container.querySelector(`#randTabCode_${idx}`).value = sec.code;
+  });
+  document.getElementById('randTabModal').style.display = 'block';
+}
+
+function closeRandTabModal() {
+  document.getElementById('randTabModal').style.display = 'none';
+}
+
+// ─ EUC-KR 인코더 (WHATWG encoding-indexes 기반 / Unicode→바이트 직접 변환)
+let _eucKrMap = null;
+
+async function _loadEucKrMap() {
+  if (_eucKrMap) return _eucKrMap;
+  // encoding-indexes.js : WHATWG 표준 EUC-KR(CP949) 디코드 테이블
+  await new Promise((resolve, reject) => {
+    if (window.EncodingIndexes) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/text-encoding@0.7.0/lib/encoding-indexes.js';
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('encoding-indexes.js 로드 실패'));
+    document.head.appendChild(s);
+  });
+  // 디코드 테이블(index→codepoint)을 역방향(codepoint→bytes)으로 변환
+  const index = window.EncodingIndexes['euc-kr'];
+  const map = new Map();
+  for (let i = 0; i < index.length; i++) {
+    const cp = index[i];
+    if (cp !== null && !map.has(cp)) {
+      const lead  = Math.floor(i / 190) + 0x81;
+      const trail = i % 190;
+      const b2    = trail + (trail < 0x3F ? 0x41 : 0x42); // 0x7F(DEL) 건너뜀
+      map.set(cp, [lead, b2]);
+    }
+  }
+  _eucKrMap = map;
+  return map;
+}
+
+async function saveEucKrAscx(btn, filename, idx) {
+  const origHtml = btn.innerHTML;
+  const origBg   = btn.style.background;
+  btn.innerHTML  = '저장 중...';
+  btn.disabled   = true;
+  try {
+    const map     = await _loadEucKrMap();
+    const content = document.getElementById('randTabCode_' + idx).value;
+    // 문자별 EUC-KR 바이트 변환
+    const bytes = [];
+    for (let i = 0; i < content.length; i++) {
+      const cp = content.codePointAt(i);
+      if (cp > 0xFFFF) i++; // 서로게이트 페어 건너뜀
+      if (cp <= 0x7F) {
+        bytes.push(cp);           // ASCII: 그대로
+      } else if (map.has(cp)) {
+        bytes.push(...map.get(cp)); // EUC-KR 2바이트
+      } else {
+        bytes.push(0x3F);         // 변환 불가 → '?'
+      }
+    }
+    const blob = new Blob([new Uint8Array(bytes)]);
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    btn.innerHTML = '✅ 저장됨'; btn.style.background = '#228738';
+    setTimeout(() => { btn.innerHTML = origHtml; btn.style.background = origBg; btn.disabled = false; }, 2000);
+  } catch(e) {
+    toast('⚠️ 저장 실패: ' + e.message);
+    btn.innerHTML = origHtml; btn.style.background = origBg; btn.disabled = false;
+  }
+}
+
+function copyRandTabSection(btn, idx) {
+  const ta = document.getElementById('randTabCode_' + idx);
+  if (!ta) return;
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ 복사됨';
+    btn.style.background = '#228738';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = '#EB217C'; }, 1800);
+  }).catch(() => {
+    ta.select();
+    document.execCommand('copy');
+    btn.textContent = '✅ 복사됨';
+    setTimeout(() => { btn.textContent = '복사'; }, 1800);
+  });
+}
+
 function gen(key){
   const fn=GEN[key]; if(!fn){toast('⚠️ 아직 준비 중입니다.');return;}
-  const code=fn(); if(!code){toast('⚠️ 내용을 입력해주세요.');return;}
+  const code=fn();
+  if(code==='__randtab__'){
+    // 모달로 서브파일 출력 + 메인 코드는 finalCode에 추가
+    if(window._pendingRandTabMainCode){
+      const ed2 = document.getElementById('finalCode');
+      const instId = nextInstId('bl');
+      moduleRegistry[instId] = {key:'bl', screenId:'sc-booklist', label:'도서목록 (랜덤탭)'};
+      const wrapped = wrapInstance(instId, window._pendingRandTabMainCode);
+      ed2.value = ed2.value ? ed2.value + '\n\n' + wrapped : wrapped;
+      window._pendingRandTabMainCode = null;
+      if(outTab==='preview') refreshPrev();
+      ed2.scrollTop = ed2.scrollHeight;
+      toast('✅ 코드가 추가되었습니다! (서브파일은 모달에서 저장)');
+      showAddMoreBtn();
+    }
+    return;
+  }
+  if(!code){toast('⚠️ 내용을 입력해주세요.');return;}
   const ed=document.getElementById('finalCode');
 
   if(key==='hm'){
@@ -2315,27 +2909,26 @@ function gen(key){
     ed.value=ed.value?ed.value+'\n\n'+wrapInstance(instId, code):wrapInstance(instId, code);
   }
   if(outTab==='preview')refreshPrev(); ed.scrollTop=ed.scrollHeight;
+  committedCode = ed.value; // gen()으로 확정된 코드만 저장
   toast('✅ 코드가 추가되었습니다!'); showAddMoreBtn();
 }
 
 function showAddMoreBtn() {
-  // 현재 화면의 s-actions 찾기
   const activeScreen = document.querySelector('.screen.on');
   if (!activeScreen) return;
   const actions = activeScreen.querySelector('.s-actions');
   if (!actions) return;
-  // 이미 변환됐으면 스킵
   if (actions.querySelector('.add-more-btn')) return;
-  // 기존 버튼 전부 숨기기
+
+  // 기존 버튼 숨기기
   actions.querySelectorAll('.btn-gen').forEach(btn => {
     btn.style.display = 'none';
   });
-  // 완료 표시 + 다른 모듈 버튼으로 교체
+
+  // 완료 표시 + 다른 모듈 버튼
   const doneRow = document.createElement('div');
   doneRow.style.cssText = 'display:flex; flex-direction:column; gap:8px; width:100%;';
-  doneRow.innerHTML = `
-    <div style="text-align:center; padding:8px; background:#f0fdf4; border-radius:var(--r-sm); color:#22c55e; font-weight:700; font-size:14px;">✅ 코드가 추가되었습니다</div>
-  `;
+  doneRow.innerHTML = `<div style="text-align:center; padding:8px; background:#f0fdf4; border-radius:var(--r-sm); color:#22c55e; font-weight:700; font-size:14px;">✅ 코드가 추가되었습니다</div>`;
   const moreBtn = document.createElement('button');
   moreBtn.className = 'btn-gen add-more-btn';
   moreBtn.style.cssText = 'background:var(--brand); width:100%;';
@@ -2343,6 +2936,20 @@ function showAddMoreBtn() {
   moreBtn.onclick = () => goHomeKeepPreview();
   doneRow.appendChild(moreBtn);
   actions.appendChild(doneRow);
+
+  // s-body에 완료 오버레이
+  const sBody = activeScreen.querySelector('.s-body');
+  if (sBody && !sBody.querySelector('.done-overlay')) {
+    const ov = document.createElement('div');
+    ov.className = 'done-overlay';
+    ov.style.cssText = 'position:absolute; inset:0; background:rgba(255,255,255,0.82); z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; pointer-events:none;';
+    ov.innerHTML = `
+      <div style="font-size:36px; line-height:1;">✅</div>
+      <div style="font-size:15px; font-weight:800; color:#1a1a1a;">코드 추가 완료</div>
+      <div style="font-size:12px; color:#888; text-align:center; line-height:1.6;">수정하려면 미리보기에서<br>✏️ 버튼을 클릭하세요</div>
+    `;
+    sBody.appendChild(ov);
+  }
 }
 
 // ─ 출력 탭
@@ -2373,6 +2980,11 @@ function refreshPrev(overrideCode){
   html = html.replace(/<uc1:alarm\s[^>]*?AlarmButton="([^"]*)"[^>]*?\/?>/gi,(_,btn)=>btn.includes('<a ')||btn.includes('<img')?btn:'<a href="javascript:void(0);">'+btn+'</a>');
   html = html.replace(/<uc1:alarm[^>]*\/?>/gi,'');
   html = html.replace(/<uc1:EventComment[^>]*?Title="([^"]*)"[^>]*\/?>/gi,'<div style="padding:40px 20px;background:#f8f9fa;border:2px dashed #d1d5db;border-radius:12px;text-align:center;color:#6b7280;font-weight:700;">💬 댓글 영역: $1</div>');
+  html = html.replace(/<uc1:wa_RandomTab[^>]*RandomUcl="([^"]*)"[^>]*\/?>/gi, (_, ucls) => {
+    const tabs = ucls.split(',');
+    const tabBtns = tabs.map((t,i) => `<span style="display:inline-block;padding:5px 12px;margin:3px;background:${i===0?'#3B4A9F':'#fff'};color:${i===0?'#fff':'#3B4A9F'};border:1.5px solid #3B4A9F;border-radius:20px;font-size:12px;font-weight:700;">${t}</span>`).join('');
+    return `<div style="background:#f0f4ff;border:2px dashed #3B4A9F;border-radius:12px;padding:20px;text-align:center;margin:16px 0;"><div style="font-size:13px;font-weight:800;color:#3B4A9F;margin-bottom:10px;">📚 랜덤탭 도서목록 (${tabs.length}개 탭)</div><div>${tabBtns}</div><div style="font-size:11px;color:#999;margin-top:8px;">각 탭 파일은 모달에서 .ascx로 저장하세요</div></div>`;
+  });
   html = html.replace(/<uc1:\w+[^>]*\/?>/gi,'');
 
   // 경로 변환
@@ -2556,7 +3168,15 @@ ${html}
 <\/script>
 </body></html>`;
 
-  document.getElementById('prevFrame').srcdoc = fullHtml;
+  const prevFrame = document.getElementById('prevFrame');
+  const prevScrollY = prevFrame.contentWindow ? (prevFrame.contentWindow.scrollY || 0) : 0;
+  prevFrame.srcdoc = fullHtml;
+  if (prevScrollY > 0) {
+    prevFrame.addEventListener('load', function restoreScroll() {
+      prevFrame.removeEventListener('load', restoreScroll);
+      prevFrame.contentWindow.scrollTo(0, prevScrollY);
+    });
+  }
 }
 
 // ─ 수정 모드일 때 버튼 상태 업데이트
