@@ -224,6 +224,14 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
               </div>
               <div class="mod-arrow" style="color:#a855f7; margin-top:0;">→</div>
             </div>
+            <div class="mod-card" onclick="goNbFull()" style="grid-column:span 2; border-color:#fce7f3; background:#fdf0f8; flex-direction:row; align-items:center; gap:14px;">
+              <div class="mod-icon" style="background:#fce7f3; font-size:22px; width:40px; height:40px; flex-shrink:0;">📖</div>
+              <div style="flex:1;">
+                <div class="mod-name" style="color:#be185d;">신간알림 이벤트 (풀세트)</div>
+                <div class="mod-desc">히어로 · 책소개 · 추천의 말 · 작가 · 이벤트 안내 한번에 완성</div>
+              </div>
+              <div class="mod-arrow" style="color:#ec4899; margin-top:0;">→</div>
+            </div>
           </div>
         </div>
       </div>
@@ -636,6 +644,173 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
         </div>
       </div>
 
+      <!-- ③ 신간알림 이벤트 풀세트 위자드 -->
+      <div class="screen" id="sc-nb-full">
+        <div class="s-head">
+          <button class="back-btn hide" id="nfBackBtn"></button>
+          <div class="s-title" id="nfStepTitle">이미지 &amp; 배경</div>
+          <div class="step-dots" id="nfDotWrap" style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;"></div>
+        </div>
+        <div class="s-div"></div>
+
+        <!-- NF Step 1: 이미지 & 배경 -->
+        <div class="s-step on" id="nfStep1">
+          <div class="field">
+            <label class="field-label">커버 스타일</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <label class="wizard-radio-card active" id="nfCoverSingle" onclick="selectNfCoverMode('single',this)"><input type="radio" name="nfCoverMode" value="single" checked style="display:none;">🖼️ 단일 표지</label>
+              <label class="wizard-radio-card" id="nfCoverMulti" onclick="selectNfCoverMode('multi',this)"><input type="radio" name="nfCoverMode" value="multi" style="display:none;">📚 여러 권</label>
+            </div>
+          </div>
+          <div class="field" id="nfSingleCoverWrap">
+            <label class="field-label">도서 표지 URL</label>
+            <div class="url-row">
+              <input type="text" id="nf_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_img.jpg" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'nf_tcv'); nfLivePreview();">
+              <img class="url-th" id="nf_tcv" src="" alt="">
+            </div>
+          </div>
+          <div class="field" id="nfMultiCoverWrap" style="display:none;">
+            <label class="field-label">표지 URL <span style="font-weight:400; color:var(--text3);">줄바꿈으로 구분 (최대 4권)</span></label>
+            <textarea id="nf_cv_multi" rows="4" oninput="nfLivePreview();">//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png
+//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png
+//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg
+//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg</textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">배경 이미지 — 모바일</label>
+            <div class="url-row">
+              <input type="text" id="nf_bgm" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tm'); nfLivePreview();">
+              <img class="url-th" id="nf_tm" src="" alt="">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">배경 이미지 — PC</label>
+            <div class="url-row">
+              <input type="text" id="nf_bgpc" value="//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg.jpg" placeholder="//image.aladin.co.kr/img/events/..." oninput="th(this,'nf_tpc'); nfLivePreview();">
+              <img class="url-th" id="nf_tpc" src="" alt="">
+            </div>
+          </div>
+          <div class="field">
+            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+              <input type="checkbox" id="nf_radial" checked onchange="nfLivePreview();"> 다크 오버레이 적용
+            </label>
+          </div>
+        </div>
+
+        <!-- NF Step 2: 타이틀 텍스트 -->
+        <div class="s-step" id="nfStep2">
+          <div class="field">
+            <label class="field-label">태그라인 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
+            <input type="text" id="nf_tag" value="신간 알림 + 기대평 댓글 이벤트" placeholder="린드그렌상 한국인 최초 수상" oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">시리즈명 / 도서명</label>
+            <input type="text" id="nf_ser" value="&lt;자신을 찾는 자세로&gt;" placeholder="{별똥별이} 떨어지는 그곳에서" oninput="nfLivePreview();">
+            <div class="field-hint">{텍스트} = 핑크 강조 &nbsp;·&nbsp; /br = 줄바꿈</div>
+          </div>
+          <div class="field">
+            <label class="field-label">이벤트명 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
+            <input type="text" id="nf_evt" value="신간 알림 + 기대평 댓글 이벤트" placeholder="신간 알림 + 기대평 댓글 이벤트" oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">타이틀 색상</label>
+            <div class="color-row">
+              <input type="text" id="nf_tc" value="#ffffff" oninput="spk('nf_tc','nf_tcp','nf_tcpv'); nfLivePreview();">
+              <div style="position:relative; width:40px; height:40px; flex-shrink:0;">
+                <div id="nf_tcpv" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:#ffffff;cursor:pointer;" onclick="document.getElementById('nf_tcp').click();" title="클릭하면 컬러 팔레트 열림"></div>
+                <input type="color" id="nf_tcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('nf_tcp','nf_tc','nf_tcpv'); nfLivePreview();">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NF Step 3: 책 소개 -->
+        <div class="s-step" id="nfStep3">
+          <div class="field">
+            <label class="field-label">이벤트 기간 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
+            <input type="text" id="nf_date" value="2026.04.14(월) ~ 소진 시 종료" placeholder="2026.04.14(월) ~ 소진 시 종료" oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">CTA 버튼 텍스트</label>
+            <input type="text" id="nf_cta" value="알라딘에서 구매하기" placeholder="지금 바로 구매하기" oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">CTA 버튼 링크</label>
+            <input type="text" id="nf_cta_url" value="https://www.aladin.co.kr/shop/wproduct.aspx?ISBN=0000000000000" placeholder="https://www.aladin.co.kr/..." oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">하이라이트 문구 <span style="font-weight:400; color:var(--text3);">(선택)</span></label>
+            <input type="text" id="nf_hl" value="이 책은 당신이 찾던 바로 그 책입니다." placeholder="한 줄 강조 문구" oninput="nfLivePreview();">
+          </div>
+          <div class="field">
+            <label class="field-label">본문 소개글</label>
+            <textarea id="nf_body" rows="5" oninput="nfLivePreview();">이 책은 자신을 찾아가는 여정을 담은 에세이입니다.
+저자는 일상 속에서 발견한 작은 질문들을 통해 독자들에게 따뜻한 울림을 전합니다.</textarea>
+          </div>
+        </div>
+
+        <!-- NF Step 4: 추천의 말 -->
+        <div class="s-step" id="nfStep4">
+          <div class="field">
+            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+              <input type="checkbox" id="nf_quote_on" checked onchange="nfToggleSection('quote');"> 추천의 말 섹션 포함
+            </label>
+          </div>
+          <div id="nfQuoteWrap">
+            <div class="field">
+              <label class="field-label">섹션 제목</label>
+              <input type="text" id="nf_q_title" value="추천의 말" placeholder="이 책을 추천합니다" oninput="nfLivePreview();">
+            </div>
+            <div id="nf-quote-list"></div>
+            <button class="btn-gen" onclick="addNfQuote()" style="background:#fff;color:var(--text);border:1.5px solid var(--border);font-size:13px;padding:10px;">+ 추천 글 추가</button>
+          </div>
+        </div>
+
+        <!-- NF Step 5: 작가 소개 -->
+        <div class="s-step" id="nfStep5">
+          <div class="field">
+            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+              <input type="checkbox" id="nf_author_on" checked onchange="nfToggleSection('author');"> 작가 소개 섹션 포함
+            </label>
+          </div>
+          <div id="nfAuthorWrap">
+            <div class="field">
+              <label class="field-label">섹션 제목</label>
+              <input type="text" id="nf_a_title" value="작가 소개" placeholder="저자를 소개합니다" oninput="nfLivePreview();">
+            </div>
+            <div id="nf-author-list"></div>
+            <button class="btn-gen" onclick="addNfAuthor()" style="background:#fff;color:var(--text);border:1.5px solid var(--border);font-size:13px;padding:10px;">+ 작가 추가</button>
+          </div>
+        </div>
+
+        <!-- NF Step 6: 이벤트 안내 -->
+        <div class="s-step" id="nfStep6">
+          <div class="field">
+            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+              <input type="checkbox" id="nf_event_on" checked onchange="nfToggleSection('event');"> 이벤트 안내 섹션 포함
+            </label>
+          </div>
+          <div id="nfEventWrap">
+            <div class="field">
+              <label class="field-label">섹션 제목</label>
+              <input type="text" id="nf_e_title" value="이벤트 안내" placeholder="이벤트 안내" oninput="nfLivePreview();">
+            </div>
+            <div class="field">
+              <label class="field-label">이벤트 내용</label>
+              <textarea id="nf_e_body" rows="5" oninput="nfLivePreview();">- 이벤트 기간: 2026.04.14(월) ~ 소진 시 종료
+- 댓글 이벤트 기간: 2026.04.14(월) ~ 2026.04.30(수)
+- 당첨자 발표: 이벤트 종료 후 1주일 이내
+- 경품: 스타벅스 아메리카노 10명</textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="s-actions" style="display:flex; gap:10px;">
+          <button class="btn-gen" id="nfPrevBtn" onclick="nfPrev()" style="background:#fff; color:var(--text); border:1.5px solid var(--border); flex:1;">← 이전</button>
+          <button class="btn-gen" id="nfNextBtn" onclick="nfNext()" style="flex:2;">다음 →</button>
+        </div>
+      </div>
+
       <!-- ② 신간 알리미 버튼 -->
       <div class="screen" id="sc-alarm">
         <div class="s-head">
@@ -929,7 +1104,7 @@ select { cursor:pointer; appearance:none; background-image:url("data:image/svg+x
 
 <script>
 // ─ 화면 전환
-const NAMES = { home:'홈', hero:'히어로 이미지', 'hero-m':'모바일 전용', 'hero-nb':'신간알림 스타일', 'ai-prompt':'AI 프롬프트 생성', alarm:'신간 알리미 버튼', slide:'도서 슬라이딩', comment:'댓글 이벤트', coupon:'쿠폰 / 적립금', 'coupon-s':'단일 쿠폰', 'coupon-m':'다중 쿠폰', 'coupon-r':'적립금', author:'작가 소개', 'author-full':'작가 소개 (풀 세트)', banner:'배너 링크', booklist:'도서 리스트' };
+const NAMES = { home:'홈', hero:'히어로 이미지', 'hero-m':'모바일 전용', 'hero-nb':'신간알림 스타일', 'nb-full':'신간알림 이벤트 (풀세트)', 'ai-prompt':'AI 프롬프트 생성', alarm:'신간 알리미 버튼', slide:'도서 슬라이딩', comment:'댓글 이벤트', coupon:'쿠폰 / 적립금', 'coupon-s':'단일 쿠폰', 'coupon-m':'다중 쿠폰', 'coupon-r':'적립금', author:'작가 소개', 'author-full':'작가 소개 (풀 세트)', banner:'배너 링크', booklist:'도서 리스트' };
 
 let hist = ['home'];
 function go(id) {
@@ -1075,6 +1250,192 @@ function nbLivePreview() {
   ed.value = code;
   ed.scrollTop = 0;
   refreshPrev();
+}
+
+// ─ 신간알림 이벤트 풀세트 위자드
+let nfStep = 1, nfCoverMode = 'single';
+let nfQuoteOn = true, nfAuthorOn = true, nfEventOn = true;
+let _savedNbfCode = '', nfqi = 0, nfai = 0;
+const NF_TITLES = { 1:'이미지 & 배경', 2:'타이틀 텍스트', 3:'책 소개', 4:'추천의 말', 5:'작가 소개', 6:'이벤트 안내' };
+
+function goNbFull() {
+  _savedNbfCode = document.getElementById('finalCode').value;
+  nfStep = 1; nfCoverMode = 'single'; nfQuoteOn = true; nfAuthorOn = true; nfEventOn = true;
+  document.getElementById('nfCoverSingle')?.classList.add('active');
+  document.getElementById('nfCoverMulti')?.classList.remove('active');
+  document.getElementById('nfSingleCoverWrap').style.display = '';
+  document.getElementById('nfMultiCoverWrap').style.display = 'none';
+  // 초기 동적 목록 생성 (없으면 1개씩 추가)
+  const ql = document.getElementById('nf-quote-list');
+  const al = document.getElementById('nf-author-list');
+  if (!ql.children.length) addNfQuote();
+  if (!al.children.length) addNfAuthor();
+  hist = hist.filter(h => h !== 'nb-full');
+  hist.push('nb-full');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById('sc-nb-full').classList.add('on');
+  document.getElementById('outArea').style.display = '';
+  // 썸네일 즉시 표시
+  th(document.getElementById('nf_cv'),   'nf_tcv');
+  th(document.getElementById('nf_bgm'),  'nf_tm');
+  th(document.getElementById('nf_bgpc'), 'nf_tpc');
+  nfRenderDots();
+  nfShowStep(1);
+  nfLivePreview();
+  renderBc();
+}
+
+function nfRenderDots() {
+  const wrap = document.getElementById('nfDotWrap');
+  if (!wrap) return;
+  const labels = { 1:'이미지', 2:'텍스트', 3:'책소개', 4:'추천', 5:'작가', 6:'이벤트' };
+  const skipMap = { 4:!nfQuoteOn, 5:!nfAuthorOn, 6:!nfEventOn };
+  wrap.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    const d = document.createElement('div');
+    const skipped = skipMap[i];
+    d.className = 'step-dot' + (i < nfStep ? ' done' : i === nfStep ? ' active' : '') + (skipped ? ' skipped' : '');
+    d.style.opacity = skipped ? '0.35' : '';
+    d.textContent = (i < nfStep ? '✓ ' : `${i === 1?'①':i===2?'②':i===3?'③':i===4?'④':i===5?'⑤':'⑥'} `) + labels[i];
+    wrap.appendChild(d);
+  }
+}
+
+function nfGetNextStep(from) {
+  let next = from + 1;
+  while (next <= 6) {
+    if (next === 4 && !nfQuoteOn) { next++; continue; }
+    if (next === 5 && !nfAuthorOn) { next++; continue; }
+    if (next === 6 && !nfEventOn) { next++; continue; }
+    break;
+  }
+  return next;
+}
+
+function nfGetPrevStep(from) {
+  let prev = from - 1;
+  while (prev >= 1) {
+    if (prev === 4 && !nfQuoteOn) { prev--; continue; }
+    if (prev === 5 && !nfAuthorOn) { prev--; continue; }
+    if (prev === 6 && !nfEventOn) { prev--; continue; }
+    break;
+  }
+  return prev;
+}
+
+function nfShowStep(n) {
+  nfStep = n;
+  for (let i = 1; i <= 6; i++) {
+    const el = document.getElementById('nfStep' + i);
+    if (el) el.classList.toggle('on', i === n);
+  }
+  const titleEl = document.getElementById('nfStepTitle');
+  if (titleEl) titleEl.textContent = NF_TITLES[n];
+  const nextBtn = document.getElementById('nfNextBtn');
+  const prevBtn = document.getElementById('nfPrevBtn');
+  const nextStep = nfGetNextStep(n);
+  const isLast = nextStep > 6;
+  if (nextBtn) {
+    nextBtn.textContent = isLast ? '⚡ 완성 코드 생성' : '다음 →';
+    nextBtn.onclick = isLast ? () => gen('nbf') : nfNext;
+  }
+  if (prevBtn) { prevBtn.textContent = n === 1 ? '← 취소' : '← 이전'; }
+  nfRenderDots();
+}
+
+function nfNext() {
+  const next = nfGetNextStep(nfStep);
+  if (next <= 6) nfShowStep(next); else gen('nbf');
+}
+
+function nfPrev() {
+  if (nfStep === 1) {
+    document.getElementById('finalCode').value = _savedNbfCode;
+    _savedNbfCode = '';
+    if (outTab === 'preview') refreshPrev();
+    go('home');
+  } else {
+    const prev = nfGetPrevStep(nfStep);
+    nfShowStep(prev);
+  }
+}
+
+function selectNfCoverMode(mode, el) {
+  nfCoverMode = mode;
+  document.querySelectorAll('[id^="nfCover"]').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('nfSingleCoverWrap').style.display = mode === 'single' ? '' : 'none';
+  document.getElementById('nfMultiCoverWrap').style.display = mode === 'multi' ? '' : 'none';
+  nfLivePreview();
+}
+
+function nfToggleSection(key) {
+  if (key === 'quote') { nfQuoteOn = document.getElementById('nf_quote_on').checked; document.getElementById('nfQuoteWrap').style.opacity = nfQuoteOn ? '1' : '0.4'; }
+  if (key === 'author') { nfAuthorOn = document.getElementById('nf_author_on').checked; document.getElementById('nfAuthorWrap').style.opacity = nfAuthorOn ? '1' : '0.4'; }
+  if (key === 'event') { nfEventOn = document.getElementById('nf_event_on').checked; document.getElementById('nfEventWrap').style.opacity = nfEventOn ? '1' : '0.4'; }
+  nfRenderDots();
+  // 현재 스텝의 다음 버튼 텍스트 재계산
+  nfShowStep(nfStep);
+}
+
+function addNfQuote() {
+  const list = document.getElementById('nf-quote-list');
+  nfqi++;
+  const qi = nfqi;
+  const item = document.createElement('div');
+  item.className = 'dyn-item';
+  item.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
+  item.innerHTML = `
+    <button onclick="this.closest('.dyn-item').remove(); nfLivePreview();" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
+    <div class="field" style="margin-bottom:8px;">
+      <label class="field-label" style="font-size:12px;">추천 글</label>
+      <textarea class="nfq-text" rows="3" oninput="nfLivePreview();" placeholder="이 책을 강력히 추천합니다..."></textarea>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <div class="field">
+        <label class="field-label" style="font-size:12px;">추천인 이름</label>
+        <input type="text" class="nfq-name" placeholder="홍길동" oninput="nfLivePreview();">
+      </div>
+      <div class="field">
+        <label class="field-label" style="font-size:12px;">직함/소개</label>
+        <input type="text" class="nfq-role" placeholder="소설가" oninput="nfLivePreview();">
+      </div>
+    </div>`;
+  list.appendChild(item);
+}
+
+function addNfAuthor() {
+  const list = document.getElementById('nf-author-list');
+  nfai++;
+  const item = document.createElement('div');
+  item.className = 'dyn-item';
+  item.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
+  item.innerHTML = `
+    <button onclick="this.closest('.dyn-item').remove(); nfLivePreview();" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
+    <div class="field" style="margin-bottom:8px;">
+      <label class="field-label" style="font-size:12px;">작가 이름</label>
+      <input type="text" class="nfa-name" placeholder="박지현" oninput="nfLivePreview();">
+    </div>
+    <div class="field" style="margin-bottom:8px;">
+      <label class="field-label" style="font-size:12px;">역할/직함 <span style="font-weight:400;color:var(--text3);">(선택)</span></label>
+      <input type="text" class="nfa-role" placeholder="저자" oninput="nfLivePreview();">
+    </div>
+    <div class="field" style="margin-bottom:8px;">
+      <label class="field-label" style="font-size:12px;">사진 URL <span style="font-weight:400;color:var(--text3);">(선택)</span></label>
+      <input type="text" class="nfa-photo" placeholder="//image.aladin.co.kr/..." oninput="nfLivePreview();">
+    </div>
+    <div class="field">
+      <label class="field-label" style="font-size:12px;">소개 글</label>
+      <textarea class="nfa-bio" rows="3" oninput="nfLivePreview();" placeholder="작가 소개를 입력하세요..."></textarea>
+    </div>`;
+  list.appendChild(item);
+}
+
+function nfLivePreview() {
+  if (!GEN.nbf) return;
+  const ed = document.getElementById('finalCode');
+  const code = GEN.nbf();
+  if (code) { ed.value = code; ed.scrollTop = 0; refreshPrev(); }
 }
 
 function nbShowStep(n) {
@@ -1554,7 +1915,178 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}         
     }
   }).join('\n'); return `<!--작가 소개-->\n<section class="author-section">\n${cards}\n</section>\n<!--// 작가 소개-->`; },
   banner(){ const list=Array.from(document.querySelectorAll('#bn-list .dyn-item')).map(i=>`                <li><a href="${i.querySelector('.bn-link').value.trim()}"><img src="${i.querySelector('.bn-img').value.trim()}" alt="${i.querySelector('.bn-alt').value.trim()}"></a></li>`).join('\n'); return `<!--배너 링크-->\n<section>\n    <h2 class="sr-only">알라딘 주요 이벤트 링크 모음</h2>\n    <div class="monly_basic_banner">\n        <ul>\n${list}\n        </ul>\n    </div>\n</section>\n<!--// 배너 링크-->`; },
-  booklist(){ const sec=G('bl_sec'),th2=sec?`    <h2 class="booklist-title">${sec}</h2>\n`:''; const list=Array.from(document.querySelectorAll('#bl-list .dyn-item')).map(i=>{ const img=i.querySelector('.bl-img').value.trim(),tit=i.querySelector('.bl-tit').value.trim(),lk=i.querySelector('.bl-link').value.trim(); return `            <li><a href="${lk}"><img src="${img}" alt="${tit}"><p class="book_name">${tit}</p></a></li>`; }).join('\n'); return `<!--도서 리스트-->\n<section class="monly_booklist">\n${th2}    <ul class="booklist_grid">\n${list}\n    </ul>\n</section>\n<!--// 도서 리스트-->`; }
+  booklist(){ const sec=G('bl_sec'),th2=sec?`    <h2 class="booklist-title">${sec}</h2>\n`:''; const list=Array.from(document.querySelectorAll('#bl-list .dyn-item')).map(i=>{ const img=i.querySelector('.bl-img').value.trim(),tit=i.querySelector('.bl-tit').value.trim(),lk=i.querySelector('.bl-link').value.trim(); return `            <li><a href="${lk}"><img src="${img}" alt="${tit}"><p class="book_name">${tit}</p></a></li>`; }).join('\n'); return `<!--도서 리스트-->\n<section class="monly_booklist">\n${th2}    <ul class="booklist_grid">\n${list}\n    </ul>\n</section>\n<!--// 도서 리스트-->`; },
+
+  nbf(){
+    const bgM  = G('nf_bgm') || '';
+    const bgPC = G('nf_bgpc') || '';
+    const bgc  = '#111111';
+    const overlay = document.getElementById('nf_radial')?.checked;
+    const tc   = G('nf_tc') || '#ffffff';
+    const tag  = G('nf_tag') ? (PT(G('nf_tag')) || G('nf_tag')) : '';
+    const ser  = PT(G('nf_ser')) || G('nf_ser') || '';
+    const evt  = G('nf_evt') ? (PT(G('nf_evt')) || G('nf_evt')) : '';
+    const date = G('nf_date') || '';
+    const cta  = G('nf_cta') || '알라딘에서 구매하기';
+    const ctaUrl = G('nf_cta_url') || '#';
+    const hl   = G('nf_hl') || '';
+    const bodyRaw = G('nf_body') || '';
+
+    const bgValM  = overlay && bgM  ? `linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('${bgM}')`  : bgM  ? `url('${bgM}')`  : 'none';
+    const bgValPC = overlay && bgPC ? `linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('${bgPC}')` : bgPC ? `url('${bgPC}')` : bgValM;
+
+    // 커버 HTML
+    let coverHtml = '';
+    if (nfCoverMode === 'multi') {
+      const urls = (G('nf_cv_multi')||'').split('\n').map(u=>u.trim()).filter(u=>u);
+      coverHtml = `            <div class="alanb2-books-panorama">\n` +
+        urls.map(u=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${u}" alt="도서 표지"/></div></div>`).join('\n') +
+        `\n            </div>`;
+    } else {
+      const cv = G('nf_cv') || '';
+      coverHtml = `            <div class="alanb-main-book-wrap">\n                <div class="alanb-book-image"><img src="${cv}" alt="도서 표지"/></div>\n            </div>`;
+    }
+
+    // 본문 단락
+    const bodyHtml = bodyRaw.split('\n').filter(l=>l.trim()).map(l=>`            <p class="alanb-body-text">${l.trim()}</p>`).join('\n');
+
+    // 추천의 말
+    let quotesHtml = '';
+    if (nfQuoteOn) {
+      const qTitle = G('nf_q_title') || '추천의 말';
+      const quotes = Array.from(document.querySelectorAll('#nf-quote-list .dyn-item')).map(item => {
+        const text = item.querySelector('.nfq-text')?.value.trim() || '';
+        const name = item.querySelector('.nfq-name')?.value.trim() || '';
+        const role = item.querySelector('.nfq-role')?.value.trim() || '';
+        if (!text) return '';
+        return `            <div class="alanb-quote-item">
+                <p class="alanb-quote-text">"${text}"</p>
+                <p class="alanb-quote-attr">${role ? role + ' ' : ''}${name}</p>
+            </div>`;
+      }).filter(q=>q).join('\n');
+      if (quotes) {
+        quotesHtml = `        <div class="alanb-section">
+            <h3 class="alanb-section-title">${qTitle}</h3>
+${quotes}
+        </div>`;
+      }
+    }
+
+    // 작가 소개
+    let authorsHtml = '';
+    if (nfAuthorOn) {
+      const aTitle = G('nf_a_title') || '작가 소개';
+      const authors = Array.from(document.querySelectorAll('#nf-author-list .dyn-item')).map(item => {
+        const name = item.querySelector('.nfa-name')?.value.trim() || '';
+        const role = item.querySelector('.nfa-role')?.value.trim() || '';
+        const photo = item.querySelector('.nfa-photo')?.value.trim() || '';
+        const bio  = item.querySelector('.nfa-bio')?.value.trim() || '';
+        if (!name && !bio) return '';
+        const photoHtml = photo ? `                <img class="alanb-author-photo" src="${photo}" alt="${name}">` : '';
+        return `            <div class="alanb-author-card">
+${photoHtml}
+                <div class="alanb-author-info">
+                    <p class="alanb-author-name">${role ? role + ' · ' : ''}${name}</p>
+                    <p class="alanb-author-bio">${bio}</p>
+                </div>
+            </div>`;
+      }).filter(a=>a).join('\n');
+      if (authors) {
+        authorsHtml = `        <div class="alanb-section">
+            <h3 class="alanb-section-title">${aTitle}</h3>
+${authors}
+        </div>`;
+      }
+    }
+
+    // 이벤트 안내
+    let eventHtml = '';
+    if (nfEventOn) {
+      const eTitle = G('nf_e_title') || '이벤트 안내';
+      const eBody  = G('nf_e_body') || '';
+      const eLines = eBody.split('\n').filter(l=>l.trim()).map(l=>`                <li>${l.trim().replace(/^[-·•]\s*/,'')}</li>`).join('\n');
+      if (eLines) {
+        eventHtml = `        <div class="alanb-section alanb-event-section">
+            <h3 class="alanb-section-title">${eTitle}</h3>
+            <ul class="alanb-event-list">
+${eLines}
+            </ul>
+        </div>`;
+      }
+    }
+
+    return `<!--신간알림 이벤트 풀세트-->
+<style>
+.alanb-wide-container { width:100%; font-family:'Pretendard',-apple-system,sans-serif; color:#333; background-color:#fff; }
+.alanb-hero-section { position:relative; display:flex; align-items:center; justify-content:center; background-image:${bgValM}; background-size:cover; background-position:center; background-color:${bgc}; min-height:550px; padding:60px 20px; }
+.alanb-hero-inner { width:calc(100% - 40px); margin:0 auto; display:flex; flex-direction:column; align-items:center; text-align:center; }
+.alanb-main-book-wrap { width:340px; max-width:80%; margin:40px auto; }
+.alanb-book-image { position:relative; width:100%; aspect-ratio:1/1.45; background-color:#fff; box-shadow:40px 40px 80px rgba(0,0,0,0.6); border-radius:4px 20px 20px 4px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.alanb-book-image::before { content:''; position:absolute; top:0; left:6px; width:3px; height:100%; background:rgba(255,255,255,0.15); z-index:1; pointer-events:none; }
+.alanb-book-image img { width:100%; height:100%; display:block; object-fit:cover; }
+.alanb-hero-title { color:${tc}; text-shadow:0 4px 15px rgba(0,0,0,0.5); line-height:1.6; margin:0; }
+.alanb-hero-title .tt1 { font-size:26px; font-weight:400; opacity:0.9; margin:0; }
+.alanb-hero-title .tt2 { font-size:36px; font-weight:800; word-break:keep-all; margin:0; }
+.alanb-hero-text { color:#fff; font-size:18px; font-weight:600; opacity:0.8; margin:0; }
+.alanb2-books-panorama { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:44px; width:100%; }
+.alanb2-book-item { display:flex; justify-content:center; }
+.alanb2-book-cover { width:100%; aspect-ratio:1/1.45; border-radius:3px 12px 12px 3px; overflow:hidden; box-shadow:10px 14px 36px rgba(0,0,0,0.7); position:relative; background:#222; }
+.alanb2-book-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+.alanb2-book-cover::before { content:''; position:absolute; top:0; left:4px; width:2px; height:100%; background:rgba(255,255,255,0.12); z-index:1; pointer-events:none; }
+.alanb-content-wrap { background:#fff; }
+.alanb-main-card { padding:32px 20px 24px; }
+.alanb-event-date { font-size:13px; color:#888; margin:0 0 14px; }
+.alanb-cta-btn { display:block; background:#eb217c; color:#fff !important; text-align:center; font-size:16px; font-weight:700; padding:16px; border-radius:8px; text-decoration:none; margin-bottom:24px; }
+.alanb-highlight { font-size:17px; font-weight:700; color:#1a1a1a; line-height:1.55; margin:0 0 16px; }
+.alanb-body-text { font-size:15px; color:#444; line-height:1.8; margin:0 0 10px; }
+.alanb-section { padding:28px 20px; border-top:1px solid #f0f0f0; }
+.alanb-section-title { font-size:18px; font-weight:800; color:#1a1a1a; margin:0 0 18px; }
+.alanb-quote-item { background:#f9f9f9; border-left:3px solid #eb217c; border-radius:0 8px 8px 0; padding:16px 18px; margin-bottom:14px; }
+.alanb-quote-text { font-size:15px; color:#333; line-height:1.75; margin:0 0 8px; font-style:italic; }
+.alanb-quote-attr { font-size:13px; color:#888; margin:0; text-align:right; }
+.alanb-author-card { display:flex; gap:16px; align-items:flex-start; margin-bottom:20px; }
+.alanb-author-photo { width:72px; height:72px; border-radius:50%; object-fit:cover; flex-shrink:0; background:#eee; }
+.alanb-author-info { flex:1; }
+.alanb-author-name { font-size:15px; font-weight:700; color:#1a1a1a; margin:0 0 6px; }
+.alanb-author-bio { font-size:14px; color:#555; line-height:1.7; margin:0; }
+.alanb-event-section { background:#fafafa; }
+.alanb-event-list { margin:0; padding:0 0 0 18px; }
+.alanb-event-list li { font-size:14px; color:#444; line-height:1.9; }
+@media screen and (min-width:750px) {
+    .alanb-hero-section { background-image:${bgValPC} !important; min-height:750px; padding:80px 0 230px; }
+    .alanb-hero-inner { max-width:1290px; }
+    .alanb-hero-title .tt1 { font-size:28px; margin:0; }
+    .alanb-hero-title .tt2 { font-size:56px; margin:0; }
+    .alanb-main-book-wrap { width:340px; }
+    .alanb2-books-panorama { grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:52px; }
+    .alanb-content-wrap { max-width:860px; margin:0 auto; padding:0 20px; }
+    .alanb-main-card { padding:40px 0 30px; }
+    .alanb-section { padding:32px 0; }
+}
+</style>
+    <div class="alanb-wide-container">
+        <div class="alanb-hero-section">
+            <div class="alanb-hero-inner">
+${coverHtml}
+                <h2 class="alanb-hero-title">
+${tag ? `                    <p class="tt1">${tag}</p>\n` : ''}                    <p class="tt2">${ser}</p>
+                </h2>
+${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}            </div>
+        </div>
+        <div class="alanb-content-wrap">
+            <div class="alanb-main-card">
+${date ? `                <p class="alanb-event-date">📅 ${date}</p>` : ''}
+                <a href="${ctaUrl}" class="alanb-cta-btn">${cta}</a>
+${hl   ? `                <p class="alanb-highlight">${hl}</p>` : ''}
+${bodyHtml}
+            </div>
+${quotesHtml}
+${authorsHtml}
+${eventHtml}
+        </div>
+    </div>
+<!--// 신간알림 이벤트 풀세트-->`;
+  }
 };
 
 // 모듈 키 → 마커 매핑
@@ -1696,6 +2228,9 @@ function gen(key){
     else { ed.value=_savedNbCode?_savedNbCode+'\n\n'+wrapped:wrapped; }
     moduleRegistry[instId]={key:'hn',screenId:'hero-nb',label:MODULE_LABELS.hn};
     _savedNbCode=''; editingInstId=null;
+  } else if(key==='nbf'){
+    ed.value = code;
+    _savedNbfCode = ''; editingInstId = null;
   } else if(editingInstId){
     // 수정 모드
     replaceInstance(editingInstId, wrapInstance(editingInstId, code));
