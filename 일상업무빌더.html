@@ -2098,7 +2098,28 @@ ${bgValM ? `.alanb-hero-section { background-image: ${bgValM}; }` : ''}${pcOverr
 </style>`;
 
     // ── 7. 조립 (newbook.css 기준 구조)
-    return `<!--신간알림 이벤트 풀세트-->
+    const header = `<%@ Control Language="c#" AutoEventWireup="true" %>
+<%@ Import namespace="Aladdin.FrameWork" %>
+<%@ Import namespace="Aladdin.AppBlock" %>
+<%@ Import namespace="System.Data" %>
+<%@ Import namespace="Aladdin.AppBlock.Blog2.Paper" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info_list" Src="~/ucl/itemview/list/wa_item_info_list.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_item_info" Src="~/ucl/itemview/wa_item_info.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_coupondown_btn" Src="~/ucl/coupon/wa_coupondown_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_RandomTab" Src="~/ucl_editor/events/wa_RandomTab.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_events_sns_btn" Src="~/ucl/events/eventComment/wa_events_sns_btn.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="wa_event_supplements" Src="~/ucl/events/wa_event_supplements.ascx" %>
+<%@ Register Src="/ucl/events/eventComment/wa_events_comment_v3.ascx" TagName="EventComment" TagPrefix="uc1" %>
+<%@ Register TagPrefix="uc1" TagName="alarm" Src="/ucl/m/Event/m_Event_NewAlarm.ascx" %>
+<link rel="stylesheet" media="screen" type="text/css" href="/ucl_editor/events/css/comment2019.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>" />
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/swiper@12/swiper-bundle.min.css">
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/newbook.css">
+<link type="text/css" rel="stylesheet" href="/ucl_editor/events/css/mOnly.css?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>">
+<script type="text/javascript" src="/ucl_editor/events/js/mOnly.js?ver=<%=DateTime.Now.ToString("yyyyMMddhhmm")%>"></script>`;
+
+    return `${header}
+
+<!--신간알림 이벤트 풀세트-->
 ${css}
     <div class="alanb-wide-container">
         <div class="alanb-hero-section">
