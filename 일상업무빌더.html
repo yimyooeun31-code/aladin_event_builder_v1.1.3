@@ -43,7 +43,7 @@ body { font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif; 
 .s-title { font-size:22px; font-weight:900; letter-spacing:-.03em; line-height:1.25; }
 .s-desc { font-size:13px; color:var(--text2); margin-top:5px; line-height:1.5; }
 
-.s-head-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.s-head-row { display:flex; align-items:center; gap:8px; margin-bottom:20px; }
 .reset-field-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border:1.5px solid var(--border); border-radius:var(--r-sm); background:#fff; font-size:14px; font-weight:700; color:var(--text3); cursor:pointer; font-family:inherit; transition:all .15s; white-space:nowrap; }
 .reset-field-btn:hover { border-color:#ef4444; color:#ef4444; background:#fef2f2; }
 .s-div { height:1px; background:var(--border); margin:0 24px; flex-shrink:0; }
@@ -55,7 +55,7 @@ body { font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif; 
 .s-body--done { overflow:hidden; opacity:0.35; pointer-events:none; user-select:none; }
 
 /* 홈 메인 탭 */
-.home-main-tab { flex:1; padding:10px 0; font-size:15px; font-weight:700; background:none; border:none; cursor:pointer; color:var(--text2); border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .15s; font-family:inherit; }
+.home-main-tab { flex:1; padding:12px 0; font-size:16px; font-weight:700; background:none; border:none; cursor:pointer; color:var(--text2); border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .15s; font-family:inherit; }
 .home-main-tab.on { color:var(--text); border-bottom-color:var(--text); }
 .home-main-tab:hover:not(.on) { color:var(--text); }
 
@@ -66,18 +66,18 @@ body { font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif; 
 
 /* 배너 요청 체크박스 목록 */
 .br-cb-list { display:flex; flex-direction:column; gap:4px; }
-.br-cb-item { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:var(--r-sm); cursor:pointer; font-size:13px; color:var(--text); transition:background .12s; user-select:none; }
+.br-cb-item { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:var(--r-sm); cursor:pointer; font-size:15px; color:var(--text); transition:background .12s; user-select:none; }
 .br-cb-item:hover { background:var(--bg); }
 .br-cb-item input[type="checkbox"] { width:15px; height:15px; accent-color:var(--brand); cursor:pointer; flex-shrink:0; }
 
 /* 모듈 그리드 */
 .mod-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.mod-card { background:#fff; border:1px solid var(--border); border-radius:var(--r); padding:18px 16px; cursor:pointer; transition:all .18s; display:flex; flex-direction:column; gap:8px; user-select:none; }
+.mod-card { background:#fff; border:1px solid var(--border); border-radius:var(--r); padding:18px 16px; cursor:pointer; transition:all .18s; display:flex; flex-direction:column; gap:8px; user-select:none; position:relative; }
 .mod-card:hover { border-color:var(--brand); background:var(--brand-bg); transform:translateY(-2px); box-shadow:0 4px 12px rgba(74,126,224,.1); }
 .mod-icon { font-size:30px; line-height:1; }
 .mod-name { font-size:16px; font-weight:700; }
 .mod-desc { font-size:13px; color:var(--text2); line-height:1.4; }
-.mod-arrow { font-size:16px; color:var(--text3); margin-top:auto; transition:all .18s; }
+.mod-arrow { font-size:16px; color:var(--text3); position:absolute; top:16px; right:16px; transition:all .18s; }
 .mod-card:hover .mod-arrow { color:var(--brand); transform:translateX(3px); }
 
 /* 스타일 카드 */
@@ -93,15 +93,15 @@ body { font-family:'Pretendard Variable','Pretendard',-apple-system,sans-serif; 
 
 /* 폼 */
 .f-sec { margin-bottom:24px; }
-.f-sec-title { font-size:11px; font-weight:700; color:var(--text2); letter-spacing:.04em; padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:14px; display:flex; align-items:center; gap:6px; text-transform:uppercase; }
+.f-sec-title { font-size:12px; font-weight:700; color:var(--text2); letter-spacing:.04em; padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:14px; display:flex; align-items:center; gap:6px; text-transform:uppercase; }
 .f-sec-title::before { content:''; width:3px; height:12px; background:var(--brand); border-radius:2px; }
-.field { margin-bottom:14px; }
+.field { margin-bottom:20px; }
 .field:last-child { margin-bottom:0; }
-.field-label { display:block; font-size:12px; font-weight:700; color:var(--text2); margin-bottom:5px; }
+.field-label { display:block; font-size:14px; font-weight:700; color:var(--text2); margin-bottom:10px; }
 .field-hint { font-size:13px; font-weight:400; color:var(--text3); margin-top:4px; line-height:1.5; }
 
-input[type="text"],select,textarea { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:var(--r-sm); font-size:15px; font-family:inherit; color:var(--text); background:var(--surface); transition:border-color .15s,box-shadow .15s; line-height:1.5; }
-input[type="text"]:focus,select:focus,textarea:focus { outline:none; border-color:var(--brand); box-shadow:0 0 0 3px rgba(74,126,224,.08); }
+input[type="text"],input[type="number"],select,textarea { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:var(--r-sm); font-size:16px; font-family:inherit; color:var(--text); background:var(--surface); transition:border-color .15s,box-shadow .15s; line-height:1.5; }
+input[type="text"]:focus,input[type="number"]:focus,select:focus,textarea:focus { outline:none; border-color:var(--brand); box-shadow:0 0 0 3px rgba(74,126,224,.08); }
 input::placeholder,textarea::placeholder { color:var(--text3); }
 textarea { resize:vertical; min-height:72px; }
 select { cursor:pointer; appearance:none; background-image:url("https://image.aladin.co.kr/img/svg/down-arrow.svg"); background-repeat:no-repeat; background-position:right 14px center; background-size:20px 20px; padding-right:42px; }
@@ -130,11 +130,11 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
 .dyn-item .field { margin-bottom:8px; }
 .dyn-item .field:last-child { margin-bottom:0; }
 .dyn-item .field-label { font-size:14px; margin-bottom:10px; }
-.dyn-item input,.dyn-item select,.dyn-item textarea { padding:7px 10px; font-size:12px; }
-.btn-add { width:100%; padding:10px; border:2px dashed #D0D0D0; background:transparent; color:var(--text3); border-radius:var(--r-sm); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; margin-top:8px; }
+.dyn-item input,.dyn-item select,.dyn-item textarea { padding:7px 10px; font-size:16px; }
+.btn-add { width:100%; padding:11px 14px; border:1.5px dashed var(--border); background:#fff; color:var(--text2); border-radius:var(--r-sm); font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; margin-top:8px; }
 .btn-add:hover { border-color:var(--brand); color:var(--brand); background:var(--brand-bg); }
 
-.tog-lbl { display:flex; align-items:center; gap:8px; padding:9px 12px; background:#F9F9F9; border:1px solid var(--border); border-radius:var(--r-sm); cursor:pointer; font-size:12px; font-weight:600; color:var(--text); margin-bottom:8px; }
+.tog-lbl { display:flex; align-items:center; gap:8px; padding:9px 12px; background:#F9F9F9; border:1px solid var(--border); border-radius:var(--r-sm); cursor:pointer; font-size:14px; font-weight:600; color:var(--text); margin-bottom:8px; }
 .tog-lbl input { width:15px; height:15px; accent-color:var(--brand); cursor:pointer; flex-shrink:0; }
 .ai-chip { display:inline-flex; align-items:center; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border); background:#fff; color:var(--text2); font-size:12px; font-weight:500; line-height:1; cursor:pointer; transition:all .15s; user-select:none; }
 .ai-chip.sel { border-color:#4A7EE0; background:#ECF2FD; color:#4A7EE0; }
@@ -156,12 +156,12 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
 .out-area[style*="none"] + * { width:100%; }
 .app-body.home-mode { justify-content:center; }
 .app-body.home-mode .step-area { width:100%; max-width:680px; margin:0 auto; border-right:none; }
-.out-header { height:48px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 16px; gap:2px; flex-shrink:0; }
-.out-tab { height:100%; padding:0 16px; border:none; background:transparent; font-size:13px; font-weight:600; color:var(--text3); cursor:pointer; border-bottom:2.5px solid transparent; transition:all .15s; font-family:inherit; }
+.out-header { height:54px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 16px; gap:2px; flex-shrink:0; }
+.out-tab { height:100%; padding:0 16px; border:none; background:transparent; font-size:15px; font-weight:600; color:var(--text3); cursor:pointer; border-bottom:2.5px solid transparent; transition:all .15s; font-family:inherit; }
 .out-tab:hover { color:var(--text); }
 .out-tab.on { color:var(--text); border-bottom-color:var(--brand); }
 .out-btns { margin-left:auto; display:flex; gap:6px; }
-.out-btn { height:30px; padding:0 12px; border:1px solid var(--border); background:var(--surface); border-radius:6px; font-size:12px; font-weight:600; color:var(--text2); cursor:pointer; font-family:inherit; transition:all .15s; }
+.out-btn { height:36px; padding:0 14px; border:1px solid var(--border); background:var(--surface); border-radius:6px; font-size:14px; font-weight:600; color:var(--text2); cursor:pointer; font-family:inherit; transition:all .15s; }
 .out-btn:hover { background:var(--bg); color:var(--text); }
 .out-btn.pri { background:var(--brand); color:#fff; border-color:var(--brand); }
 .out-btn.pri:hover { background:var(--brand-dark); }
@@ -289,6 +289,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <div class="mod-card" onclick="sel('author')"><div class="mod-icon">✍️</div><div class="mod-name">작가 소개</div><div class="mod-desc">신간알림 및 저자파일 포함</div><div class="mod-arrow">→</div></div>
               <div class="mod-card" onclick="sel('banner')"><div class="mod-icon">🏷️</div><div class="mod-name">배너 링크</div><div class="mod-desc">이미지형 / 텍스트 컬러형</div><div class="mod-arrow">→</div></div>
               <div class="mod-card" onclick="sel('booklist')"><div class="mod-icon">📋</div><div class="mod-name">도서 리스트</div><div class="mod-desc">큐레이션 도서 목록 섹션</div><div class="mod-arrow">→</div></div>
+              <div class="mod-card" onclick="sel('spacer')"><div class="mod-icon">↕️</div><div class="mod-name">여백 삽입</div><div class="mod-desc">모듈 사이 상하 여백 추가</div><div class="mod-arrow">→</div></div>
             </div>
           </div>
 
@@ -296,42 +297,42 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
           <div id="homeTab-event" style="display:none; flex-direction:column; gap:10px;">
             <div class="s-desc" style="margin-bottom:14px;">완성형 이벤트 템플릿을 선택하세요. 필요한 섹션을 한 번에 완성합니다.</div>
             <div class="mod-grid">
-              <div class="mod-card" onclick="goNbFull()" style="grid-column:span 2; border-color:#fce7f3; background:#fdf0f8; flex-direction:row; align-items:center; gap:14px;">
-                <div class="mod-icon" style="background:#fce7f3; font-size:22px; width:40px; height:40px; flex-shrink:0;">📖</div>
+              <div class="mod-card" onclick="goNbFull()" style="grid-column:span 2; flex-direction:row; align-items:center; gap:14px;">
+                <div class="mod-icon" style="font-size:22px; width:40px; height:40px; flex-shrink:0;">📖</div>
                 <div style="flex:1;">
-                  <div class="mod-name" style="color:#be185d;">신간알림 이벤트 (풀세트)</div>
+                  <div class="mod-name">신간알림 이벤트 (풀세트)</div>
                   <div class="mod-desc">히어로 · 책소개 · 추천의 말 · 작가 · 이벤트 안내 한번에 완성</div>
                 </div>
-                <div class="mod-arrow" style="color:#ec4899; margin-top:0;">→</div>
+                <div class="mod-arrow">→</div>
               </div>
             </div>
           </div>
 
           <!-- 업무 도구 탭 -->
           <div id="homeTab-tools" style="display:none; flex-direction:column; gap:10px;">
-            <div class="mod-card" onclick="go('banner-request')" style="grid-column:span 2; border-color:#bfdbfe; background:#eff6ff; flex-direction:row; align-items:center; gap:14px;">
-              <div class="mod-icon" style="background:#dbeafe; font-size:22px; width:40px; height:40px; flex-shrink:0;">🏷️</div>
+            <div class="mod-card" onclick="go('banner-request')" style="grid-column:span 2; flex-direction:row; align-items:center; gap:14px;">
+              <div class="mod-icon" style="font-size:22px; width:40px; height:40px; flex-shrink:0;">🏷️</div>
               <div style="flex:1;">
-                <div class="mod-name" style="color:#1d4ed8;">이벤트 배너 요청 목록 생성</div>
+                <div class="mod-name">이벤트 배너 요청 목록 생성</div>
                 <div class="mod-desc">이벤트명 입력 → 전체 배너 URL 자동 생성 (이벤트 · 북펀드 · 종합이벤트)</div>
               </div>
-              <div class="mod-arrow" style="color:#3b82f6; margin-top:0;">→</div>
+              <div class="mod-arrow" style="margin-top:0;">→</div>
             </div>
-            <div class="mod-card" onclick="sel('ai-prompt')" style="grid-column:span 2; border-color:#e9d5ff; background:#fdf4ff; flex-direction:row; align-items:center; gap:14px;">
-              <div class="mod-icon" style="background:#f3e8ff; font-size:22px; width:40px; height:40px; flex-shrink:0;">🎨</div>
+            <div class="mod-card" onclick="sel('ai-prompt')" style="grid-column:span 2; flex-direction:row; align-items:center; gap:14px;">
+              <div class="mod-icon" style="font-size:22px; width:40px; height:40px; flex-shrink:0;">🎨</div>
               <div style="flex:1;">
-                <div class="mod-name" style="color:#7c3aed;">AI 배경 이미지 프롬프트 생성</div>
+                <div class="mod-name">AI 배경 이미지 프롬프트 생성</div>
                 <div class="mod-desc">분위기·스타일·컬러 설정 → Midjourney / ChatGPT / Gemini에 바로 붙여넣기</div>
               </div>
-              <div class="mod-arrow" style="color:#a855f7; margin-top:0;">→</div>
+              <div class="mod-arrow" style="margin-top:0;">→</div>
             </div>
-            <div class="mod-card" onclick="openLottieGuide()" style="grid-column:span 2; border-color:#d1fae5; background:#f0fdf4; flex-direction:row; align-items:center; gap:14px;">
-              <div class="mod-icon" style="background:#d1fae5; font-size:22px; width:40px; height:40px; flex-shrink:0;">🎬</div>
+            <div class="mod-card" onclick="openLottieGuide()" style="grid-column:span 2; flex-direction:row; align-items:center; gap:14px;">
+              <div class="mod-icon" style="font-size:22px; width:40px; height:40px; flex-shrink:0;">🎬</div>
               <div style="flex:1;">
-                <div class="mod-name" style="color:#065f46;">JSON 이벤트 페이지 활용 가이드</div>
+                <div class="mod-name">JSON 이벤트 페이지 활용 가이드</div>
                 <div class="mod-desc">Lottie 애니메이션 삽입 방법 · 업로드 경로 · 코드 예시 · FAQ</div>
               </div>
-              <div class="mod-arrow" style="color:#10b981; margin-top:0;">→</div>
+              <div class="mod-arrow" style="margin-top:0;">→</div>
             </div>
           </div>
 
@@ -349,15 +350,15 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
           <div style="display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap;">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-size:12px; color:var(--text2); font-weight:600;">연도</span>
-              <input type="text" id="br_year" maxlength="4" style="width:72px; font-size:13px; text-align:center;" oninput="genBannerReq()">
+              <input type="text" id="br_year" maxlength="4" style="width:72px; font-size:16px; text-align:center;" oninput="genBannerReq()">
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-size:12px; color:var(--text2); font-weight:600;">분기</span>
-              <input type="text" id="br_quarter" maxlength="2" style="width:72px; font-size:13px; text-align:center;" oninput="genBannerReq()">
+              <input type="text" id="br_quarter" maxlength="2" style="width:72px; font-size:16px; text-align:center;" oninput="genBannerReq()">
               <span id="br_quarter_hint" style="font-size:11px; color:var(--text3);"></span>
             </div>
           </div>
-          <script>(function(){var now=new Date(),y=now.getFullYear(),q=String(Math.ceil((now.getMonth()+1)/3)).padStart(2,'0'),hints=['1~3월→01','4~6월→02','7~9월→03','10~12월→04'];document.getElementById('br_year').value=y;document.getElementById('br_quarter').value=q;document.getElementById('br_quarter_hint').textContent='(자동: '+hints[parseInt(q,10)-1]+')';})();</script>
+          <script>(function(){var now=new Date(),y=now.getFullYear(),q=String(Math.ceil((now.getMonth()+1)/3)).padStart(2,'0'),hints=['1~3월→01','4~6월→02','7~9월→03','10~12월→04'];document.getElementById('br_year').value=y;document.getElementById('br_quarter').value=q;document.getElementById('br_quarter_hint').textContent='(자동: '+hints[parseInt(q,10)-1]+')';genBannerReq();})();</script>
           <!-- 배너 타입 서브탭 -->
           <div style="display:flex; gap:0; border-bottom:2px solid var(--border); margin-top:14px;">
             <button class="br-sub-tab on" onclick="switchBannerTab('event',this)">이벤트 배너</button>
@@ -389,7 +390,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <div style="display:flex; align-items:center; gap:8px; position:relative;">
                 <div id="br_ev_bgpv" style="width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:#ffffff; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('br_ev_bgcp').click()"></div>
                 <input type="color" id="br_ev_bgcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="document.getElementById('br_ev_bgpv').style.background=this.value; document.getElementById('br_ev_bgtx').value=this.value; genBannerReq();">
-                <input type="text" id="br_ev_bgtx" value="#ffffff" maxlength="7" style="width:80px; font-size:13px; font-family:monospace;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ev_bgcp').value=this.value; document.getElementById('br_ev_bgpv').style.background=this.value;} genBannerReq();">
+                <input type="text" id="br_ev_bgtx" value="#ffffff" maxlength="7" style="width:90px; font-size:16px; font-family:inherit;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ev_bgcp').value=this.value; document.getElementById('br_ev_bgpv').style.background=this.value;} genBannerReq();">
               </div>
             </div>
             <div style="font-size:14px; font-weight:700; color:var(--text2); margin-top:4px; margin-bottom:10px;">포함할 배너 선택</div>
@@ -437,7 +438,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <div style="display:flex; align-items:center; gap:8px; position:relative;">
                 <div id="br_bf_bgpv" style="width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:#ffffff; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('br_bf_bgcp').click()"></div>
                 <input type="color" id="br_bf_bgcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="document.getElementById('br_bf_bgpv').style.background=this.value; document.getElementById('br_bf_bgtx').value=this.value; genBannerReq();">
-                <input type="text" id="br_bf_bgtx" value="#ffffff" maxlength="7" style="width:80px; font-size:13px; font-family:monospace;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_bf_bgcp').value=this.value; document.getElementById('br_bf_bgpv').style.background=this.value;} genBannerReq();">
+                <input type="text" id="br_bf_bgtx" value="#ffffff" maxlength="7" style="width:80px; font-size:16px; font-family:inherit;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_bf_bgcp').value=this.value; document.getElementById('br_bf_bgpv').style.background=this.value;} genBannerReq();">
               </div>
             </div>
             <div style="font-size:14px; font-weight:700; color:var(--text2); margin-top:4px; margin-bottom:10px;">포함할 배너 선택</div>
@@ -467,7 +468,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
                 <div style="display:flex; align-items:center; gap:6px; position:relative;">
                   <div id="br_ge_bgpv" style="width:32px; height:32px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:#ffffff; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('br_ge_bgcp').click()"></div>
                   <input type="color" id="br_ge_bgcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="document.getElementById('br_ge_bgpv').style.background=this.value; document.getElementById('br_ge_bgtx').value=this.value; genBannerReq();">
-                  <input type="text" id="br_ge_bgtx" value="#ffffff" maxlength="7" style="width:72px; font-size:12px; font-family:monospace;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_bgcp').value=this.value; document.getElementById('br_ge_bgpv').style.background=this.value;} genBannerReq();">
+                  <input type="text" id="br_ge_bgtx" value="#ffffff" maxlength="7" style="width:72px; font-size:16px; font-family:inherit;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_bgcp').value=this.value; document.getElementById('br_ge_bgpv').style.background=this.value;} genBannerReq();">
                 </div>
               </div>
               <div class="field" style="margin:0; flex:1;">
@@ -475,7 +476,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
                 <div style="display:flex; align-items:center; gap:6px; position:relative;">
                   <div id="br_ge_roofpv" style="width:32px; height:32px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:#ffffff; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('br_ge_roofcp').click()"></div>
                   <input type="color" id="br_ge_roofcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="document.getElementById('br_ge_roofpv').style.background=this.value; document.getElementById('br_ge_rooftx').value=this.value; genBannerReq();">
-                  <input type="text" id="br_ge_rooftx" value="#ffffff" maxlength="7" style="width:72px; font-size:12px; font-family:monospace;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_roofcp').value=this.value; document.getElementById('br_ge_roofpv').style.background=this.value;} genBannerReq();">
+                  <input type="text" id="br_ge_rooftx" value="#ffffff" maxlength="7" style="width:72px; font-size:16px; font-family:inherit;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_roofcp').value=this.value; document.getElementById('br_ge_roofpv').style.background=this.value;} genBannerReq();">
                 </div>
               </div>
               <div class="field" style="margin:0; flex:1;">
@@ -483,7 +484,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
                 <div style="display:flex; align-items:center; gap:6px; position:relative;">
                   <div id="br_ge_ldpv" style="width:32px; height:32px; border-radius:var(--r-sm); border:1.5px solid var(--border); background:#ffffff; cursor:pointer; flex-shrink:0;" onclick="document.getElementById('br_ge_ldcp').click()"></div>
                   <input type="color" id="br_ge_ldcp" value="#ffffff" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="document.getElementById('br_ge_ldpv').style.background=this.value; document.getElementById('br_ge_ldtx').value=this.value; genBannerReq();">
-                  <input type="text" id="br_ge_ldtx" value="#ffffff" maxlength="7" style="width:72px; font-size:12px; font-family:monospace;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_ldcp').value=this.value; document.getElementById('br_ge_ldpv').style.background=this.value;} genBannerReq();">
+                  <input type="text" id="br_ge_ldtx" value="#ffffff" maxlength="7" style="width:72px; font-size:16px; font-family:inherit;" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('br_ge_ldcp').value=this.value; document.getElementById('br_ge_ldpv').style.background=this.value;} genBannerReq();">
                 </div>
               </div>
             </div>
@@ -511,7 +512,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
             <div style="margin-bottom:8px;">
               <span style="font-size:14px; font-weight:700; color:var(--text2);">생성된 목록</span>
             </div>
-            <textarea id="br_output" readonly style="width:100%; min-height:220px; font-size:12px; font-family:monospace; line-height:1.7; border:1.5px solid var(--border); border-radius:var(--r-sm); padding:12px; box-sizing:border-box; background:#fafafa; resize:vertical; color:var(--text); white-space:pre;" placeholder="위 항목을 입력하면 자동으로 생성됩니다."></textarea>
+            <textarea id="br_output" readonly style="width:100%; min-height:220px; font-size:16px; font-family:inherit; line-height:1.7; border:1.5px solid var(--border); border-radius:var(--r-sm); padding:12px; box-sizing:border-box; background:#fafafa; resize:vertical; color:var(--text); white-space:pre;" placeholder="위 항목을 입력하면 자동으로 생성됩니다."></textarea>
           </div>
 
         </div>
@@ -774,7 +775,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
             </div>
           </div>
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="hm_fade" onchange="livePreview();"> PC에서 양옆 그라데이션 페이드 적용
             </label>
             <div class="field-hint" style="margin-top:6px; padding-left:2px;">체크 시 PC 화면에서 이미지 양옆이 배경색으로 자연스럽게 이어집니다.</div>
@@ -785,7 +786,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
         <div class="s-step" id="hmStep2">
           <div class="field">
             <label class="field-label">메인 타이틀</label>
-            <textarea id="hm_title" rows="3" placeholder="이벤트 타이틀을 입력하세요" style="font-size:14px;" oninput="livePreview();">이벤트 타이틀을 입력하세요</textarea>
+            <textarea id="hm_title" rows="3" placeholder="이벤트 타이틀을 입력하세요" oninput="livePreview();">이벤트 타이틀을 입력하세요</textarea>
             <div class="field-hint">{텍스트} = 핑크 강조 &nbsp;·&nbsp; /br = 줄바꿈</div>
           </div>
           <div class="field">
@@ -887,7 +888,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
           <div class="field" id="nbMultiCoverWrap" style="display:none;">
             <label class="field-label" style="margin-bottom:10px;">표지 목록 <span style="font-weight:400; color:var(--text3);">(최대 4권)</span></label>
             <div id="nbMultiList" style="display:flex; flex-direction:column; gap:8px;"></div>
-            <button type="button" id="nbAddCoverBtn" onclick="addCoverRow('nb')" style="margin-top:10px; width:100%; height:36px; background:#fff; border:1.5px dashed var(--border); border-radius:var(--r-sm); font-size:13px; color:var(--text3); cursor:pointer;">+ 표지 추가</button>
+            <button type="button" id="nbAddCoverBtn" onclick="addCoverRow('nb')" class="btn-add">+ 표지 추가</button>
           </div>
           <!-- 배경 -->
           <div class="field">
@@ -905,7 +906,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
             </div>
           </div>
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="hn_radial" checked onchange="nbLivePreview();"> 다크 오버레이 적용
             </label>
             <div class="field-hint" style="margin-top:6px; padding-left:2px;">배경 이미지 위에 50% 어두운 레이어를 씌워 타이틀 가독성을 높입니다.</div>
@@ -960,12 +961,12 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
         <div class="s-step on" id="nfStep1">
           <div class="field">
             <label class="field-label">커버 스타일</label>
-            <div style="display:flex; flex-direction:column; gap:4px;">
-              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+            <div style="display:flex; flex-direction:row; gap:20px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:18px; font-weight:600;">
                 <input type="radio" name="nfCoverMode" value="single" id="nfCoverSingleRd" checked onchange="selectNfCoverMode(this.value)">
                 단일 표지
               </label>
-              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:14px; font-weight:600;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 2px; font-size:18px; font-weight:600;">
                 <input type="radio" name="nfCoverMode" value="multi" id="nfCoverMultiRd" onchange="selectNfCoverMode(this.value)">
                 여러 권
               </label>
@@ -977,11 +978,12 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <input type="text" id="nf_cv" value="//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'nf_tcv'); nfLivePreview();">
               <img class="url-th" id="nf_tcv" src="" alt="">
             </div>
+            <input type="text" id="nf_cv_alt" value="" placeholder="표지 이미지 alt 텍스트 (예: 어스플러스 1권 표지)" oninput="nfLivePreview();" style="margin-top:8px;">
           </div>
           <div class="field" id="nfMultiCoverWrap" style="display:none;">
             <label class="field-label" style="margin-bottom:10px;">표지 목록 <span style="font-weight:400; color:var(--text3);">(최대 4권)</span></label>
             <div id="nfMultiList" style="display:flex; flex-direction:column; gap:8px;"></div>
-            <button type="button" id="nfAddCoverBtn" onclick="addCoverRow('nf')" style="margin-top:10px; width:100%; height:36px; background:#fff; border:1.5px dashed var(--border); border-radius:var(--r-sm); font-size:13px; color:var(--text3); cursor:pointer;">+ 표지 추가</button>
+            <button type="button" id="nfAddCoverBtn" onclick="addCoverRow('nf')" class="btn-add">+ 표지 추가</button>
           </div>
           <div class="field">
             <label class="field-label">배경 이미지 — 모바일</label>
@@ -998,7 +1000,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
             </div>
           </div>
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="nf_radial" checked onchange="nfLivePreview();"> 다크 오버레이 적용
             </label>
           </div>
@@ -1045,7 +1047,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
           <div class="field">
             <label class="field-label">신간알리미</label>
             <div style="display:flex; gap:8px; align-items:center;">
-              <select id="nf_alarm_type" onchange="nfLivePreview();" style="width:90px; flex-shrink:0; height:42px; border:1px solid var(--border); border-radius:8px; font-size:14px; padding:0 8px 0 10px; background:#fff url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23666%22/></svg>') no-repeat right 10px center; appearance:none; cursor:pointer;">
+              <select id="nf_alarm_type" onchange="nfLivePreview();" style="width:90px; flex-shrink:0; height:42px; border:1px solid var(--border); border-radius:8px; font-size:16px; padding:0 8px 0 10px; background:#fff url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23666%22/></svg>') no-repeat right 10px center; appearance:none; cursor:pointer;">
                 <option value="1">저자</option>
                 <option value="2">시리즈</option>
                 <option value="3">출판사</option>
@@ -1072,7 +1074,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
         <!-- NF Step 4: 추천의 말 -->
         <div class="s-step" id="nfStep4">
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="nf_quote_on" checked onchange="nfToggleSection('quote');"> 추천의 말 섹션 포함
             </label>
           </div>
@@ -1082,14 +1084,14 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <input type="text" id="nf_q_title" value="추천의 말" placeholder="추천의 말" oninput="nfLivePreview();">
             </div>
             <div id="nf-quote-list"></div>
-            <button class="btn-gen" onclick="addNfQuote()" style="background:#fff;color:var(--text);border:1.5px solid var(--border);font-size:13px;padding:10px;">+ 추천 글 추가</button>
+            <button class="btn-add" onclick="addNfQuote()">+ 추천 글 추가</button>
           </div>
         </div>
 
         <!-- NF Step 5: 만든 사람들 -->
         <div class="s-step" id="nfStep5">
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="nf_author_on" checked onchange="nfToggleSection('author');"> 만든 사람들 섹션 포함
             </label>
           </div>
@@ -1099,14 +1101,14 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
               <input type="text" id="nf_a_title" value="만든 사람들" placeholder="만든 사람들" oninput="nfLivePreview();">
             </div>
             <div id="nf-author-list"></div>
-            <button class="btn-gen" onclick="addNfAuthor()" style="background:#fff;color:var(--text);border:1.5px solid var(--border);font-size:13px;padding:10px;">+ 작가 추가</button>
+            <button class="btn-add" onclick="addNfAuthor()">+ 작가 추가</button>
           </div>
         </div>
 
         <!-- NF Step 6: 이벤트 안내 -->
         <div class="s-step" id="nfStep6">
           <div class="field">
-            <label class="tog-lbl" style="font-size:13px; font-weight:700; border-radius:10px; padding:13px 16px;">
+            <label class="tog-lbl" style="font-weight:700; border-radius:10px; padding:13px 16px;">
               <input type="checkbox" id="nf_event_on" checked onchange="nfToggleSection('event');"> 이벤트 안내 섹션 포함
             </label>
           </div>
@@ -1122,7 +1124,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
             <div class="field">
               <label class="field-label">신간알리미</label>
               <div style="display:flex; gap:8px; align-items:center;">
-                <select id="nf_e_alarm_type" onchange="nfLivePreview();" style="width:90px; flex-shrink:0; height:42px; border:1px solid var(--border); border-radius:8px; font-size:14px; padding:0 8px 0 10px; background:#fff url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23666%22/></svg>') no-repeat right 10px center; appearance:none; cursor:pointer;">
+                <select id="nf_e_alarm_type" onchange="nfLivePreview();" style="width:90px; flex-shrink:0; height:42px; border:1px solid var(--border); border-radius:8px; font-size:16px; padding:0 8px 0 10px; background:#fff url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%23666%22/></svg>') no-repeat right 10px center; appearance:none; cursor:pointer;">
                   <option value="1">저자</option>
                   <option value="2">시리즈</option>
                   <option value="3">출판사</option>
@@ -1141,7 +1143,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
 참여 조건: 발표 시점까지 알림 상태 유지 및 기대평 작성 필수</textarea>
             </div>
             <div class="field">
-              <label class="tog-lbl" style="font-size:13px; font-weight:600; border-radius:8px; padding:10px 14px;">
+              <label class="tog-lbl" style="font-weight:600; border-radius:8px; padding:10px 14px;">
                 <input type="checkbox" id="nf_e_comment" checked onchange="nfLivePreview();"> 댓글 작성하러 가기 버튼 포함
               </label>
             </div>
@@ -1553,7 +1555,7 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
         </div>
         <div class="s-div"></div>
         <div class="s-body">
-          <div class="field" style="padding:16px 24px 0;">
+          <div class="field">
             <label class="field-label">섹션 제목</label>
             <input type="text" id="au_section_title" value="만든 사람들" placeholder="만든 사람들">
           </div>
@@ -1666,6 +1668,35 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
           <button class="btn-add" onclick="addGiftBanner()">+ 배너 추가</button>
         </div>
         <div class="s-actions"><button class="btn-gen" onclick="gen('gift-banner')">⚡ 코드 생성 후 추가</button></div>
+      </div>
+
+      <!-- 여백 삽입 -->
+      <div class="screen" id="sc-spacer">
+        <div class="s-head">
+          <div class="s-head-row">
+            <button class="back-btn" onclick="goHome('module')" style="margin-bottom:0;">← 뒤로</button>
+            <button class="reset-field-btn" onclick="resetScreen('spacer')">🔄 초기화</button>
+          </div>
+          <div class="s-title">여백 삽입</div>
+          <div class="s-desc">모듈 사이 상하 여백을 추가합니다.</div>
+        </div>
+        <div class="s-div"></div>
+        <div class="s-body">
+          <div class="field">
+            <label class="field-label">여백 크기</label>
+            <div style="display:flex; gap:12px;">
+              <div style="flex:1;">
+                <label style="font-size:12px; color:var(--text3); display:block; margin-bottom:6px;">모바일 (px)</label>
+                <input type="number" id="sp_m" value="40" min="0" max="300" style="width:100%; text-align:center; font-size:18px; font-weight:700;" oninput="moduleLivePreview('spacer');">
+              </div>
+              <div style="flex:1;">
+                <label style="font-size:12px; color:var(--text3); display:block; margin-bottom:6px;">PC (px)</label>
+                <input type="number" id="sp_pc" value="80" min="0" max="600" style="width:100%; text-align:center; font-size:18px; font-weight:700;" oninput="moduleLivePreview('spacer');">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="s-actions"><button class="btn-gen" onclick="gen('spacer')">⚡ 코드 생성 후 추가</button></div>
       </div>
 
       <!-- ② 도서 리스트: 타입 선택 -->
@@ -1846,12 +1877,14 @@ select { cursor:pointer; appearance:none; background-image:url("https://image.al
 fetch('/ucl_editor/json/bell.json')
   .then(function(res) { return res.json(); })
   .then(function(data) {
-    bodymovin.loadAnimation({
-      container: document.querySelector('.bell-motion'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: data
+    document.querySelectorAll('.bell-motion').forEach(function(el) {
+      bodymovin.loadAnimation({
+        container: el,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        animationData: data
+      });
     });
   });
 &lt;/script&gt;</code></div>
@@ -1918,22 +1951,23 @@ fetch('/ucl_editor/json/bell.json')
 fetch('/ucl_editor/json/bell.json')
   .then(function(res) { return res.json(); })
   .then(function(data) {
-    var bellBox = document.querySelector('.bell-motion');
-    var anim = bodymovin.loadAnimation({
-      container: bellBox,
-      renderer: 'svg',
-      loop: false,      // 반복 ❌
-      autoplay: false,  // 자동재생 ❌
-      animationData: data
-    });
+    document.querySelectorAll('.bell-motion').forEach(function(bellBox) {
+      var anim = bodymovin.loadAnimation({
+        container: bellBox,
+        renderer: 'svg',
+        loop: false,      // 반복 ❌
+        autoplay: false,  // 자동재생 ❌
+        animationData: data
+      });
 
-    function ringBell() { anim.goToAndPlay(0, true); }
-    bellBox.addEventListener('click', ringBell);
-    bellBox.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        ringBell();
-      }
+      function ringBell() { anim.goToAndPlay(0, true); }
+      bellBox.addEventListener('click', ringBell);
+      bellBox.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          ringBell();
+        }
+      });
     });
   });
 &lt;/script&gt;</code></div>
@@ -1955,19 +1989,20 @@ fetch('/ucl_editor/json/bell.json')
 fetch('/ucl_editor/json/bell.json')
   .then(function(res) { return res.json(); })
   .then(function(data) {
-    var bellBox = document.querySelector('.bell-motion');
-    var anim = bodymovin.loadAnimation({
-      container: bellBox,
-      renderer: 'svg',
-      loop: true,       // 반복 ⭕
-      autoplay: false,  // 자동재생 ❌
-      animationData: data
-    });
+    document.querySelectorAll('.bell-motion').forEach(function(bellBox) {
+      var anim = bodymovin.loadAnimation({
+        container: bellBox,
+        renderer: 'svg',
+        loop: true,       // 반복 ⭕
+        autoplay: false,  // 자동재생 ❌
+        animationData: data
+      });
 
-    bellBox.addEventListener('mouseenter', function() { anim.play(); });
-    bellBox.addEventListener('mouseleave', function() { anim.pause(); });
-    bellBox.addEventListener('focus', function() { anim.play(); });
-    bellBox.addEventListener('blur', function() { anim.pause(); });
+      bellBox.addEventListener('mouseenter', function() { anim.play(); });
+      bellBox.addEventListener('mouseleave', function() { anim.pause(); });
+      bellBox.addEventListener('focus', function() { anim.play(); });
+      bellBox.addEventListener('blur', function() { anim.pause(); });
+    });
   });
 &lt;/script&gt;</code></div>
           </div>
@@ -2139,6 +2174,8 @@ function go(id) {
   const hideOut = (id === 'home' || id === 'ai-prompt' || id === 'hero' || id === 'author' || id === 'coupon' || id === 'comment' || id === 'booklist' || id === 'slide' || id === 'banner-request');
   document.getElementById('outArea').style.display = hideOut ? 'none' : '';
   document.querySelector('.app-body').classList.toggle('home-mode', !!hideOut);
+  // 배너 요청 목록 화면 진입 시 목록 자동 생성
+  if (id === 'banner-request') genBannerReq();
   // 모듈 화면 진입 시 버튼 상태 업데이트 (추가/수정)
   updateGenBtnState(id);
   // 생성 모드에서 non-module 화면으로 이동 시 draft preview 초기화
@@ -2244,7 +2281,7 @@ function go(id) {
       moduleLivePreview('banner-card');
     } else if (id==='gift-banner') {
       document.getElementById('gb-list').innerHTML=''; gbi=0;
-      addGiftBanner({img:_si, link:_sl, tag:'증정품', tit:'증정 상품명 (샘플)', name:'상세 정보'});
+      addGiftBanner({img:'https://image.aladin.co.kr/img/events/book/2026/02/260406_taste_img2.jpg', link:_sl, tag:'증정품', tit:'증정 상품명 (샘플)', name:'상세 정보'});
       moduleLivePreview('gift-banner');
     } else if (id==='banner-all') {
       document.getElementById('bna-list').innerHTML=''; bnai=0;
@@ -2295,7 +2332,7 @@ function go(id) {
 }
 
 // 화면 ID → 모듈 키 매핑
-const SCREEN_TO_KEY = { alarm:'alarm', slide:'slide', 'slide-v1':'slide-v1', 'slide-v2':'slide-v2', 'slide-v3':'slide-v3', 'slide-v4':'slide-v4', 'slide-v5':'slide-v5', 'comment-detail':'comment', 'coupon-s':'cs', 'coupon-m':'cm', 'coupon-r':'rv', 'author-full':'author', 'banner-basic':'banner-basic', 'banner-all':'banner-all', 'banner-card':'banner-card', 'gift-banner':'gift-banner', 'booklist-detail':'booklist' };
+const SCREEN_TO_KEY = { alarm:'alarm', slide:'slide', 'slide-v1':'slide-v1', 'slide-v2':'slide-v2', 'slide-v3':'slide-v3', 'slide-v4':'slide-v4', 'slide-v5':'slide-v5', 'comment-detail':'comment', 'coupon-s':'cs', 'coupon-m':'cm', 'coupon-r':'rv', 'author-full':'author', 'banner-basic':'banner-basic', 'banner-all':'banner-all', 'banner-card':'banner-card', 'gift-banner':'gift-banner', 'booklist-detail':'booklist', spacer:'spacer' };
 
 function updateGenBtnState(screenId) {
   const key = SCREEN_TO_KEY[screenId];
@@ -2353,6 +2390,20 @@ function goHeroM() {
   document.getElementById('outArea').style.display = '';
   hmShowStep(1);
   renderBc();
+  // 기본값 설정 (편집 모드가 아닐 때만)
+  if (!editingInstId) {
+    const _mUrl = 'https://image.aladin.co.kr/img/events/book/2026/02/260527_yyd_mbg1.jpg';
+    const _pcUrl = 'https://image.aladin.co.kr/img/events/book/2026/02/260527_yyd_bg1.jpg';
+    const _bgc = '#e9e2d6';
+    document.getElementById('hm_bgm').value = _mUrl;
+    document.getElementById('hm_bgpc').value = _pcUrl;
+    th(document.getElementById('hm_bgm'), 'hm_tm');
+    th(document.getElementById('hm_bgpc'), 'hm_tpc');
+    document.getElementById('hm_bgc').value = _bgc;
+    document.getElementById('hm_bgcp').value = _bgc;
+    document.getElementById('hm_bgpv').style.background = _bgc;
+    document.getElementById('hm_fade').checked = true;
+  }
   livePreview();
 }
 
@@ -2600,11 +2651,11 @@ function addNfQuote() {
   item.innerHTML = `
     <button onclick="this.closest('.dyn-item').remove(); nfLivePreview();" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
     <div class="field" style="margin-bottom:8px;">
-      <label class="field-label" style="font-size:12px;">추천 글</label>
+      <label class="field-label">추천 글</label>
       <textarea class="nfq-text" rows="3" oninput="nfLivePreview();" placeholder="아이들의 뇌 구조와 호기심을 완벽하게 저격한 책"></textarea>
     </div>
     <div class="field">
-      <label class="field-label" style="font-size:12px;">출처 <span style="font-weight:400;color:#aaa;">추천인 ㅡ 직함/소속</span></label>
+      <label class="field-label">출처 <span style="font-weight:400;color:#aaa;">추천인 ㅡ 직함/소속</span></label>
       <input type="text" class="nfq-source" placeholder="엑소쌤 ㅡ 꾸그 1위 / 과학 커뮤니케이터" oninput="nfLivePreview();">
     </div>`;
   list.appendChild(item);
@@ -2627,24 +2678,24 @@ function addNfAuthor() {
     <button onclick="this.closest('.dyn-item').remove(); nfLivePreview();" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
       <div class="field">
-        <label class="field-label" style="font-size:12px;">역할 태그</label>
+        <label class="field-label">역할 태그</label>
         <input type="text" class="nfa-role" placeholder="글 / 그림 / 번역" oninput="nfLivePreview();">
       </div>
       <div class="field">
-        <label class="field-label" style="font-size:12px;">작가 이름</label>
+        <label class="field-label">작가 이름</label>
         <input type="text" class="nfa-name" placeholder="김해원" oninput="nfLivePreview();">
       </div>
     </div>
-    <div class="field" style="margin-bottom:8px;">
-      <label class="field-label" style="font-size:12px;">작가 ID <span style="font-weight:400;color:#aaa;">저자파일·신간알리미에 사용</span></label>
+    <div class="field">
+      <label class="field-label">작가 ID <span style="font-weight:400;color:#aaa;">저자파일·신간알리미에 사용</span></label>
       <input type="text" class="nfa-id" placeholder="6306681" oninput="nfLivePreview();">
     </div>
-    <div class="field" style="margin-bottom:8px;">
-      <label class="field-label" style="font-size:12px;">프로필 사진 URL <span style="font-weight:400;color:var(--text3);">(선택)</span></label>
+    <div class="field">
+      <label class="field-label">프로필 사진 URL <span style="font-weight:400;color:var(--text3);">(선택)</span></label>
       <input type="text" class="nfa-photo" placeholder="https://image.aladin.co.kr/..." oninput="nfLivePreview();">
     </div>
     <div class="field">
-      <label class="field-label" style="font-size:12px;">작가 소개 글</label>
+      <label class="field-label">작가 소개 글</label>
       <textarea class="nfa-bio" rows="3" oninput="nfLivePreview();" placeholder="한국일보 신춘문예 당선..."></textarea>
     </div>`;
   list.appendChild(item);
@@ -2760,10 +2811,10 @@ function addBlTab() {
   div.innerHTML = `
     <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
-      <div class="field"><label class="field-label" style="font-size:12px;">탭 이름</label><input type="text" class="bl2-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
-      <div class="field"><label class="field-label" style="font-size:12px;">CID</label><input type="text" class="bl2-tab-cid" value="196514" placeholder="196514"></div>
+      <div class="field"><label class="field-label">탭 이름</label><input type="text" class="bl2-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
+      <div class="field"><label class="field-label">CID</label><input type="text" class="bl2-tab-cid" value="196514" placeholder="196514"></div>
     </div>
-    <div class="field"><label class="field-label" style="font-size:12px;">더보기 URL <span style="font-weight:400;color:#aaa;">(선택, 없으면 # 처리)</span></label><input type="text" class="bl2-tab-url" placeholder="https://www.aladin.co.kr/shop/..."></div>`;
+    <div class="field"><label class="field-label">더보기 URL <span style="font-weight:400;color:#aaa;">(선택, 없으면 # 처리)</span></label><input type="text" class="bl2-tab-url" placeholder="https://www.aladin.co.kr/shop/..."></div>`;
   list.appendChild(div);
 }
 
@@ -2774,7 +2825,7 @@ function addBlItem() {
   div.style = 'background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; position:relative;';
   div.innerHTML = `
     <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
-    <div class="field"><label class="field-label" style="font-size:12px;">ItemID</label><input type="text" class="bl3-item-id" value="870950" placeholder="870950"></div>`;
+    <div class="field"><label class="field-label">ItemID</label><input type="text" class="bl3-item-id" value="870950" placeholder="870950"></div>`;
   list.appendChild(div);
 }
 
@@ -2787,8 +2838,8 @@ function addBlRandTab() {
   div.innerHTML = `
     <button onclick="this.closest('.dyn-item').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#999;" title="삭제">✕</button>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <div class="field"><label class="field-label" style="font-size:12px;">탭 이름</label><input type="text" class="bl4-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
-      <div class="field"><label class="field-label" style="font-size:12px;">CID</label><input type="text" class="bl4-tab-cid" value="196514" placeholder="196514"></div>
+      <div class="field"><label class="field-label">탭 이름</label><input type="text" class="bl4-tab-name" value="탭 ${n}" placeholder="탭 이름"></div>
+      <div class="field"><label class="field-label">CID</label><input type="text" class="bl4-tab-cid" value="196514" placeholder="196514"></div>
     </div>`;
   list.appendChild(div);
 }
@@ -2798,17 +2849,12 @@ function loadNfSample() {
   document.getElementById('nf_bgm').value = '//image.aladin.co.kr/img/events/book/2026/02/260414_pj_bg2.png';
   const radial = document.getElementById('nf_radial');
   if (radial) radial.checked = true;
-  // ── 멀티 표지 모드로 전환
-  document.getElementById('nfCoverMultiRd').checked = true;
+  // ── 단일 표지 모드 (기본값)
+  document.getElementById('nf_cv').value = '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png';
+  document.getElementById('nf_cv_alt').value = '어스플러스 1권 표지';
+  th(document.getElementById('nf_cv'), 'nf_tcv');
   document.getElementById('nfMultiList').innerHTML = '';
-  const _demoCovers = [
-    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo1.png',
-    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo2.png',
-    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo3.jpg',
-    '//image.aladin.co.kr/img/events/book/2026/02/260402_ep_boo4.jpg',
-  ];
-  _demoCovers.forEach(url => addCoverRow('nf', url));
-  selectNfCoverMode('multi');
+  selectNfCoverMode('single');
   // ── 타이틀
   document.getElementById('nf_tag').value = '어드벤처 과학 탐구 만화';
   document.getElementById('nf_ser').value = '<어스플러스> 시리즈';
@@ -2884,21 +2930,25 @@ function nbPrev() {
 }
 
 // ── 표지 동적 목록 헬퍼 (nb/nf 공용) ──────────────────────────────
-function addCoverRow(prefix, url='') {
+function addCoverRow(prefix, url='', alt='') {
   const list = document.getElementById(prefix + 'MultiList');
   if (!list) return;
   const count = list.querySelectorAll('.cover-row').length;
   if (count >= 4) return;
   const idx = count + 1;
   const dispUrl = url.startsWith('//') ? 'https:' + url : url;
+  const previewFn = prefix === 'nf' ? 'nfLivePreview' : 'nbLivePreview';
   const row = document.createElement('div');
   row.className = 'cover-row';
-  row.style.cssText = 'display:flex; align-items:center; gap:8px;';
+  row.style.cssText = 'display:flex; flex-direction:column; gap:4px;';
   row.innerHTML = `
-    <span style="font-size:12px; color:var(--text3); width:42px; flex-shrink:0; text-align:right;">표지 ${idx}</span>
-    <input type="text" class="cover-url" value="${url}" placeholder="//image.aladin.co.kr/..." oninput="coverUrlInput(this,'${prefix}')" style="flex:1; min-width:0;">
-    <img class="cover-th" src="${dispUrl}" alt="" style="width:28px; height:40px; object-fit:cover; border-radius:3px; flex-shrink:0;${url ? '' : ' display:none;'}">
-    <button type="button" onclick="removeCoverRow(this,'${prefix}')" style="flex-shrink:0; width:28px; height:28px; background:none; border:1.5px solid var(--border); border-radius:6px; cursor:pointer; font-size:12px; color:var(--text3); line-height:1; padding:0;">✕</button>`;
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:12px; color:var(--text3); width:42px; flex-shrink:0; text-align:right;">표지 ${idx}</span>
+      <input type="text" class="cover-url" value="${url}" placeholder="//image.aladin.co.kr/..." oninput="coverUrlInput(this,'${prefix}')" style="flex:1; min-width:0;">
+      <img class="cover-th" src="${dispUrl}" alt="" style="width:28px; height:40px; object-fit:cover; border-radius:3px; flex-shrink:0;${url ? '' : ' display:none;'}">
+      <button type="button" onclick="removeCoverRow(this,'${prefix}')" style="flex-shrink:0; width:28px; height:28px; background:none; border:1.5px solid var(--border); border-radius:6px; cursor:pointer; font-size:12px; color:var(--text3); line-height:1; padding:0;">✕</button>
+    </div>
+    <input type="text" class="cover-alt" value="${alt}" placeholder="alt 텍스트 (예: 어스플러스 1권 표지)" oninput="${previewFn}()" style="margin-left:50px; width:calc(100% - 50px); box-sizing:border-box; font-size:16px;">`;
   list.appendChild(row);
   updateCoverAddBtn(prefix);
 }
@@ -3164,8 +3214,8 @@ function genBannerReq() {
     if (chk(8))  { lines.push(`쇼핑앱 로딩 이미지 (bg:${ldBg})`); lines.push(`${p}/${name}_loading.jpg`); lines.push(''); }
     if (chk(9))  { lines.push('베스트셀러 하단 배너'); lines.push(`${p}/${name}_best.jpg`); lines.push(''); }
     if (chk(10)) { lines.push('굿즈썸네일'); lines.push(`${p}/${name}_gs.jpg`); lines.push(''); }
-    if (chk(12)) { lines.push('팝업'); lines.push(`http://image.aladin.co.kr/img/bn/${cat}/${year}/${qtr}/${name}_pop.jpg`); lines.push(''); }
-    if (chk(13)) { lines.push('플래시'); lines.push(`${p}/${name}.jpg`); lines.push(`${p}/${name}_main_flash_on.jpg`); lines.push(`${p}/${name}_main_flash_off.jpg`); lines.push(''); }
+    if (chk(11)) { lines.push('팝업'); lines.push(`${p}/${name}_pop.jpg`); lines.push(''); }
+    if (chk(12)) { lines.push('플래시'); lines.push(`${p}/${name}_main_flash.jpg`); lines.push(`${p}/${name}_main_flash_on.jpg`); lines.push(`${p}/${name}_main_flash_off.jpg`); lines.push(''); }
   }
 
   // 마지막 빈 줄 제거
@@ -3427,9 +3477,9 @@ function addSlideV4(d){ slv4i++; const c=document.getElementById('slv4-list'),el
 function resetSlideV4(){ if(!confirm('입력 내용을 모두 초기화하시겠습니까?'))return; document.getElementById('slv4-list').innerHTML=''; slv4i=0; document.getElementById('slv4_tit').value='이달의 추천 도서'; toast('🔄 입력이 초기화되었습니다.'); }
 function addSlideV5(d){ slv5i++; const c=document.getElementById('slv5-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">도서 ${slv5i}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">아이템ID</label><input type="text" class="slv5-id" value="${d?.id||''}" placeholder="298570092"></div>`; c.appendChild(el); _bindLp(el); }
 function resetSlideV5(){ if(!confirm('입력 내용을 모두 초기화하시겠습니까?'))return; document.getElementById('slv5-list').innerHTML=''; slv5i=0; document.getElementById('slv5_tit').value='이달의 추천 도서'; toast('🔄 입력이 초기화되었습니다.'); }
-function addAuthor(d){ ai++; const c=document.getElementById('au-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">작가 ${ai}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">역할</label><input type="text" class="au-role" value="${d?.role||'글'}" placeholder="글, 그림, 글·그림"></div><div class="field"><label class="field-label">이름</label><input type="text" class="au-name" value="${d?.name||''}" placeholder="작가명"></div><div class="field"><label class="field-label">저자 ID</label><input type="text" class="au-id" value="${d?.aid||''}" placeholder="aladin 저자 ID"></div><div class="field"><label class="field-label">소개글</label><textarea class="au-bio" rows="3" placeholder="저자 소개글">${d?.bio||''}</textarea></div><div class="field"><label class="field-label">사진 URL (선택)</label><div class="url-row"><input type="text" class="au-photo" value="${d?.photo||'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg'}" placeholder="https://image.aladin.co.kr/author/photo/..." oninput="th(this,'au_t${ai}')"><img class="url-th" id="au_t${ai}" src="${d?.photo||'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg'}" alt=""></div></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px"><label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" class="au-alarm" ${d?.alarm!==false?'checked':''} style="accent-color:#EB217C"> 신간 알리미</label><label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" class="au-file" ${d?.file!==false?'checked':''} style="accent-color:#EB217C"> 저자 파일</label></div>`; c.appendChild(el); _bindLp(el); }
+function addAuthor(d){ ai++; const c=document.getElementById('au-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">작가 ${ai}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">역할</label><input type="text" class="au-role" value="${d?.role||'글'}" placeholder="글, 그림, 글·그림"></div><div class="field"><label class="field-label">이름</label><input type="text" class="au-name" value="${d?.name||''}" placeholder="작가명"></div><div class="field"><label class="field-label">저자 ID</label><input type="text" class="au-id" value="${d?.aid||''}" placeholder="aladin 저자 ID"></div><div class="field"><label class="field-label">소개글</label><textarea class="au-bio" rows="3" placeholder="저자 소개글">${d?.bio||''}</textarea></div><div class="field"><label class="field-label">사진 URL (선택)</label><div class="url-row"><input type="text" class="au-photo" value="${d?.photo||'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg'}" placeholder="https://image.aladin.co.kr/author/photo/..." oninput="th(this,'au_t${ai}')"><img class="url-th" id="au_t${ai}" src="${d?.photo||'https://image.aladin.co.kr/author/photo/5694305/5694305_1.jpg'}" alt=""></div></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px"><label style="display:flex;align-items:center;gap:5px;font-size:14px;cursor:pointer"><input type="checkbox" class="au-alarm" ${d?.alarm!==false?'checked':''} style="accent-color:#EB217C"> 신간 알리미</label><label style="display:flex;align-items:center;gap:5px;font-size:14px;cursor:pointer"><input type="checkbox" class="au-file" ${d?.file!==false?'checked':''} style="accent-color:#EB217C"> 저자 파일</label></div>`; c.appendChild(el); _bindLp(el); }
 function addBannerAll(d){ bnai++; const n=bnai, color=d?.color||'#f2f3b1', c=document.getElementById('bna-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">배너 ${n}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">배경 색상</label><div style="display:flex;align-items:center;gap:8px;position:relative;"><div id="bna_pv${n}" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:${color};cursor:pointer;flex-shrink:0;" onclick="document.getElementById('bna_cp${n}').click()" title="클릭하면 컬러 팔레트 열림"></div><input type="color" id="bna_cp${n}" class="bna-color" value="${color}" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('bna_cp${n}',null,'bna_pv${n}'); moduleLivePreview('banner-all');"></div></div><div class="field"><label class="field-label">링크 URL</label><input type="text" class="bna-link" value="${d?.link||''}" placeholder="https://www.aladin.co.kr/..."></div><div class="field"><label class="field-label">메인 텍스트</label><input type="text" class="bna-p" value="${d?.p||''}" placeholder="쇼핑앱 접속 시, 적립금 1천원"></div><div class="field"><label class="field-label">부가 설명 <span style="font-weight:400;color:var(--text3);">선택</span></label><input type="text" class="bna-span" value="${d?.span||''}" placeholder="(유효기간 발급 당일, 본인인증 회원 한함)"></div>`; c.appendChild(el); _bindLp(el); }
-function addBannerCard(d){ if(!d){const _its=document.querySelectorAll('#bnc-list .dyn-item');if(_its.length>0){const _l=_its[_its.length-1];d={img:_l.querySelector('.bnc-img')?.value,link:_l.querySelector('.bnc-link')?.value,tag:_l.querySelector('.bnc-tag')?.value,tit:_l.querySelector('.bnc-tit')?.value,sub:_l.querySelector('.bnc-sub')?.value,btn:_l.querySelector('.bnc-btn')?.value,bg:_l.querySelector('.bnc-bg')?.value,btnColor:_l.querySelector('.bnc-btncolor')?.value};}} bnci++; const n=bnci,bgColor=d?.bg||'#f8f8f8',btnColor=d?.btnColor||'#333333',c=document.getElementById('bnc-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">배너 ${n}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">표지 이미지 URL</label><div class="url-row"><input type="text" class="bnc-img" value="${d?.img||''}" placeholder="https://image.aladin.co.kr/product/..." oninput="th(this,'bnc_t${n}')"><img class="url-th" id="bnc_t${n}" src="${d?.img||''}" alt=""></div></div><div class="field"><label class="field-label">링크 URL</label><input type="text" class="bnc-link" value="${d?.link||'#'}" placeholder="https://www.aladin.co.kr/..."></div><div class="field"><label class="field-label">태그</label><input type="text" class="bnc-tag" value="${d?.tag||''}" placeholder="북토크, 북펀드, 이벤트 등"></div><div class="field"><label class="field-label">제목</label><input type="text" class="bnc-tit" value="${d?.tit||''}" placeholder="출간 기념 북토크"></div><div class="field"><label class="field-label">부제목</label><input type="text" class="bnc-sub" value="${d?.sub||''}" placeholder="저자 × 게스트 북토크"></div><div class="field"><label class="field-label">버튼 텍스트</label><input type="text" class="bnc-btn" value="${d?.btn||'자세히 보기'}" placeholder="자세히 보기"></div><div class="field"><label class="field-label">카드 배경색</label><div style="display:flex;align-items:center;gap:8px;position:relative;"><div id="bnc_bgpv${n}" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:${bgColor};cursor:pointer;flex-shrink:0;" onclick="document.getElementById('bnc_bgcp${n}').click()" title="클릭하면 컬러 팔레트 열림"></div><input type="color" id="bnc_bgcp${n}" class="bnc-bg" value="${bgColor}" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('bnc_bgcp${n}','bnc_bgtx${n}','bnc_bgpv${n}'); moduleLivePreview('banner-card');"><input type="text" id="bnc_bgtx${n}" class="bnc-bgtx" value="${bgColor}" maxlength="7" style="width:82px;font-size:13px;font-family:monospace;letter-spacing:.04em;" oninput="spk('bnc_bgtx${n}','bnc_bgcp${n}','bnc_bgpv${n}'); moduleLivePreview('banner-card');"></div></div><div class="field"><label class="field-label">버튼 색상</label><div style="display:flex;align-items:center;gap:8px;position:relative;"><div id="bnc_btnpv${n}" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:${btnColor};cursor:pointer;flex-shrink:0;" onclick="document.getElementById('bnc_btncp${n}').click()" title="클릭하면 컬러 팔레트 열림"></div><input type="color" id="bnc_btncp${n}" class="bnc-btncolor" value="${btnColor}" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('bnc_btncp${n}','bnc_btntx${n}','bnc_btnpv${n}'); moduleLivePreview('banner-card');"><input type="text" id="bnc_btntx${n}" class="bnc-btntx" value="${btnColor}" maxlength="7" style="width:82px;font-size:13px;font-family:monospace;letter-spacing:.04em;" oninput="spk('bnc_btntx${n}','bnc_btncp${n}','bnc_btnpv${n}'); moduleLivePreview('banner-card');"></div></div>`; c.appendChild(el); _bindLp(el); }
+function addBannerCard(d){ if(!d){const _its=document.querySelectorAll('#bnc-list .dyn-item');if(_its.length>0){const _l=_its[_its.length-1];d={img:_l.querySelector('.bnc-img')?.value,link:_l.querySelector('.bnc-link')?.value,tag:_l.querySelector('.bnc-tag')?.value,tit:_l.querySelector('.bnc-tit')?.value,sub:_l.querySelector('.bnc-sub')?.value,btn:_l.querySelector('.bnc-btn')?.value,bg:_l.querySelector('.bnc-bg')?.value,btnColor:_l.querySelector('.bnc-btncolor')?.value};}} bnci++; const n=bnci,bgColor=d?.bg||'#f8f8f8',btnColor=d?.btnColor||'#333333',c=document.getElementById('bnc-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">배너 ${n}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">표지 이미지 URL</label><div class="url-row"><input type="text" class="bnc-img" value="${d?.img||''}" placeholder="https://image.aladin.co.kr/product/..." oninput="th(this,'bnc_t${n}')"><img class="url-th" id="bnc_t${n}" src="${d?.img||''}" alt=""></div></div><div class="field"><label class="field-label">링크 URL</label><input type="text" class="bnc-link" value="${d?.link||'#'}" placeholder="https://www.aladin.co.kr/..."></div><div class="field"><label class="field-label">태그</label><input type="text" class="bnc-tag" value="${d?.tag||''}" placeholder="북토크, 북펀드, 이벤트 등"></div><div class="field"><label class="field-label">제목</label><input type="text" class="bnc-tit" value="${d?.tit||''}" placeholder="출간 기념 북토크"></div><div class="field"><label class="field-label">부제목</label><input type="text" class="bnc-sub" value="${d?.sub||''}" placeholder="저자 × 게스트 북토크"></div><div class="field"><label class="field-label">버튼 텍스트</label><input type="text" class="bnc-btn" value="${d?.btn||'자세히 보기'}" placeholder="자세히 보기"></div><div class="field"><label class="field-label">카드 배경색</label><div style="display:flex;align-items:center;gap:8px;position:relative;"><div id="bnc_bgpv${n}" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:${bgColor};cursor:pointer;flex-shrink:0;" onclick="document.getElementById('bnc_bgcp${n}').click()" title="클릭하면 컬러 팔레트 열림"></div><input type="color" id="bnc_bgcp${n}" class="bnc-bg" value="${bgColor}" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('bnc_bgcp${n}','bnc_bgtx${n}','bnc_bgpv${n}'); moduleLivePreview('banner-card');"><input type="text" id="bnc_bgtx${n}" class="bnc-bgtx" value="${bgColor}" maxlength="7" style="width:82px;font-size:16px;font-family:inherit;letter-spacing:.04em;" oninput="spk('bnc_bgtx${n}','bnc_bgcp${n}','bnc_bgpv${n}'); moduleLivePreview('banner-card');"></div></div><div class="field"><label class="field-label">버튼 색상</label><div style="display:flex;align-items:center;gap:8px;position:relative;"><div id="bnc_btnpv${n}" style="width:40px;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:${btnColor};cursor:pointer;flex-shrink:0;" onclick="document.getElementById('bnc_btncp${n}').click()" title="클릭하면 컬러 팔레트 열림"></div><input type="color" id="bnc_btncp${n}" class="bnc-btncolor" value="${btnColor}" style="position:absolute;top:0;left:0;width:0;height:0;opacity:0;pointer-events:none;" oninput="stx('bnc_btncp${n}','bnc_btntx${n}','bnc_btnpv${n}'); moduleLivePreview('banner-card');"><input type="text" id="bnc_btntx${n}" class="bnc-btntx" value="${btnColor}" maxlength="7" style="width:82px;font-size:16px;font-family:inherit;letter-spacing:.04em;" oninput="spk('bnc_btntx${n}','bnc_btncp${n}','bnc_btnpv${n}'); moduleLivePreview('banner-card');"></div></div>`; c.appendChild(el); _bindLp(el); }
 function addBanner(d){ bni++; const c=document.getElementById('bn-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">배너 ${bni}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">배너 텍스트</label><input type="text" class="bn-txt" value="${d?.txt||''}" placeholder="1권만 구매해도 무료배송!"></div><div class="field"><label class="field-label">링크 URL</label><input type="text" class="bn-link" value="${d?.link||'#'}" placeholder="https://www.aladin.co.kr/..."></div>`; c.appendChild(el); _bindLp(el); }
 function addBook(d){ bli++; const c=document.getElementById('bl-list'),el=document.createElement('div'); el.className='dyn-item'; el.innerHTML=`<div class="dyn-head"><span class="dyn-lbl">도서 ${bli}</span><button class="btn-del" onclick="this.closest('.dyn-item').remove()">✕</button></div><div class="field"><label class="field-label">표지 이미지 URL</label><div class="url-row"><input type="text" class="bl-img" value="${d?.img||''}" placeholder="//image.aladin.co.kr/product/..." oninput="th(this,'bl_t${bli}')"><img class="url-th" id="bl_t${bli}" src="${d?.img||''}" alt=""></div></div><div class="field"><label class="field-label">도서명</label><input type="text" class="bl-tit" value="${d?.tit||''}" placeholder="도서명을 입력하세요"></div><div class="field"><label class="field-label">링크 URL</label><input type="text" class="bl-link" value="${d?.link||''}" placeholder="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=..."></div>`; c.appendChild(el); _bindLp(el); }
 
@@ -3621,9 +3671,9 @@ const GEN = {
     // 커버 HTML
     let coverHtml = '';
     if (nbCoverMode === 'multi') {
-      const urls = Array.from(document.querySelectorAll('#nbMultiList .cover-url')).map(i=>i.value.trim()).filter(u=>u);
+      const nbItems = Array.from(document.querySelectorAll('#nbMultiList .cover-row')).map(r=>({url:r.querySelector('.cover-url').value.trim(),alt:(r.querySelector('.cover-alt')||{value:''}).value.trim()||'도서 표지'})).filter(i=>i.url);
       coverHtml = `            <div class="alanb2-books-panorama">\n` +
-        urls.map(u=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${u}" alt="도서 표지"/></div></div>`).join('\n') +
+        nbItems.map(i=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${i.url}" alt="${i.alt}"/></div></div>`).join('\n') +
         `\n            </div>`;
     } else {
       const cv = G('hn_cv') || '';
@@ -3678,12 +3728,12 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}         
             <div class="alanb-main-card">
 <!--// 히어로 이미지 (신간알림 스타일)-->`;
   },
-  alarm(){ const t=G('al_type')||'1',v=G('al_val'),tx=G('al_txt')||'신간 알리미 신청',f=CK('al_file'),url=v?`https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${v}`:'#'; return `<!--신간 알리미 버튼-->\n<div class="alanb-alarm-section">${f?`\n    <a href="${url}" class="alanb-alarm-btn alanb-alarm-btn--file">저자 파일</a>`:''}${v?`\n    <span class="alanb-alarm-btn alanb-alarm-btn--primary">\n        <uc1:alarm runat="server" AlarmType="${t}" AlarmValue="${v}" AlarmButton="${tx}" />\n    </span>`:''}\n</div>\n<!--// 신간 알리미 버튼-->`; },
-  'slide-v1'(){ const uid=Date.now();const tit=G('slv1_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv1-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv1-img').value.trim(),t2=i.querySelector('.slv1-tit').value.trim(),au=i.querySelector('.slv1-auth').value.trim(); return `      <div class="swiper-slide">\n        <a href="#">\n          <div class="bookimg"><img src="${img}" alt="${t2}"></div>\n          <span class="book_tit2">${t2}</span>\n          <span class="book_tit1">${au}</span>\n        </a>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩-->\n<style>.bs-v1 a:link,.bs-v1 a:visited,.bs-v1 a:hover{text-decoration:none !important;color:inherit !important;}@media(min-width:768px){.bs-v1 .swiper-slide{margin-right:50px !important;}}@media(min-width:1280px){.bs-v1 .swiper-slide{margin-right:110px !important;}}<\/style>\n<section class="bs-section">\n  <h2 class="bs-section-tit">${tit}</h2>\n<div class="bs-v1">\n  <div class="swiper bookswiper-v1 bookswiper-v1-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n</div>\n</section>\n<script>\n(function(){\n  var w=document.querySelector('.bookswiper-v1-${uid} .swiper-wrapper');\n  var s=Array.from(w.querySelectorAll('.swiper-slide'));\n  while(w.querySelectorAll('.swiper-slide').length<15){\n    s.forEach(function(sl){w.appendChild(sl.cloneNode(true));});\n  }\n  new Swiper('.bookswiper-v1-${uid}',{\n    slidesPerView:'auto',spaceBetween:20,loop:true,loopAdditionalSlides:5,\n    speed:8000,autoplay:{delay:0,disableOnInteraction:false,pauseOnMouseEnter:false},\n    freeMode:{enabled:true,momentum:false},allowTouchMove:true,grabCursor:true\n  });\n})();\n<\/script>\n<!--// 도서 슬라이딩-->`; },
-  'slide-v2'(){ const uid=Date.now();const tit=G('slv2_tit')||'이달의 추천 도서'; const shelfColor=G('slv2_shelf_color')||'#316818'; const items=Array.from(document.querySelectorAll('#slv2-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const id=i.querySelector('.slv2-id').value.trim(),t=i.querySelector('.slv2-tit').value.trim(); return `        <div class="swiper-slide">\n          <div class="book">\n            <uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="0" CoverType="8" PriceType="0" BorderType="0" TitleType="0" TitleCut="0" desc=""/>\n          </div>\n        </div>`; }).join('\n'); const infos=items.map((i,idx)=>{ const t=i.querySelector('.slv2-tit').value.trim(),au=i.querySelector('.slv2-auth').value.trim(),desc=i.querySelector('.slv2-desc').value.trim(); return `    <div class="bookinfo${idx===0?' active':''}">\n      <h4>${t}</h4>\n      <span>${au}</span>\n      <p>${desc}</p>\n    </div>`; }).join('\n'); return `<!--도서 슬라이딩 V2-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV2-${uid}" onclick="toggleBsV2_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v2 bs-v2-${uid}">\n  <div class="swiper-outer">\n    <div class="swiper bookswiper-v2 bookswiper-v2-${uid}">\n      <div class="swiper-wrapper">\n${slides}\n      </div>\n    </div>\n  </div>\n  <div class="shelf" style="background-color:${shelfColor}"></div>\n  <div class="bookinfos">\n    <div class="swiper-button-prev"></div>\n    <div class="swiper-button-next"></div>\n${infos}\n  </div>\n</div>\n</section>\n<script>\nvar bsV2_${uid};\n(function(){\n  var wrapper = document.querySelector('.bookswiper-v2-${uid} .swiper-wrapper');\n  var origSlides = Array.from(wrapper.querySelectorAll('.swiper-slide'));\n  var origCount = origSlides.length;\n  origSlides.forEach(function(s){ wrapper.appendChild(s.cloneNode(true)); });\n  bsV2_${uid} = new Swiper('.bookswiper-v2-${uid}', {\n    loop:true, centeredSlides:true, slidesPerView:'auto', spaceBetween:23, speed:500,\n    autoplay:{delay:3000, disableOnInteraction:false},\n    navigation:{nextEl:'.bs-v2-${uid} .swiper-button-next', prevEl:'.bs-v2-${uid} .swiper-button-prev'},\n    on:{\n      init: function(){ updateInfoV2(this.realIndex); },\n      slideChange: function(){ updateInfoV2(this.realIndex); }\n    }\n  });\n  function updateInfoV2(idx){\n    var realIdx = idx % origCount;\n    document.querySelectorAll('.bs-v2-${uid} .bookinfo').forEach(function(el,i){ el.classList.toggle('active', i===realIdx); });\n  }\n})();\nvar PAUSE_ICON_V2='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V2='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV2_${uid}=true;\nfunction toggleBsV2_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV2_${uid}){ bsV2_${uid}.autoplay.stop(); img.src=PLAY_ICON_V2; bsPlayingV2_${uid}=false; }\n  else{ bsV2_${uid}.autoplay.start(); img.src=PAUSE_ICON_V2; bsPlayingV2_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V2-->`; },
-  'slide-v3'(){ const uid=Date.now();const tit=G('slv3_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv3-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv3-img').value.trim(),link=i.querySelector('.slv3-link').value.trim()||'#',sub=i.querySelector('.slv3-sub').value.trim(),t=i.querySelector('.slv3-tit').value.trim(); return `      <div class="swiper-slide">\n        <a href="${link}">\n          <div class="book-cover"><img src="${img}" alt="${t}"></div>\n          <div class="book_tit">\n            <span class="book_tit1">${sub}</span>\n            <span class="book_tit2">${t}</span>\n          </div>\n        </a>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V3-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV3-${uid}" onclick="toggleBsV3_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v3 bs-v3-${uid}">\n  <div class="swiper bookswiper-v3 bookswiper-v3-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n  <div class="swiper-pagination"></div>\n</div>\n</section>\n<script>\nvar bsV3_${uid};\n(function(){\n  var w3=document.querySelector('.bookswiper-v3-${uid} .swiper-wrapper');\n  var s3=Array.from(w3.querySelectorAll('.swiper-slide'));\n  while(w3.querySelectorAll('.swiper-slide').length<12){\n    s3.forEach(function(s){ w3.appendChild(s.cloneNode(true)); });\n  }\n  bsV3_${uid}=new Swiper('.bookswiper-v3-${uid}',{\n    slidesPerView:1.6, centeredSlides:true, loop:true, speed:1000,\n    autoplay:{delay:2000, disableOnInteraction:false},\n    pagination:{el:'.bs-v3-${uid} .swiper-pagination', type:'progressbar'},\n    breakpoints:{480:{slidesPerView:2}, 768:{slidesPerView:3}}\n  });\n})();\nvar PAUSE_ICON_V3='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V3='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV3_${uid}=true;\nfunction toggleBsV3_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV3_${uid}){ bsV3_${uid}.autoplay.stop(); img.src=PLAY_ICON_V3; bsPlayingV3_${uid}=false; }\n  else{ bsV3_${uid}.autoplay.start(); img.src=PAUSE_ICON_V3; bsPlayingV3_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V3-->`; },
-  'slide-v4'(){ const uid=Date.now();const tit=G('slv4_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv4-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv4-img').value.trim(),link=i.querySelector('.slv4-link').value.trim()||'#',qtit=i.querySelector('.slv4-qtit').value.trim(),auth=i.querySelector('.slv4-auth').value.trim(),desc=i.querySelector('.slv4-desc').value.trim(); return `      <div class="swiper-slide">\n        <a href="${link}">\n          <div class="book-cover">\n            <img src="${img}" alt="${auth}">\n          </div>\n          <div class="book_tit">\n            <span class="book_tit1">${qtit}</span>\n            <span class="book_tit2">${auth}</span>\n          </div>\n        </a>\n        <p class="bookdesc">${desc}</p>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V4-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV4-${uid}" onclick="toggleBsV4_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v4 bs-v4-${uid}">\n  <div class="swiper bookswiper-v4 bookswiper-v4-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n  <div class="showdesc"><p></p></div>\n  <div class="swiper-pagination"></div>\n</div>\n</section>\n<script>\nvar bsV4_${uid};\n(function(){\n  bsV4_${uid}=new Swiper('.bookswiper-v4-${uid}',{\n    slidesPerView:1, centeredSlides:true, loop:true, speed:1000,\n    autoplay:{delay:3000, disableOnInteraction:false},\n    pagination:{el:'.bs-v4-${uid} .swiper-pagination', type:'progressbar'},\n    on:{\n      init: function(){ updateDescV4(this); },\n      slideChangeTransitionStart: function(){ var el=document.querySelector('.bs-v4 .showdesc'); if(el) el.style.opacity=0; },\n      slideChangeTransitionEnd: function(){ updateDescV4(this); }\n    }\n  });\n  function updateDescV4(swiper){\n    var showDesc=document.querySelector('.bs-v4-${uid} .showdesc');\n    if(!showDesc) return;\n    var targetP=showDesc.querySelector('p');\n    var slide=swiper.slides[swiper.activeIndex];\n    if(!slide) return;\n    var descEl=slide.querySelector('.bookdesc');\n    if(!descEl) return;\n    if(targetP) targetP.innerHTML=descEl.innerHTML;\n    showDesc.style.opacity=1;\n  }\n})();\nvar PAUSE_ICON_V4='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V4='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV4_${uid}=true;\nfunction toggleBsV4_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV4_${uid}){ bsV4_${uid}.autoplay.stop(); img.src=PLAY_ICON_V4; bsPlayingV4_${uid}=false; }\n  else{ bsV4_${uid}.autoplay.start(); img.src=PAUSE_ICON_V4; bsPlayingV4_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V4-->`; },
-  'slide-v5'(){ const uid=Date.now();const tit=G('slv5_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv5-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const id=i.querySelector('.slv5-id').value.trim(); return `      <div class="slider-item">\n        <div class="cover"><uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="0" CoverType="4" PriceType="0" BorderType="0" TitleType="0" /></div>\n        <div class="txt"><uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="1" CoverType="0" PriceType="0" BorderType="0" TitleType="1" /></div>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V5-->\n<section class="bs-section">\n  <h2 class="bs-section-tit">${tit}</h2>\n<div class="bs-v5">\n  <div class="slider-inner" id="bsV5Inner-${uid}">\n    <div class="slider-track" id="bsV5Track-${uid}">\n${slides}\n    </div>\n  </div>\n</div>\n</section>\n<script>\n(function(){\n  function bsV5Init(){\n    var track=document.getElementById('bsV5Track-${uid}');\n    if(!track) return;\n    var orig=track.innerHTML;\n    track.innerHTML=orig+orig+orig;\n    var pos=0,animId,isDragging=false,dragStartX=0,dragStartPos=0,setWidth=0;\n    function getSetWidth(){\n      var items=track.querySelectorAll('.slider-item'),oneSet=Math.round(items.length/3),gap=window.innerWidth<750?24:28,w=0;\n      for(var i=0;i<oneSet;i++) w+=(items[i].offsetWidth||(window.innerWidth<750?140:230))+gap;\n      return w;\n    }\n    function init(){ setWidth=getSetWidth()||(window.innerWidth<750?2460:3920); pos=0; track.style.transform='translateX(0px)'; }\n    function animate(){\n      if(!isDragging) pos-=window.innerWidth<750?0.7:0.6;\n      if(pos<=-setWidth) pos=0;\n      if(pos>0) pos=-setWidth+1;\n      track.style.transform='translateX('+pos+'px)';\n      animId=requestAnimationFrame(animate);\n    }\n    track.addEventListener('mousedown',function(e){ isDragging=true; dragStartX=e.clientX; dragStartPos=pos; track.style.cursor='grabbing'; });\n    document.addEventListener('mousemove',function(e){ if(!isDragging) return; pos=dragStartPos+(e.clientX-dragStartX); });\n    document.addEventListener('mouseup',function(){ if(!isDragging) return; isDragging=false; track.style.cursor='grab'; });\n    track.addEventListener('touchstart',function(e){ isDragging=true; dragStartX=e.touches[0].clientX; dragStartPos=pos; },{passive:true});\n    track.addEventListener('touchmove',function(e){ if(!isDragging) return; pos=dragStartPos+(e.touches[0].clientX-dragStartX); },{passive:true});\n    track.addEventListener('touchend',function(){ isDragging=false; });\n    init(); animId=requestAnimationFrame(animate);\n    window.addEventListener('resize',function(){ cancelAnimationFrame(animId); init(); animId=requestAnimationFrame(animate); });\n  }\n  if(document.readyState==='complete') bsV5Init();\n  else{ var prev=window.onload; window.onload=function(){ if(typeof prev==='function') prev(); bsV5Init(); }; }\n})();\n<\/script>\n<!--// 도서 슬라이딩 V5-->`; },
+  alarm(){ const t=G('al_type')||'1',v=G('al_val'),tx=G('al_txt')||'신간 알리미 신청',f=CK('al_file'),url=v?`https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${v}`:'#'; return `<!--신간 알리미 버튼-->\n<div class="alanb-alarm-section">${f?`\n    <a href="${url}" class="alanb-alarm-btn alanb-alarm-btn--file">저자 파일</a>`:''}${v?`\n    <div class="alanb-alarm-btn alanb-alarm-btn--primary">\n        <uc1:alarm runat="server" AlarmType="${t}" AlarmValue="${v}" AlarmButton="${tx}" />\n    </div>`:''}\n</div>\n<!--// 신간 알리미 버튼-->`; },
+  'slide-v1'(){ const uid=Date.now();const tit=G('slv1_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv1-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv1-img').value.trim(),t2=i.querySelector('.slv1-tit').value.trim(),au=i.querySelector('.slv1-auth').value.trim(); return `      <div class="swiper-slide">\n        <a href="#">\n          <div class="bookimg"><img src="${img}" alt="${t2}"></div>\n          <p class="book_tit2">${t2}</p>\n          <p class="book_tit1">${au}</p>\n        </a>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩-->\n<style>.bs-v1 a:link,.bs-v1 a:visited,.bs-v1 a:hover{text-decoration:none !important;color:inherit !important;}@media(min-width:768px){.bs-v1 .swiper-slide{margin-right:50px !important;}}@media(min-width:1280px){.bs-v1 .swiper-slide{margin-right:110px !important;}}<\/style>\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV1-${uid}" onclick="toggleBsV1_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v1">\n  <div class="swiper bookswiper-v1 bookswiper-v1-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n</div>\n</section>\n<script src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>\n<script>\nvar bsV1_${uid};\n(function(){\n  var w=document.querySelector('.bookswiper-v1-${uid} .swiper-wrapper');\n  var s=Array.from(w.querySelectorAll('.swiper-slide'));\n  while(w.querySelectorAll('.swiper-slide').length<15){\n    s.forEach(function(sl){w.appendChild(sl.cloneNode(true));});\n  }\n  bsV1_${uid}=new Swiper('.bookswiper-v1-${uid}',{\n    slidesPerView:'auto',spaceBetween:20,loop:true,loopAdditionalSlides:5,\n    speed:8000,autoplay:{delay:0,disableOnInteraction:false,pauseOnMouseEnter:true},\n    freeMode:{enabled:true,momentum:false},allowTouchMove:true,grabCursor:true\n  });\n})();\nvar PAUSE_ICON_V1='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V1='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV1_${uid}=true;\nfunction toggleBsV1_${uid}(btn){\n  var img=btn.querySelector('img');\n  var wrapper=bsV1_${uid}.wrapperEl;\n  if(bsPlayingV1_${uid}){\n    bsV1_${uid}.autoplay.stop();\n    var ct=window.getComputedStyle(wrapper).transform;\n    wrapper.style.transitionDuration='0ms';\n    wrapper.style.transform=ct;\n    img.src=PLAY_ICON_V1; bsPlayingV1_${uid}=false;\n  } else {\n    bsV1_${uid}.animating=false;\n    bsV1_${uid}.autoplay.paused=false;\n    bsV1_${uid}.autoplay.start();\n    img.src=PAUSE_ICON_V1; bsPlayingV1_${uid}=true;\n  }\n}\n<\/script>\n<!--// 도서 슬라이딩-->`; },
+  'slide-v2'(){ const uid=Date.now();const tit=G('slv2_tit')||'이달의 추천 도서'; const shelfColor=G('slv2_shelf_color')||'#316818'; const items=Array.from(document.querySelectorAll('#slv2-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const id=i.querySelector('.slv2-id').value.trim(),t=i.querySelector('.slv2-tit').value.trim(); return `        <div class="swiper-slide">\n          <div class="book">\n            <uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="0" CoverType="8" PriceType="0" BorderType="0" TitleType="0" TitleCut="0" desc=""/>\n          </div>\n        </div>`; }).join('\n'); const infos=items.map((i,idx)=>{ const t=i.querySelector('.slv2-tit').value.trim(),au=i.querySelector('.slv2-auth').value.trim(),desc=i.querySelector('.slv2-desc').value.trim(); return `    <div class="bookinfo${idx===0?' active':''}">\n      <h3>${t}</h3>\n      <p class="bookinfo-author">${au}</p>\n      <p>${desc}</p>\n    </div>`; }).join('\n'); return `<!--도서 슬라이딩 V2-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV2-${uid}" onclick="toggleBsV2_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v2 bs-v2-${uid}">\n  <div class="swiper-outer">\n    <div class="swiper bookswiper-v2 bookswiper-v2-${uid}">\n      <div class="swiper-wrapper">\n${slides}\n      </div>\n    </div>\n  </div>\n  <div class="shelf" style="background-color:${shelfColor}"></div>\n  <div class="bookinfos">\n    <div class="swiper-button-prev"></div>\n    <div class="swiper-button-next"></div>\n${infos}\n  </div>\n</div>\n</section>\n<script src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>\n<script>\nvar bsV2_${uid};\n(function(){\n  var wrapper = document.querySelector('.bookswiper-v2-${uid} .swiper-wrapper');\n  var origSlides = Array.from(wrapper.querySelectorAll('.swiper-slide'));\n  var origCount = origSlides.length;\n  origSlides.forEach(function(s){ wrapper.appendChild(s.cloneNode(true)); });\n  bsV2_${uid} = new Swiper('.bookswiper-v2-${uid}', {\n    loop:true, centeredSlides:true, slidesPerView:'auto', spaceBetween:23, speed:500,\n    autoplay:{delay:3000, disableOnInteraction:false},\n    navigation:{nextEl:'.bs-v2-${uid} .swiper-button-next', prevEl:'.bs-v2-${uid} .swiper-button-prev'},\n    on:{\n      init: function(){ updateInfoV2(this.realIndex); },\n      slideChange: function(){ updateInfoV2(this.realIndex); }\n    }\n  });\n  function updateInfoV2(idx){\n    var realIdx = idx % origCount;\n    document.querySelectorAll('.bs-v2-${uid} .bookinfo').forEach(function(el,i){ el.classList.toggle('active', i===realIdx); });\n  }\n})();\nvar PAUSE_ICON_V2='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V2='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV2_${uid}=true;\nfunction toggleBsV2_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV2_${uid}){ bsV2_${uid}.autoplay.stop(); img.src=PLAY_ICON_V2; bsPlayingV2_${uid}=false; }\n  else{ bsV2_${uid}.autoplay.start(); img.src=PAUSE_ICON_V2; bsPlayingV2_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V2-->`; },
+  'slide-v3'(){ const uid=Date.now();const tit=G('slv3_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv3-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv3-img').value.trim(),link=i.querySelector('.slv3-link').value.trim()||'#',sub=i.querySelector('.slv3-sub').value.trim(),t=i.querySelector('.slv3-tit').value.trim(); return `      <div class="swiper-slide">\n        <a href="${link}">\n          <div class="book-cover"><img src="${img}" alt="${t}"></div>\n          <div class="book_tit">\n            <p class="book_tit1">${sub}</p>\n            <p class="book_tit2">${t}</p>\n          </div>\n        </a>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V3-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV3-${uid}" onclick="toggleBsV3_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v3 bs-v3-${uid}">\n  <div class="swiper bookswiper-v3 bookswiper-v3-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n  <div class="swiper-pagination"></div>\n</div>\n</section>\n<script src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>\n<script>\nvar bsV3_${uid};\n(function(){\n  var w3=document.querySelector('.bookswiper-v3-${uid} .swiper-wrapper');\n  var s3=Array.from(w3.querySelectorAll('.swiper-slide'));\n  while(w3.querySelectorAll('.swiper-slide').length<12){\n    s3.forEach(function(s){ w3.appendChild(s.cloneNode(true)); });\n  }\n  bsV3_${uid}=new Swiper('.bookswiper-v3-${uid}',{\n    slidesPerView:1.6, centeredSlides:true, loop:true, speed:1000,\n    autoplay:{delay:2000, disableOnInteraction:false},\n    pagination:{el:'.bs-v3-${uid} .swiper-pagination', type:'progressbar'},\n    breakpoints:{480:{slidesPerView:2}, 768:{slidesPerView:3}}\n  });\n})();\nvar PAUSE_ICON_V3='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V3='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV3_${uid}=true;\nfunction toggleBsV3_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV3_${uid}){ bsV3_${uid}.autoplay.stop(); img.src=PLAY_ICON_V3; bsPlayingV3_${uid}=false; }\n  else{ bsV3_${uid}.autoplay.start(); img.src=PAUSE_ICON_V3; bsPlayingV3_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V3-->`; },
+  'slide-v4'(){ const uid=Date.now();const tit=G('slv4_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv4-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const img=i.querySelector('.slv4-img').value.trim(),link=i.querySelector('.slv4-link').value.trim()||'#',qtit=i.querySelector('.slv4-qtit').value.trim(),auth=i.querySelector('.slv4-auth').value.trim(),desc=i.querySelector('.slv4-desc').value.trim(); return `      <div class="swiper-slide">\n        <a href="${link}">\n          <div class="book-cover">\n            <img src="${img}" alt="${auth}">\n          </div>\n          <div class="book_tit">\n            <p class="book_tit1">${qtit}</p>\n            <p class="book_tit2">${auth}</p>\n          </div>\n        </a>\n        <p class="bookdesc">${desc}</p>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V4-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV4-${uid}" onclick="toggleBsV4_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v4 bs-v4-${uid}">\n  <div class="swiper bookswiper-v4 bookswiper-v4-${uid}">\n    <div class="swiper-wrapper">\n${slides}\n    </div>\n  </div>\n  <div class="showdesc"><p></p></div>\n  <div class="swiper-pagination"></div>\n</div>\n</section>\n<script src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>\n<script>\nvar bsV4_${uid};\n(function(){\n  bsV4_${uid}=new Swiper('.bookswiper-v4-${uid}',{\n    slidesPerView:1, centeredSlides:true, loop:true, speed:1000,\n    autoplay:{delay:3000, disableOnInteraction:false},\n    pagination:{el:'.bs-v4-${uid} .swiper-pagination', type:'progressbar'},\n    on:{\n      init: function(){ updateDescV4(this); },\n      slideChangeTransitionStart: function(){ var el=document.querySelector('.bs-v4-${uid} .showdesc'); if(el) el.style.opacity=0; },\n      slideChangeTransitionEnd: function(){ updateDescV4(this); }\n    }\n  });\n  function updateDescV4(swiper){\n    var showDesc=document.querySelector('.bs-v4-${uid} .showdesc');\n    if(!showDesc) return;\n    var targetP=showDesc.querySelector('p');\n    var slide=swiper.slides[swiper.activeIndex];\n    if(!slide) return;\n    var descEl=slide.querySelector('.bookdesc');\n    if(!descEl) return;\n    if(targetP) targetP.innerHTML=descEl.innerHTML;\n    showDesc.style.opacity=1;\n  }\n})();\nvar PAUSE_ICON_V4='https://image.aladin.co.kr/img/svg/event-pause-btn.svg';\nvar PLAY_ICON_V4='https://image.aladin.co.kr/img/svg/event-play-btn.svg';\nvar bsPlayingV4_${uid}=true;\nfunction toggleBsV4_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsPlayingV4_${uid}){ bsV4_${uid}.autoplay.stop(); img.src=PLAY_ICON_V4; bsPlayingV4_${uid}=false; }\n  else{ bsV4_${uid}.autoplay.start(); img.src=PAUSE_ICON_V4; bsPlayingV4_${uid}=true; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V4-->`; },
+  'slide-v5'(){ const uid=Date.now();const tit=G('slv5_tit')||'이달의 추천 도서'; const items=Array.from(document.querySelectorAll('#slv5-list .dyn-item')); if(!items.length){toast('⚠️ 도서를 최소 1권 추가하세요.');return null;} const slides=items.map(i=>{ const id=i.querySelector('.slv5-id').value.trim(); return `      <div class="slider-item">\n        <div class="cover"><uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="0" CoverType="4" PriceType="0" BorderType="0" TitleType="0" /></div>\n        <div class="txt"><uc1:wa_item_info runat="server" ItemId="${id}" vtype="2" AuthorType="1" CoverType="0" PriceType="0" BorderType="0" TitleType="1" /></div>\n      </div>`; }).join('\n'); return `<!--도서 슬라이딩 V5-->\n<section class="bs-section">\n  <div class="bs-section-head">\n    <h2 class="bs-section-tit">${tit}</h2>\n    <button class="bs-pause-btn" id="pauseBtnV5-${uid}" onclick="toggleBsV5_${uid}(this)"><img src="https://image.aladin.co.kr/img/svg/event-pause-btn.svg" alt="일시정지/재생"></button>\n  </div>\n<div class="bs-v5">\n  <div class="slider-inner" id="bsV5Inner-${uid}">\n    <div class="slider-track" id="bsV5Track-${uid}">\n${slides}\n    </div>\n  </div>\n</div>\n</section>\n<script src="/ucl_editor/events/js/swiper@12/swiper-bundle.min.js"><\/script>\n<script>\n(function(){\n  function bsV5Init(){\n    var track=document.getElementById('bsV5Track-${uid}');\n    if(!track) return;\n    var orig=track.innerHTML;\n    var origCount=track.querySelectorAll('.slider-item').length;\n    var approxItemW=window.innerWidth<750?164:258;\n    var numSets=Math.max(6,Math.ceil(window.screen.width*2/(origCount*approxItemW)));\n    var html=''; for(var i=0;i<numSets;i++) html+=orig;\n    track.innerHTML=html;\n    var pos=0,animId,isDragging=false,dragStartX=0,dragStartPos=0,setWidth=0;\n    function getSetWidth(){\n      var items=track.querySelectorAll('.slider-item'),gap=window.innerWidth<750?24:28,w=0;\n      for(var i=0;i<origCount;i++) w+=(items[i].offsetWidth||(window.innerWidth<750?140:230))+gap;\n      return w;\n    }\n    function init(){ setWidth=getSetWidth()||(window.innerWidth<750?2460:3920); pos=0; track.style.transform='translateX(0px)'; }\n    function animate(){\n      if(!isDragging&&bsV5Playing_${uid}) pos-=window.innerWidth<750?0.7:0.6;\n      if(pos<=-setWidth) pos=0;\n      if(pos>0) pos=-setWidth+1;\n      track.style.transform='translateX('+pos+'px)';\n      animId=requestAnimationFrame(animate);\n    }\n    track.addEventListener('mousedown',function(e){ isDragging=true; dragStartX=e.clientX; dragStartPos=pos; track.style.cursor='grabbing'; });\n    document.addEventListener('mousemove',function(e){ if(!isDragging) return; pos=dragStartPos+(e.clientX-dragStartX); });\n    document.addEventListener('mouseup',function(){ if(!isDragging) return; isDragging=false; track.style.cursor='grab'; });\n    track.addEventListener('touchstart',function(e){ isDragging=true; dragStartX=e.touches[0].clientX; dragStartPos=pos; },{passive:true});\n    track.addEventListener('touchmove',function(e){ if(!isDragging) return; pos=dragStartPos+(e.touches[0].clientX-dragStartX); },{passive:true});\n    track.addEventListener('touchend',function(){ isDragging=false; });\n    init(); animId=requestAnimationFrame(animate);\n    window.addEventListener('resize',function(){ cancelAnimationFrame(animId); init(); animId=requestAnimationFrame(animate); });\n  }\n  if(document.readyState==='complete') bsV5Init();\n  else{ var prev=window.onload; window.onload=function(){ if(typeof prev==='function') prev(); bsV5Init(); }; }\n})();\nvar bsV5Playing_${uid}=true;\nfunction toggleBsV5_${uid}(btn){\n  var img=btn.querySelector('img');\n  if(bsV5Playing_${uid}){ bsV5Playing_${uid}=false; img.src='https://image.aladin.co.kr/img/svg/event-play-btn.svg'; }\n  else{ bsV5Playing_${uid}=true; img.src='https://image.aladin.co.kr/img/svg/event-pause-btn.svg'; }\n}\n<\/script>\n<!--// 도서 슬라이딩 V5-->`; },
   slide(){ return null; },
   comment(){
     const type = cmType || 'basic';
@@ -3705,13 +3755,13 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>\n` : ''}         
     const sa=i.querySelector('.au-alarm').checked,sf=i.querySelector('.au-file').checked;
     const fileUrl=aid?`https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${aid}`:'';
     const avatarHtml=photo?`                    <div class="alanb-avatar"><img src="${photo}" alt="${name}" style="object-fit:cover; object-position:center;" /></div>`:``;
-    const btnFile=(sf&&fileUrl)?`\n                            <button type="button" class="alanb-btn-sub"><a href="${fileUrl}">저자 파일</a></button>`:'';
-    const btnAlarm=(sa&&aid)?`\n                            <button type="button" class="alanb-btn-sub">\n                                <uc1:alarm runat="server" AlarmType="1" AlarmValue="${aid}" AlarmButton="신간 알리미 신청" />\n                            </button>`:'';
+    const btnFile=(sf&&fileUrl)?`\n                            <a href="${fileUrl}" class="alanb-btn-sub">저자 파일</a>`:'';
+    const btnAlarm=(sa&&aid)?`\n                            <span class="alanb-btn-sub">\n                                <uc1:alarm runat="server" AlarmType="1" AlarmValue="${aid}" AlarmButton="신간 알리미 신청" />\n                            </span>`:'';
     return `            <div class="alanb-profile-card">\n                <div class="alanb-profile-top">\n${avatarHtml}\n                    <div class="alanb-bio">\n                        <div class="alanb-author-txt">\n                            ${role?`<span class="alanb-role-tag">${role}</span>`:''}<strong class="alanb-author-name">${name}</strong>\n                        </div>\n                        <div class="alanb-author-btns">${btnFile}${btnAlarm}\n                        </div>\n                    </div>\n                </div>\n                <div class="alanb-profile-bottom">\n                    <p class="alanb-author-long-desc">${bio}</p>\n                </div>\n            </div>`;
   }).join('\n');
   return '<!--작가 소개-->\n<section class="alanb-collab-section2">\n    <h2 class="alanb-collab-title">' + sTitle + '</h2>\n    <div class="alanb-profile-list">\n' + cards + '\n    </div>\n</section>\n<!--// 작가 소개-->'; },
   'banner-basic'(){ const items=Array.from(document.querySelectorAll('#bn-list .dyn-item')); if(!items.length){toast('⚠️ 배너를 최소 1개 추가하세요.');return null;} const list=items.map(i=>`                    <li><a href="${i.querySelector('.bn-link').value.trim()||'#'}">${i.querySelector('.bn-txt').value.trim()}</a></li>`).join('\n'); return `<!--배너 링크-->\n<div class="monly_basic_banner fadein active">\n    <ul>\n${list}\n    </ul>\n</div>\n<!--// 배너 링크-->`; },
-  'banner-card'(){ const items=Array.from(document.querySelectorAll('#bnc-list .dyn-item')); if(!items.length){toast('⚠️ 배너를 최소 1개 추가하세요.');return null;} const arrowSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>`; const cards=items.map(i=>{ const img=i.querySelector('.bnc-img').value.trim(),link=i.querySelector('.bnc-link').value.trim()||'#',tag=i.querySelector('.bnc-tag').value.trim(),tit=i.querySelector('.bnc-tit').value.trim(),sub=i.querySelector('.bnc-sub').value.trim(),btn=i.querySelector('.bnc-btn').value.trim()||'자세히 보기',bg=i.querySelector('.bnc-bg').value||'#f8f8f8',btnColor=i.querySelector('.bnc-btncolor').value||'#333333'; return `    <div class="event-banner-container">\n        <a href="${link}" class="event-banner-link" style="background-color:${bg};">\n            <div class="banner-inner">\n                <div class="banner-image"><img src="${img}" alt="${tit}"></div>\n                <div class="banner-content">${tag?`\n                    <span class="banner-tag">${tag}</span>`:''}\n                    <h3 class="banner-title">${tit}</h3>\n                    <p class="banner-subtitle">${sub}</p>\n                </div>\n                <div class="banner-action" style="background:${btnColor};"><span>${btn}</span>${arrowSvg}</div>\n            </div>\n        </a>\n    </div>`; }).join('\n'); const css=`<style>
+  'banner-card'(){ const items=Array.from(document.querySelectorAll('#bnc-list .dyn-item')); if(!items.length){toast('⚠️ 배너를 최소 1개 추가하세요.');return null;} const arrowSvg=`<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>`; const cards=items.map(i=>{ const img=i.querySelector('.bnc-img').value.trim(),link=i.querySelector('.bnc-link').value.trim()||'#',tag=i.querySelector('.bnc-tag').value.trim(),tit=i.querySelector('.bnc-tit').value.trim(),sub=i.querySelector('.bnc-sub').value.trim(),btn=i.querySelector('.bnc-btn').value.trim()||'자세히 보기',bg=i.querySelector('.bnc-bg').value||'#f8f8f8',btnColor=i.querySelector('.bnc-btncolor').value||'#333333'; return `    <div class="event-banner-container">\n        <a href="${link}" class="event-banner-link" style="background-color:${bg};">\n            <div class="banner-inner">\n                <div class="banner-image"><img src="${img}" alt="${tit}"></div>\n                <div class="banner-content">${tag?`\n                    <span class="banner-tag">${tag}</span>`:''}\n                    <p class="banner-title">${tit}</p>\n                    <h3 class="banner-subtitle">${sub}</h3>\n                </div>\n                <div class="banner-action" style="background:${btnColor};"><span>${btn}</span>${arrowSvg}</div>\n            </div>\n        </a>\n    </div>`; }).join('\n'); const css=`<style>
 .event-banner-container-wrap{margin:0 auto;width:90%;padding:0;box-sizing:border-box;}
 .event-banner-container{width:100%;margin:20px auto;font-family:'Pretendard',sans-serif;}
 a.event-banner-link{text-decoration:none;}
@@ -3720,8 +3770,8 @@ a.event-banner-link{text-decoration:none;}
 .banner-image{flex-shrink:0;width:100px;height:145px;background:#F5F5F5;border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
 .banner-image img{width:100%;height:100%;object-fit:cover;}
 .banner-content{flex:1;min-width:0;flex-grow:1;}
-.banner-tag{display:inline-block;font-size:11px;font-weight:700;color:#EB217C;background:rgba(235,33,124,0.07);padding:3px 8px;border-radius:4px;margin-bottom:8px;letter-spacing:0.3px;}
-.banner-title{margin:0;font-size:13px;font-weight:500;color:#737373;line-height:1.4;}
+.banner-tag{display:inline-block;font-size:12px;font-weight:700;color:#EB217C;background:rgba(235,33,124,0.07);padding:3px 8px;border-radius:4px;margin-bottom:8px;letter-spacing:0.3px;}
+.banner-title{margin:0;font-size:15px;font-weight:500;color:#737373;line-height:1.4;}
 .banner-subtitle{margin:4px 0;font-size:17px;font-weight:800;color:#333;line-height:1.3;}
 .banner-action{width:85%;display:flex;align-items:center;justify-content:center;gap:6px;color:#fff;padding:11px 18px;border-radius:6px;font-size:13px;font-weight:700;white-space:nowrap;}
 .banner-action svg{transition:transform 0.2s ease;}
@@ -3730,15 +3780,21 @@ a.event-banner-link{text-decoration:none;}
 .event-banner-container{max-width:750px;}
 .banner-inner{flex-direction:row;padding:20px 24px;gap:20px;text-align:left;}
 .banner-image{width:80px;height:116px;}
-.banner-subtitle{font-size:18px;margin-bottom:0;}
+.banner-subtitle{font-size:21px;margin-bottom:0;}
 .banner-action{width:auto;flex-shrink:0;justify-content:flex-start;padding:10px 18px;}
 }
 <\/style>`; return `<!--카드형 배너-->\n${css}\n<section class="event-banner-container-wrap">\n    <h2 class="sr-only">관련 이벤트</h2>\n${cards}\n</section>\n<!--// 카드형 배너-->`; },
+  spacer(){
+    const m = parseInt(document.getElementById('sp_m')?.value) || 40;
+    const pc = parseInt(document.getElementById('sp_pc')?.value) || 80;
+    const uid = Date.now();
+    return `<!--여백-->\n<div class="spacer-${uid}" style="height:${m}px;"></div>\n<style>@media(min-width:750px){.spacer-${uid}{height:${pc}px;}}</style>\n<!--// 여백-->`;
+  },
   'gift-banner'(){
     const sTitle='관련 이벤트';
     const items=Array.from(document.querySelectorAll('#gb-list .dyn-item'));
     if(!items.length){toast('⚠️ 배너를 최소 1개 추가하세요.');return null;}
-    const cards=items.map(i=>{ const img=i.querySelector('.gb-img').value.trim(),link=i.querySelector('.gb-link').value.trim()||'#',tag=i.querySelector('.gb-tag').value.trim(),tit=i.querySelector('.gb-tit').value.trim(),name=i.querySelector('.gb-name').value.trim(); return `        <a href="${link}" class="gift-banner-item">\n            <img class="gift-banner-thumb" src="${img}" alt="${tag?tag+' - ':''}${name}">\n            <div class="gift-banner-txt">${tag?`\n                <span class="gift-banner-tag">${tag}</span>`:''}\n                <p class="gift-banner-tit"><strong>${tit}</strong></p>\n                <p class="gift-banner-name">${name}</p>\n            </div>\n        </a>`; }).join('\n');
+    const cards=items.map(i=>{ const img=i.querySelector('.gb-img').value.trim(),link=i.querySelector('.gb-link').value.trim()||'#',tag=i.querySelector('.gb-tag').value.trim(),tit=i.querySelector('.gb-tit').value.trim(),name=i.querySelector('.gb-name').value.trim(); return `        <a href="${link}" class="gift-banner-item">\n            <img class="gift-banner-thumb" src="${img}" alt="${tag?tag+' - ':''}${name}">\n            <div class="gift-banner-txt">${tag?`\n                <span class="gift-banner-tag">${tag}</span>`:''}\n                <h3 class="gift-banner-tit">${tit}</h3>\n                <p class="gift-banner-name">${name}</p>\n            </div>\n        </a>`; }).join('\n');
     const css = `<style>
 .gift-banner{width:clamp(280px,92%,930px);margin:8% auto;}
 .gift-banner-list{display:flex;flex-direction:column;gap:16px;}
@@ -3749,7 +3805,7 @@ a.event-banner-link{text-decoration:none;}
 .gift-banner-txt{padding:12px 20px;}
 .gift-banner-tag{display:inline-block;margin-bottom:12px;padding:2px 12px;background:#EB217C;border-radius:999px;color:#fff;font-size:clamp(12px,3.2vw,14px);font-weight:700;}
 .gift-banner-tit{color:#111;font-size:clamp(17px,4.4vw,21px);font-weight:800;line-height:1.4;}
-.gift-banner-name{margin-top:10px;color:#EB217C;font-size:clamp(14px,3.6vw,16px);font-weight:600;}
+.gift-banner-name{margin-top:10px;color:#000;font-size:clamp(14px,3.6vw,16px);font-weight:600;}
 @media screen and (min-width:750px){
 .gift-banner{margin:50px auto 80px;}
 .gift-banner-list{display:grid;grid-template-columns:repeat(3,calc((100% - 32px) / 3));justify-content:center;}
@@ -3759,6 +3815,10 @@ a.event-banner-link{text-decoration:none;}
 .gift-banner-thumb{width:100%;aspect-ratio:750/650;}
 .gift-banner-tit{margin:0 auto;}
 .gift-banner-name{margin:10px 0 auto;}
+}
+@media (prefers-reduced-motion: reduce) {
+.gift-banner-item{transition:none;}
+.gift-banner-item:hover{transform:none;}
 }
 </style>`;
     return `<!--사은품 배너-->\n${css}\n<section class="gift-banner">\n    <h2 class="sr-only">${sTitle}</h2>\n    <div class="gift-banner-list">\n${cards}\n    </div>\n</section>\n<!--// 사은품 배너-->`; },
@@ -3963,14 +4023,15 @@ ${tabs.map(t => `            <div class="swiper-slide${t.idx === i+1 ? ' on' : '
     // 커버 HTML
     let coverHtml = '';
     if (nfCoverMode === 'multi') {
-      const urls = Array.from(document.querySelectorAll('#nfMultiList .cover-url')).map(i=>i.value.trim()).filter(u=>u);
-      const cnt = Math.min(urls.length, 4);
+      const nfItems = Array.from(document.querySelectorAll('#nfMultiList .cover-row')).map(r=>({url:r.querySelector('.cover-url').value.trim(),alt:(r.querySelector('.cover-alt')||{value:''}).value.trim()||'도서 표지'})).filter(i=>i.url).slice(0,4);
+      const cnt = nfItems.length;
       coverHtml = `            <div class="alanb2-books-panorama" data-count="${cnt}">\n` +
-        urls.slice(0,4).map(u=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${u}" alt="도서 표지"/></div></div>`).join('\n') +
+        nfItems.map(i=>`                <div class="alanb2-book-item"><div class="alanb2-book-cover"><img src="${i.url}" alt="${i.alt}"/></div></div>`).join('\n') +
         `\n            </div>`;
     } else {
       const cv = G('nf_cv') || '';
-      coverHtml = `            <div class="alanb-main-book-wrap">\n                <div class="alanb-book-image"><img src="${cv}" alt="도서 표지" /></div>\n            </div>`;
+      const cvAlt = G('nf_cv_alt') || '도서 표지';
+      coverHtml = `            <div class="alanb-main-book-wrap">\n                <div class="alanb-book-image"><img src="${cv}" alt="${cvAlt}" /></div>\n            </div>`;
     }
 
     // ── 2. 책 소개 값
@@ -3993,13 +4054,13 @@ ${tabs.map(t => `            <div class="swiper-slide${t.idx === i+1 ? ' on' : '
         if (!text) return '';
         return `                <div class="alanb2-quote-item">
                     <p class="alanb2-quote-text">${text}</p>
-                    <span class="alanb2-quote-source">${source}</span>
+                    <p class="alanb2-quote-source">${source}</p>
                 </div>`;
       }).filter(Boolean).join('\n');
       if (items) {
         quotesHtml = `\n\n        <!-- 추천의 말 (alanb2-quotes-section) -->
         <section class="alanb2-quotes-section">
-            <div class="alanb2-quotes-title">${qTitle}</div>
+            <h2 class="alanb2-quotes-title">${qTitle}</h2>
             <div class="alanb2-quotes-grid">
 ${items}
             </div>
@@ -4020,8 +4081,8 @@ ${items}
         if (!name && !bio) return '';
         const fileUrl = aid ? `https://www.aladin.co.kr/author/wauthor_overview.aspx?AuthorSearch=@${aid}` : '';
         const photoHtml = photo ? `                    <div class="alanb-avatar"><img src="${photo}" alt="${name}" style="object-fit:cover; object-position:center;" /></div>` : ``;
-        const btnFile   = fileUrl ? `\n                            <button type="button" class="alanb-btn-sub"><a href="${fileUrl}">저자 파일</a></button>` : '';
-        const btnAlarm  = aid ? `\n                            <button type="button" class="alanb-btn-sub">\n                                <uc1:alarm runat="server" AlarmType="1" AlarmValue="${aid}" AlarmButton="신간 알리미 신청" />\n                            </button>` : '';
+        const btnFile   = fileUrl ? `\n                            <a href="${fileUrl}" class="alanb-btn-sub">저자 파일</a>` : '';
+        const btnAlarm  = aid ? `\n                            <span class="alanb-btn-sub">\n                                <uc1:alarm runat="server" AlarmType="1" AlarmValue="${aid}" AlarmButton="신간 알리미 신청" />\n                            </span>` : '';
         return `            <div class="alanb-profile-card">
                 <div class="alanb-profile-top">
 ${photoHtml}
@@ -4041,7 +4102,7 @@ ${photoHtml}
       if (cards) {
         authorsHtml = `\n\n                <!-- 작가 소개 -->
                 <section class="alanb-collab-section">
-                    <h3 class="alanb-collab-title">${aTitle}</h3>
+                    <h2 class="alanb-collab-title">${aTitle}</h2>
                     <div class="alanb-profile-list">
 ${cards}
                     </div>
@@ -4088,7 +4149,7 @@ ${infoLines}
             <div class="alanb-event-card">
                 <div class="alanb-event-header">
                     <span class="alanb-event-tag">EVENT</span>
-                    <h3 class="alanb-event-main-title">${eMain}</h3>
+                    <h2 class="alanb-event-main-title">${eMain}</h2>
                 </div>${couponDisplay}${infoBlock}
                 <div class="alanb-event-btns">${alarmBtn2}${commentBtn}
                 </div>
@@ -4104,7 +4165,6 @@ ${infoLines}
     const pcOverride = bgValPC ? `\n/* PC 대응 */\n@media screen and (min-width: 750px) {\n    .alanb-hero-section { background-image: ${bgValPC} !important; }\n}` : '';
     const css = `<style>
 .monly_basic_event { padding: 0 !important; width: 100%; }
-.alanb-hero-title .tt1, .alanb-hero-title .tt2, .alanb-hero-text { margin: 0; }
 ${bgValM ? `.alanb-hero-section { background-image: ${bgValM}; }` : ''}${pcOverride}
 </style>`;
 
@@ -4134,15 +4194,15 @@ ${css}
 <article class="event-wrap">
     <div class="alanb-wide-container">
         <!-- 상단 KV -->
-        <div class="alanb-hero-section">
+        <header class="alanb-hero-section">
             <div class="alanb-hero-inner">
 ${coverHtml}
-                <h2 class="alanb-hero-title">
-${tag ? `                    <p class="tt1">${tag}</p>\n` : ''}                    <p class="tt2">${ser}</p>
-                </h2>
+                <h1 class="alanb-hero-title">
+${tag ? `                    <span class="tt1">${tag}</span>\n` : ''}                    <span class="tt2">${ser}</span>
+                </h1>
 ${evt ? `                <p class="alanb-hero-text">${evt}</p>` : ''}
             </div>
-        </div>
+        </header>
         <!-- 상단 KV //-->
 
         <!-- 내용 박스 시작 -->
@@ -4150,7 +4210,7 @@ ${evt ? `                <p class="alanb-hero-text">${evt}</p>` : ''}
             <div class="alanb-main-card">
 ${label || date ? `                <section class="alanb-release-header">
 ${label ? `                    <span class="alanb-release-label">${label}</span>` : ''}
-${date  ? `                    <h4 class="alanb-release-date">${date}</h4>` : ''}
+${date  ? `                    <h2 class="alanb-release-date">${date}</h2>` : ''}
                 </section>` : ''}
 ${alarmId ? `                <div class="alanb-action-area">
                     <div class="alanb-btn-primary">
@@ -4159,6 +4219,7 @@ ${alarmId ? `                <div class="alanb-action-area">
                 </div>` : ''}
 ${hl || bodyHtml ? `                <!-- 책 소개 -->
                 <section class="alanb-detail-article">
+                    <h2 class="sr-only">책 소개</h2>
                     <div class="alanb-detail-text">
 ${hl ? `                        <p class="alanb-para-highlight">${hl}</p>` : ''}
 ${bodyHtml}
@@ -4195,7 +4256,8 @@ const MODULE_LABELS = {
   alarm:'신간 알리미', slide:'도서 슬라이딩', 'slide-v1':'도서 슬라이딩 V1', 'slide-v2':'도서 슬라이딩 V2', 'slide-v3':'도서 슬라이딩 V3', 'slide-v4':'도서 슬라이딩 V4', 'slide-v5':'도서 슬라이딩 V5', comment:'댓글 이벤트',
   cs:'단일 쿠폰', cm:'다중 쿠폰', rv:'적립금',
   author:'작가 소개', 'banner-basic':'기본 배너', 'banner-all':'종합이벤트 배너', 'banner-card':'카드형 배너', booklist:'도서 리스트',
-  hm:'히어로 (모바일)', hn:'히어로 (신간알림)', nbf:'신간알림 이벤트 (풀세트)', 'gift-banner':'사은품 배너'
+  hm:'히어로 (모바일)', hn:'히어로 (신간알림)', nbf:'신간알림 이벤트 (풀세트)', 'gift-banner':'사은품 배너',
+  spacer:'여백 삽입'
 };
 
 // 키 → 편집할 화면 ID
@@ -4203,7 +4265,8 @@ const KEY_TO_SCREEN = {
   alarm:'alarm', slide:'slide', 'slide-v1':'slide-v1', 'slide-v2':'slide-v2', 'slide-v3':'slide-v3', 'slide-v4':'slide-v4', 'slide-v5':'slide-v5', comment:'comment-detail',
   cs:'coupon-s', cm:'coupon-m', rv:'coupon-r',
   author:'author-full', 'banner-basic':'banner-basic', 'banner-all':'banner-all', 'banner-card':'banner-card', booklist:'booklist-detail',
-  hm:'hero-m', hn:'hero-nb', nbf:'nb-full', 'gift-banner':'gift-banner'
+  hm:'hero-m', hn:'hero-nb', nbf:'nb-full', 'gift-banner':'gift-banner',
+  spacer:'spacer'
 };
 
 function wrapInstance(instId, code) {
@@ -4285,6 +4348,7 @@ const MODULE_MARKERS = {
   booklist: ['<!--도서 리스트-->', '<!--// 도서 리스트-->'],
   hm: ['<!--히어로 이미지 (모바일only)-->', '<!--// 히어로 이미지 (모바일only)-->'],
   hn: ['<!--히어로 이미지 (신간알림 스타일)-->', '<!--// 히어로 이미지 (신간알림 스타일)-->'],
+  spacer: ['<!--여백-->', '<!--// 여백-->'],
 };
 
 function hasModuleInCode(key) {
@@ -4661,6 +4725,9 @@ ul{list-style:none;padding:0;margin:0;}
 .event_container .b-txt{font-weight:700;}
 .event_container .pink_big_btn{color:#fff !important;}
 .event_container a:not(.pink_big_btn):not(.author-card__btn):not(.author-card__btn--primary){color:inherit;}
+/* mOnly.css 탭 활성 색상 복원 */
+.event_container .monly_swiper_tab .swiper-slide.on a{color:#fff;}
+.event_container .monly_swiper_tab .swiper-slide a{color:inherit;}
 /* 알리미 단독 모드 — pink_big_btn 스타일 통일 */
 .alarm-standalone { display:flex; gap:10px; justify-content:center; max-width:750px; margin:0 auto; padding:20px 24px; }
 .alarm-standalone__btn { display:flex; align-items:center; justify-content:center; min-width:200px; height:50px; padding:0 30px; border-radius:25px; font-size:16px; font-weight:700; text-decoration:none !important; cursor:pointer; transition:opacity .2s; border:none; }
@@ -4694,8 +4761,9 @@ ul{list-style:none;padding:0;margin:0;}
 .gift-banner-txt{padding:12px 20px;}
 .gift-banner-tag{display:inline-block;margin-bottom:12px;padding:2px 12px;background:#EB217C;border-radius:999px;color:#fff;font-size:clamp(12px,3.2vw,14px);font-weight:700;}
 .gift-banner-tit{color:#111;font-size:clamp(17px,4.4vw,21px);font-weight:800;line-height:1.4;}
-.gift-banner-name{margin-top:10px;color:#EB217C;font-size:clamp(14px,3.6vw,16px);font-weight:600;}
+.gift-banner-name{margin-top:10px;color:#000;font-size:clamp(14px,3.6vw,16px);font-weight:600;}
 @media screen and (min-width:750px){.gift-banner{margin:50px auto 80px;}.gift-banner h2{margin:0 auto 30px;}.gift-banner-list{display:grid;grid-template-columns:repeat(3,calc((100% - 32px) / 3));justify-content:center;}.gift-banner-item{flex-direction:column;text-align:center;}.gift-banner-list:has(.gift-banner-item:nth-child(1):last-child){grid-template-columns:calc((100% - 32px) / 3);}.gift-banner-list:has(.gift-banner-item:nth-child(2):last-child){grid-template-columns:repeat(2,calc((100% - 32px) / 3));}.gift-banner-thumb{width:100%;aspect-ratio:750/650;}.gift-banner-tit{margin:0 auto;}.gift-banner-name{margin:10px 0 auto;}}
+@media (prefers-reduced-motion: reduce){.gift-banner-item{transition:none;}.gift-banner-item:hover{transform:none;}}
 /* 작가 소개 + 신간알리미 */
 .author-section { padding: 20px 24px; max-width: 750px; margin: 0 auto; }
 .author-card { border-bottom: 1px solid #e5e7eb; padding: 20px 0; }
@@ -4724,7 +4792,7 @@ ul{list-style:none;padding:0;margin:0;}
 /* ===== 도서 슬라이딩 V1~V5 ===== */
 .bs-section{padding:40px 0;}.bs-section-tit{font-size:22px;font-weight:700;color:#333333;letter-spacing:-.03em;text-align:center;margin:0 0 20px;padding:0 16px;}.bs-section-head{display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:20px;}.bs-section-head .bs-section-tit{margin-bottom:0;}.bs-pause-btn{position:absolute;right:16px;background:none;border:none;cursor:pointer;padding:0;}.bs-pause-btn img{width:10px;height:14px;display:block;opacity:.4;}@media screen and (min-width:768px){.bs-section-tit{font-size:28px;}}
 .bs-v1{margin:40px 0;overflow:hidden;}.bs-v1 .bookswiper-v1{overflow:hidden;}.bs-v1 .bookswiper-v1 .swiper-wrapper{display:flex;align-items:stretch;-webkit-transition-timing-function:linear!important;transition-timing-function:linear!important;}.bs-v1 .swiper-slide{width:200px;display:flex;flex-direction:column;height:auto;justify-content:flex-end;}.bs-v1 .bookimg{width:100%;border-radius:8px;overflow:hidden;}.bs-v1 .bookimg img{width:100%;display:block;transition:transform .4s ease;}.bs-v1 .bookimg:hover img{transform:scale(1.05);}.bs-v1 .book_tit2{display:block;font-size:22px;font-weight:700;color:#333333;line-height:1.2;letter-spacing:-.03em;margin-top:14px;margin-bottom:8px;word-break:keep-all;}.bs-v1 .book_tit1{display:block;font-size:15px;font-weight:400;color:#333333;line-height:1.4;letter-spacing:-.03em;}.bs-v1 a:link,.bs-v1 a:visited,.bs-v1 a:hover{text-decoration:none !important;color:inherit !important;}@media(max-width:1280px){.bs-v1 .swiper-slide{width:150px;}.bs-v1 .book_tit2{font-size:18px;}.bs-v1 .book_tit1{font-size:14px;}}@media(max-width:480px){.bs-v1 .swiper-slide{width:100px;}.bs-v1 .book_tit2{font-size:17px;line-height:1.15;}.bs-v1 .book_tit1{font-size:14px;line-height:1.3;}}@media(min-width:768px){.bs-v1 .swiper-slide{margin-right:50px !important;}}@media(min-width:1280px){.bs-v1 .swiper-slide{margin-right:110px !important;}}
-.bs-v2{position:relative;margin:40px 0;}.bs-v2 .swiper-outer{overflow:hidden;}.bs-v2 .bookswiper-v2{overflow:visible;padding-bottom:30px;}.bs-v2 .swiper-slide{width:240px!important;display:flex;justify-content:center;align-items:flex-end;}.bs-v2 .swiper-slide .book{width:180px;height:250px;overflow:hidden;transition:width .45s cubic-bezier(.34,1.06,.64,1),height .45s cubic-bezier(.34,1.06,.64,1);will-change:width,height;}.bs-v2 .swiper-slide-active .book{width:220px;height:300px;}.bs-v2 .swiper-slide .book img{width:100%;height:100%;object-fit:cover;display:block;}.bs-v2 .shelf{border-radius:4px;width:100%;height:30px;box-shadow:0 4px 10px rgba(0,0,0,.18);position:relative;top:-10px;}.bs-v2 .bookinfos{width:100%;max-width:610px;margin:30px auto 0;text-align:center;position:relative;min-height:200px;padding:0 50px;box-sizing:border-box;}.bs-v2 .bookinfo{position:absolute;top:0;left:50px;right:50px;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility .5s;}.bs-v2 .bookinfo.active{opacity:1;visibility:visible;}.bs-v2 .bookinfo h4{margin:0 0 8px;font-size:22px;font-weight:600;color:#222;letter-spacing:-.05em;line-height:1.3;}.bs-v2 .bookinfo span{display:block;margin-bottom:8px;font-size:16px;font-weight:600;color:#555;letter-spacing:-.05em;}.bs-v2 .bookinfo p{margin:0 auto;padding:15px 5px;font-size:14px;font-weight:500;color:#222;letter-spacing:-.05em;word-break:keep-all;border-top:2px solid #316818;border-bottom:2px solid #316818;min-height:80px;box-sizing:border-box;line-height:1.7;display:flex;align-items:center;justify-content:center;}.bs-v2 .bookinfos .swiper-button-prev,.bs-v2 .bookinfos .swiper-button-next{position:absolute;top:0;width:40px;height:40px;margin-top:0;}.bs-v2 .bookinfos .swiper-button-prev{left:5px;}.bs-v2 .bookinfos .swiper-button-next{right:5px;}.bs-v2 .bookinfos .swiper-button-prev::after,.bs-v2 .bookinfos .swiper-button-next::after{font-size:18px;color:#316818;}@media screen and (min-width:750px){.bs-v2 .swiper-outer{overflow:visible;max-width:1660px;margin:0 auto;}.bs-v2 .bookswiper-v2{overflow:hidden;padding-bottom:0;}.bs-v2 .swiper-slide{width:320px!important;height:440px;}.bs-v2 .swiper-slide .book{width:240px;height:330px;}.bs-v2 .swiper-slide-prev .book,.bs-v2 .swiper-slide-next .book{width:280px;height:385px;}.bs-v2 .swiper-slide-active .book{width:320px;height:440px;}.bs-v2 .shelf{height:56px;top:-27px;}.bs-v2 .bookinfos{margin-top:40px;min-height:250px;}.bs-v2 .bookinfo h4{font-size:32px;margin-bottom:20px;}.bs-v2 .bookinfo span{font-size:24px;margin-bottom:30px;}.bs-v2 .bookinfo p{font-size:19px;padding:20px 5px;min-height:140px;line-height:1.85;}.bs-v2 .bookinfos .swiper-button-prev,.bs-v2 .bookinfos .swiper-button-next{width:48px;height:48px;top:50%;transform:translateY(-50%);}.bs-v2 .bookinfos .swiper-button-prev{left:-109px;}.bs-v2 .bookinfos .swiper-button-next{right:-109px;}}
+.bs-v2{position:relative;margin:40px 0;}.bs-v2 .swiper-outer{overflow:hidden;}.bs-v2 .bookswiper-v2{overflow:visible;padding-bottom:30px;}.bs-v2 .swiper-slide{width:240px!important;display:flex;justify-content:center;align-items:flex-end;}.bs-v2 .swiper-slide .book{width:180px;height:250px;overflow:hidden;transition:width .45s cubic-bezier(.34,1.06,.64,1),height .45s cubic-bezier(.34,1.06,.64,1);will-change:width,height;}.bs-v2 .swiper-slide-active .book{width:220px;height:300px;}.bs-v2 .swiper-slide .book img{width:100%;height:100%;object-fit:cover;display:block;}.bs-v2 .shelf{border-radius:4px;width:100%;height:30px;box-shadow:0 4px 10px rgba(0,0,0,.18);position:relative;top:-10px;}.bs-v2 .bookinfos{width:100%;max-width:610px;margin:30px auto 0;text-align:center;position:relative;min-height:200px;padding:0 50px;box-sizing:border-box;}.bs-v2 .bookinfo{position:absolute;top:0;left:50px;right:50px;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility .5s;}.bs-v2 .bookinfo.active{opacity:1;visibility:visible;}.bs-v2 .bookinfo h3{margin:0 0 8px;font-size:22px;font-weight:600;color:#222;letter-spacing:-.05em;line-height:1.3;}.bs-v2 .bookinfo .bookinfo-author{display:block;margin-bottom:8px;font-size:16px;font-weight:600;color:#555;letter-spacing:-.05em;}.bs-v2 .bookinfo p{margin:0 auto;padding:15px 5px;font-size:14px;font-weight:500;color:#222;letter-spacing:-.05em;word-break:keep-all;border-top:2px solid #316818;border-bottom:2px solid #316818;min-height:80px;box-sizing:border-box;line-height:1.7;display:flex;align-items:center;justify-content:center;}.bs-v2 .bookinfos .swiper-button-prev,.bs-v2 .bookinfos .swiper-button-next{position:absolute;top:0;width:40px;height:40px;margin-top:0;}.bs-v2 .bookinfos .swiper-button-prev{left:5px;}.bs-v2 .bookinfos .swiper-button-next{right:5px;}.bs-v2 .bookinfos .swiper-button-prev::after,.bs-v2 .bookinfos .swiper-button-next::after{font-size:18px;color:#316818;}@media screen and (min-width:750px){.bs-v2 .swiper-outer{overflow:visible;max-width:1660px;margin:0 auto;}.bs-v2 .bookswiper-v2{overflow:hidden;padding-bottom:0;}.bs-v2 .swiper-slide{width:320px!important;height:440px;}.bs-v2 .swiper-slide .book{width:240px;height:330px;}.bs-v2 .swiper-slide-prev .book,.bs-v2 .swiper-slide-next .book{width:280px;height:385px;}.bs-v2 .swiper-slide-active .book{width:320px;height:440px;}.bs-v2 .shelf{height:56px;top:-27px;}.bs-v2 .bookinfos{margin-top:40px;min-height:250px;}.bs-v2 .bookinfo h3{font-size:32px;margin-bottom:20px;}.bs-v2 .bookinfo .bookinfo-author{font-size:24px;margin-bottom:30px;}.bs-v2 .bookinfo p{font-size:19px;padding:20px 5px;min-height:140px;line-height:1.85;}.bs-v2 .bookinfos .swiper-button-prev,.bs-v2 .bookinfos .swiper-button-next{width:48px;height:48px;top:50%;transform:translateY(-50%);}.bs-v2 .bookinfos .swiper-button-prev{left:-109px;}.bs-v2 .bookinfos .swiper-button-next{right:-109px;}}
 .bs-v3{margin:40px auto;max-width:1270px;position:relative;overflow:hidden;padding-bottom:60px;box-sizing:border-box;}.bs-v3 .bookswiper-v3{overflow:visible;}.bs-v3 .swiper-slide{transform:scale(0.8);opacity:0.5;transition:all 0.6s cubic-bezier(0.4,0,0.2,1);text-align:center;padding-bottom:130px!important;position:relative;}.bs-v3 .swiper-slide>a{display:inline-block;}.bs-v3 .swiper-slide-active{transform:scale(1);opacity:1;}.bs-v3 .book-cover{position:relative;aspect-ratio:376/536;max-width:376px;width:100%;filter:grayscale(80%);transition:0.6s cubic-bezier(0.4,0,0.2,1);}.bs-v3 .book-cover::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);transition:0.6s cubic-bezier(0.4,0,0.2,1);pointer-events:none;}.bs-v3 .swiper-slide-active .book-cover{filter:grayscale(0%);}.bs-v3 .swiper-slide-active .book-cover::after{background:rgba(0,0,0,0);}.bs-v3 .book-cover img{max-width:100%;display:block;box-shadow:0 10px 16px rgba(51,51,51,0.45);}.bs-v3 .book_tit{position:absolute;left:50%;bottom:0;width:120%;pointer-events:none;opacity:0;transform:translate(-50%,40px);transition:transform 0.001s ease,opacity 0.001s ease;text-align:center;}.bs-v3 .swiper-slide-active .book_tit{opacity:1;transform:translate(-50%,0);transition:transform 1s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease;transition-delay:0.25s;}.bs-v3 .swiper-slide-active .book_tit .book_tit1{display:block;font-size:18px;color:#ed5959;font-weight:700;margin-bottom:10px;word-break:keep-all;letter-spacing:-0.03em;}.bs-v3 .swiper-slide-active .book_tit .book_tit2{display:block;font-size:28px;color:#111111;font-weight:700;word-break:keep-all;letter-spacing:-0.03em;}.bs-v3 .swiper-pagination{position:relative;left:50%;transform:translateX(-50%);width:320px;height:2px;background:#ddd;border-radius:2px;margin-top:24px;display:block;}.bs-v3 .swiper-pagination-progressbar-fill{background:#333;border-radius:2px;}@media(max-width:768px){.bs-v3 .book_tit{width:calc(100vw - 15px);}}@media(max-width:480px){.bs-v3 .swiper-pagination{position:relative!important;top:auto!important;margin-top:16px;}.bs-v3 .book_tit{bottom:10px;}.bs-v3 .swiper-slide-active .book_tit .book_tit1{font-size:17px;}.bs-v3 .swiper-slide-active .book_tit .book_tit2{font-size:24px;}.bs-v3 .swiper-pagination{width:180px;}}
 .bs-v4{margin:40px auto;max-width:960px;}.bs-v4 .bookswiper-v4{overflow:hidden;width:100%;}.bs-v4 .swiper-slide{transform:scale(0.8);opacity:0.5;transition:all 0.6s cubic-bezier(0.4,0,0.2,1);text-align:center;padding-bottom:130px!important;will-change:transform,opacity;position:relative;}.bs-v4 .swiper-slide>a{display:inline-block;}.bs-v4 .swiper-slide-active{transform:scale(1);opacity:1;}.bs-v4 .book-cover{position:relative;aspect-ratio:376/536;max-width:376px;width:100%;margin:0 auto;filter:grayscale(80%);transition:0.6s cubic-bezier(0.4,0,0.2,1);}.bs-v4 .book-cover::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);transition:0.6s cubic-bezier(0.4,0,0.2,1);pointer-events:none;}.bs-v4 .swiper-slide-active .book-cover{filter:grayscale(0%);}.bs-v4 .swiper-slide-active .book-cover::after{background:rgba(0,0,0,0);}.bs-v4 .book-cover img{max-width:100%;box-shadow:0 10px 16px rgba(51,51,51,0.45);}.bs-v4 .book_tit{position:absolute;left:50%;bottom:0;width:120%;pointer-events:none;opacity:0;transform:translate(-50%,40px);transition:transform 0.001s ease,opacity 0.001s ease;}.bs-v4 .swiper-slide-active .book_tit{opacity:1;transform:translate(-50%,0);transition:transform 1s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease;transition-delay:0.25s;}.bs-v4 .book_tit1{display:block;color:#0b155e;font-size:22px;margin-bottom:8px;word-break:keep-all;font-weight:600;letter-spacing:-0.03em;}.bs-v4 .book_tit2{display:block;color:#272c4e;font-size:15px;font-weight:400;word-break:keep-all;}.bs-v4 .bookdesc{display:none;}.bs-v4 .showdesc{position:relative;opacity:0;transition:opacity 0.5s ease;min-height:130px;width:90%;margin:70px auto 0;text-align:center;}.bs-v4 .showdesc::before{content:'';display:inline-block;width:28px;height:3px;background:#091467;position:absolute;top:-34px;left:50%;transform:translateX(-50%);}.bs-v4 .showdesc>p{margin:0;color:#111;font-size:17px;font-weight:400;line-height:1.8;letter-spacing:-0.03em;word-break:keep-all;}.bs-v4 .swiper-button-next,.bs-v4 .swiper-button-prev{top:44%;transform:translateY(-50%);width:34px;height:64px;}.bs-v4 .swiper-button-next{right:100px;}.bs-v4 .swiper-button-prev{left:100px;}.bs-v4 .swiper-pagination-progressbar{top:auto;bottom:0;left:50%;transform:translateX(-50%);width:calc(100% - 15px);max-width:320px;height:2px!important;background:#ddd!important;}.bs-v4 .swiper-pagination-progressbar-fill{background:#111!important;}@media(max-width:768px){.bs-v4 .book_tit{width:calc(100vw - 15px);}.bs-v4 .swiper-button-next{right:16px;}.bs-v4 .swiper-button-prev{left:16px;}.bs-v4 .showdesc{margin-top:40px;min-height:0;}.bs-v4 .showdesc::before{top:-22px;}.bs-v4 .book_tit1{margin-bottom:5px;}}@media(max-width:480px){.bs-v4 .swiper-slide{padding-bottom:100px!important;}.bs-v4 .book-cover{max-width:246px;}.bs-v4 .swiper-button-next{right:4px;width:28px;}.bs-v4 .swiper-button-prev{left:4px;width:28px;}.bs-v4 .book_tit1{font-size:20px;}.bs-v4 .book_tit2{font-size:14px;}.bs-v4 .showdesc{min-height:0;margin-top:30px;}.bs-v4 .showdesc>p{font-size:15px;}.bs-v4 .showdesc::before{top:-24px;}}
 .bs-v5{width:100%;padding:32px 0 40px;overflow:hidden;position:relative;}.bs-v5::before,.bs-v5::after{content:'';position:absolute;top:0;width:80px;height:100%;z-index:10;pointer-events:none;}.bs-v5::before{left:0;background:linear-gradient(to right,#fff,transparent);}.bs-v5::after{right:0;background:linear-gradient(to left,#fff,transparent);}.bs-v5 .slider-inner{overflow:hidden;width:100%;cursor:grab;}.bs-v5 .slider-inner:active{cursor:grabbing;}.bs-v5 .slider-track{display:flex;width:max-content;gap:24px;will-change:transform;}.bs-v5 .slider-item{width:140px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center;}.bs-v5 .slider-item .cover{width:100%;display:block;}.bs-v5 .slider-item .cover img{max-width:100%;height:auto;display:block;box-shadow:2px 4px 10px rgba(0,0,0,.12);}.bs-v5 .slider-item .txt{font-size:12px;padding:6px 4px 0;line-height:1.4;color:#333;font-weight:600;word-break:keep-all;}@media screen and (min-width:750px){.bs-v5{padding:40px 0 56px;}.bs-v5::before,.bs-v5::after{width:300px;}.bs-v5 .slider-track{gap:28px;align-items:stretch;}.bs-v5 .slider-item{width:230px;gap:10px;align-self:stretch;}.bs-v5 .slider-item .cover{flex:1;display:flex;align-items:flex-end;justify-content:center;min-height:0;}.bs-v5 .slider-item .txt{font-size:13px;}}
@@ -5021,19 +5089,41 @@ function resetScreen(screenId) {
 function finishCode(){
   const ed=document.getElementById('finalCode');
   if(!ed.value){toast('⚠️ 추가된 코드가 없습니다.');return;}
-  // 진행중 주석 제거 + 닫는 태그 추가
+  const btn=document.getElementById('finishBtn');
+  if(btn.dataset.finished==='1'){unfinishCode();return;}
+  // 진행중 주석 제거
   let code=ed.value;
   code=code.replace(/\n?<!-- ⚠️.*?-->\n?/g,'');
+  // 스크립트 블록을 모아 맨 아래로 이동 (src 중복 제거)
+  const scripts=[], seenSrc=new Set();
+  code=code.replace(/<script[\s\S]*?<\/script>/gi, m=>{
+    const srcMatch=m.match(/<script[^>]+src=["']([^"']+)["']/i);
+    if(srcMatch){ if(seenSrc.has(srcMatch[1]))return''; seenSrc.add(srcMatch[1]); }
+    scripts.push(m); return '';
+  });
+  code=code.replace(/\n{3,}/g,'\n\n').trimEnd();
+  if(scripts.length) code+='\n\n'+scripts.join('\n');
+  // 닫는 태그 추가
   if(!code.includes('<!-- // 이벤트 끝 -->')) {
     code+='\n    </div><!-- monly_basic_wrap -->\n</article>\n<!-- // 이벤트 끝 -->';
   }
   ed.value=code;
   if(outTab==='preview')refreshPrev();
-  const btn=document.getElementById('finishBtn');
-  btn.textContent='✅ 완료됨';
-  btn.disabled=true;
-  btn.style.opacity='0.5';
+  btn.textContent='✅ 완료됨 (취소하기)';
+  btn.dataset.finished='1';
+  btn.style.opacity='1';
   toast('✅ 코드 완료! 닫는 태그가 추가되었습니다.');
+}
+function unfinishCode(){
+  const ed=document.getElementById('finalCode');
+  let code=ed.value;
+  code=code.replace(/\n?    <\/div><!-- monly_basic_wrap -->\n<\/article>\n<!-- \/\/ 이벤트 끝 -->/,'');
+  ed.value=code;
+  if(outTab==='preview')refreshPrev();
+  const btn=document.getElementById('finishBtn');
+  btn.textContent='⚡ 코드 완료';
+  btn.dataset.finished='0';
+  toast('↩ 완료가 취소됐습니다. 모듈을 계속 추가하세요.');
 }
 function cpCode(){ const c=document.getElementById('finalCode').value; if(!c){toast('⚠️ 복사할 코드가 없습니다.');return;} navigator.clipboard.writeText(c).then(()=>toast('📋 복사되었습니다!')).catch(()=>toast('⚠️ 복사 실패')); }
 

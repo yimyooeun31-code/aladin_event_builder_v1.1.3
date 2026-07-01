@@ -1056,7 +1056,7 @@
             </div>
             <div class="input-row">
               <label>금지 요소</label>
-              <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트, 글자, 로고">
+              <input type="text" id="pg_exclude" placeholder="예: 사람 얼굴, 텍스트" value="텍스트 절대 금지, 인물, 구체적인 캐릭터, 복잡한 패턴, 중앙 오브젝트 금지, 워터마크 금지">
             </div>
 
             <div style="display:flex; gap:10px; margin-top:12px;">
@@ -2488,7 +2488,8 @@ function wizardShowStep(step) {
         const excludeInput = document.getElementById('pg_exclude');
         if (excludeInput) {
             excludeInput.value = (wizardTitleMode === 'text' || wizardTitleMode === 'bg_only')
-                ? '텍스트, 글자, 로고' : '로고';
+                ? '텍스트 절대 금지, 인물, 구체적인 캐릭터, 복잡한 패턴, 중앙 오브젝트 금지, 워터마크 금지'
+                : '인물, 구체적인 캐릭터, 복잡한 패턴, 중앙 오브젝트 금지, 워터마크 금지';
         }
     } else if (step === 3) {
         document.getElementById('wizStep3').style.display = 'block';
@@ -2973,18 +2974,10 @@ function generatePrompt(device) {
     const elements = [];
     document.querySelectorAll('.pg_element:checked').forEach(cb => elements.push(cb.value));
 
-    // 사이즈 결정
-    let sizeInfo = device === 'pc'
-        ? '1400x440 사이즈의 가로형 배너 이미지'
-        : '750x770 사이즈의 모바일 배너 이미지';
-
     // 프롬프트 조합
     let prompt = '';
 
-    // 1. 사이즈
-    prompt += `${sizeInfo}.\n`;
-
-    // 2. 메인 컨셉
+    // 1. 메인 컨셉
     prompt += `주제: ${theme}.\n`;
 
     // 3. 배경 스타일/분위기
@@ -3003,20 +2996,10 @@ function generatePrompt(device) {
         prompt += `${extra}.\n`;
     }
 
-    // 7. 위자드 타이틀 모드에 따른 지시
-    prompt += '온라인 서점 이벤트 배너용.\n';
-    if (wizardTitleMode === 'text') {
-        prompt += '상단에 텍스트가 올라가므로, 타이틀 영역에 빈 공간을 확보해주세요.\n';
-        prompt += '배경 이미지만 생성, 텍스트는 별도로 입력합니다.\n';
-    } else if (wizardTitleMode === 'image_title') {
-        const imgTitle = document.getElementById('ps_img_title')?.value?.trim() || '';
-        const imgSubtitle = document.getElementById('ps_img_subtitle')?.value?.trim() || '';
-        if (imgTitle) prompt += `이미지에 다음 타이틀 텍스트를 포함해주세요: "${imgTitle}".\n`;
-        if (imgSubtitle) prompt += `부제목: "${imgSubtitle}".\n`;
-        prompt += '타이틀이 잘 읽히도록 배경과 대비되게 해주세요.\n';
-    } else {
-        prompt += '타이틀 텍스트 없이 순수 배경 이미지만 생성해주세요.\n';
-    }
+    // 7. 배경 확장 (고정)
+    prompt += '배경 확장: 참조 이미지의 배경 요소(자연물, 건축물, 추상 그래픽)만 활용하여 캔버스 전체를 자연스럽게 채울 것.\n';
+    prompt += '레이아웃: 중앙에 넓은 빈 공간 유지. 주요 오브젝트는 좌우 가장자리에만 배치.\n';
+    prompt += '후처리: 좌우 끝은 자연스럽게 흐려지는 그라데이션 효과 적용.\n';
 
     // 8. 금지 요소
     if (exclude) {
@@ -3411,7 +3394,7 @@ function updatePreview() {
 
     // wa_coupondown_btn - Price 추출
     html = html.replace(/<uc1:wa_coupondown_btn[^>]*?Price="([^"]*)"[^>]*\/?>/gi,
-        '<a href="javascript:void(0);" style="text-decoration:none;"><span style="font-size:76px; font-family:NanumSquare,sans-serif; color:#e62e8b; font-weight:300; letter-spacing:-3px; position:absolute; left:40px; top:116px;">$1</span></a>');
+        '<button style="cursor:pointer;"><span>$1</span></button>');
 
     // alarm - AlarmButton 추출 (이미지 버튼 포함)
     html = html.replace(/<uc1:alarm\s[^>]*?AlarmButton="([^"]*)"[^>]*?\/?>/gi, function(match, btnText) {
@@ -3482,15 +3465,20 @@ setTimeout(function() {
 }, 500);
 <\/script>
 <style>
-  body { margin: 0; padding: 0; }
+  body { margin: 0; padding: 0; line-height: 19px; }
   img { max-width: 100%; height: auto; }
+  ul { list-style: none; padding: 0; margin: 0; }
   /* 사이트 기본 CSS의 파란색 오버라이드 방지 */
   .event_container h1, .event_container h2, .event_container h3, .event_container h4,
   .event_container p, .event_container span:not(.t_pink):not(.b-txt), .event_container li { color: inherit; }
-  .event_container a { color: inherit; }
+  .event_container a { color: inherit; text-decoration: none; }
   .event_container { color: #333; }
   .event_container .t_pink { color: #eb217c !important; }
   .event_container .b-txt { font-weight: 700; }
+  /* 쿠폰/적립금 컬러 복원 — span:not(.t_pink):not(.b-txt) color:inherit 오버라이드 대응 */
+  .event_container .coupon_down button span,
+  .event_container .coupon_down a span { color: #e62e8b !important; }
+  .event_container .savedmoney_new .price { color: #fe8814 !important; }
   /* 작가 소개 버튼 영역 스타일 */
   .event_container .monly_author_info .info_top .btn a {
     display: inline-block;
