@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>알라딘 이벤트 빌더 가이드 v3.0</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brand: #4A7EE0;
+  --brand-dark: #3A6BC8;
+  --brand-bg: #ECF2FD;
+  --bg: #F5F5F5;
+  --surface: #FFFFFF;
+  --border: #E8E8E8;
+  --text: #1A1A1A;
+  --text2: #4D4D4D;
+  --text3: #888888;
+  --r: 10px;
+  --r-sm: 6px;
+  --sidebar-w: 240px;
+}
+body {
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ── 레이아웃 ── */
+.guide-wrap { display: flex; min-height: 100vh; }
+
+/* ── 사이드바 ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+.sb-header {
+  padding: 22px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-logo { font-size: 12px; font-weight: 900; letter-spacing: .08em; color: var(--brand); margin-bottom: 4px; }
+.sb-title { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.3; }
+.sb-ver { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.sb-nav { padding: 12px 0 20px; flex: 1; }
+.sb-group {
+  font-size: 11px; font-weight: 800; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 16px 20px 6px;
+}
+.sb-nav a {
+  display: block;
+  padding: 7px 20px 7px 28px;
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.sb-nav a:hover { color: var(--text); background: var(--bg); }
+.sb-nav a.active { color: var(--brand); font-weight: 700; border-left-color: var(--brand); background: var(--brand-bg); }
+
+.sb-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.open-btn {
+  display: block; width: 100%;
+  padding: 10px 0;
+  background: var(--brand);
+  color: #fff;
+  font-size: 15px; font-weight: 700;
+  text-align: center; text-decoration: none;
+  border-radius: var(--r-sm);
+  transition: background .15s;
+}
+.open-btn:hover { background: var(--brand-dark); }
+
+/* ── 본문 ── */
+.content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 0 0 80px;
+}
+
+/* ── 상단 히어로 ── */
+.content-hero {
+  background: linear-gradient(135deg, #2B3A6E 0%, #3A6BC8 100%);
+  color: #fff;
+  padding: 52px 60px 48px;
+}
+.content-hero h1 { font-size: 30px; font-weight: 900; margin-bottom: 10px; }
+.content-hero p { font-size: 17px; opacity: .82; max-width: 500px; line-height: 1.8; }
+
+/* ── 섹션 ── */
+.section {
+  padding: 52px 60px 0;
+  max-width: 1200px;
+}
+.section + .section { border-top: 1px solid var(--border); margin-top: 52px; }
+
+.section-eyebrow {
+  font-size: 12px; font-weight: 800;
+  color: var(--brand);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section h2 {
+  font-size: 30px; font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.section h3 {
+  font-size: 20px; font-weight: 800;
+  color: var(--text);
+  margin: 36px 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+.section h3:first-of-type { margin-top: 0; }
+.section p { color: var(--text2); margin-bottom: 10px; }
+.section p strong { color: var(--text); font-weight: 700; }
+
+/* 흐름 스텝 */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 0;
+  flex-wrap: nowrap;
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px; font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+}
+.flow-arrow { color: var(--text3); font-size: 13px; }
+.flow-num {
+  width: 22px; height: 22px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 섹션 타이틀 + 빌더 링크 한 줄 */
+.section-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.section-title-row h2 { margin-bottom: 0; }
+
+/* 빌더 링크 */
+.builder-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border: 1px solid #C8DAFC;
+  border-radius: 6px;
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.builder-link:hover { background: #D8E8FB; }
+
+/* 종류 리스트 */
+.type-list { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; width: fit-content; }
+.type-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+}
+.type-item-name { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.type-item-desc { font-size: 16px; color: var(--text2); line-height: 1.6; }
+
+/* 댓글 타입 옵션 카드 */
+.comment-type-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.comment-type-item {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-left: 4px solid var(--brand);
+  border-radius: var(--r);
+  padding: 16px 18px;
+}
+.comment-type-item-name { font-size: 17px; font-weight: 800; color: var(--brand); margin-bottom: 6px; }
+.comment-type-item-desc { font-size: 16px; color: var(--text2); line-height: 1.6; }
+
+/* 필요한 정보 */
+.info-label {
+  font-size: 20px; font-weight: 800;
+  color: var(--brand);
+  margin: 36px 0 12px;
+}
+.info-label:has(+ .step-list) {
+  display: inline-block;
+  font-size: 13px;
+  background: var(--brand-bg);
+  border: 1px solid #C8DAFC;
+  border-radius: 6px 6px 0 0;
+  border-bottom: none;
+  padding: 5px 14px;
+  margin-bottom: 0;
+}
+.info-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.info-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 16px; color: var(--text2);
+}
+.info-list li::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--brand);
+  border-radius: 50%;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.info-list li strong { color: var(--text); font-weight: 700; }
+
+/* 타입 블록 (카드 + 제작순서 묶음) */
+.type-block { display: flex; flex-direction: column; gap: 0; margin: 16px 0 0; }
+.type-block + .type-block { margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--border); }
+.type-block .type-item { margin-bottom: 16px; }
+.type-block-label {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 13px; font-weight: 800;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border: 1px solid #C8DAFC;
+  border-radius: 6px 6px 0 0;
+  border-bottom: none;
+  padding: 5px 14px;
+  letter-spacing: .04em; text-transform: uppercase;
+  margin-bottom: 0;
+}
+.type-block-label + .step-list,
+.info-label + .step-list {
+  background: var(--surface);
+  border: 1px solid #C8DAFC;
+  border-radius: 0 var(--r) var(--r) var(--r);
+  padding: 20px 24px;
+}
+.step-box {
+  background: var(--surface);
+  border: 1px solid #C8DAFC;
+  border-radius: var(--r);
+  padding: 20px 24px;
+  margin-top: 12px;
+}
+
+/* 스텝 리스트 */
+.step-list { list-style: none; display: flex; flex-direction: column; gap: 14px; counter-reset: step-counter; margin: 0; padding: 0; }
+.step-list > li { display: flex; gap: 10px; align-items: flex-start; font-size: 16px; color: var(--text); line-height: 1.6; counter-increment: step-counter; }
+.step-list > li::before { content: counter(step-counter); min-width: 22px; height: 22px; background: var(--brand); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-tag { display: inline-flex; background: var(--brand-bg); color: var(--brand); border: 1px solid #C8DAFC; border-radius: 4px; padding: 2px 8px; font-size: 13px; font-weight: 700; vertical-align: middle; }
+.step-sub { margin-top: 4px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; font-size: 15px; color: var(--text2); }
+.step-sub li::before { content: '—'; margin-right: 5px; color: var(--text3); }
+.option-chips { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.option-chips li { background: #F5F5F5; border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 15px; color: var(--text); white-space: nowrap; }
+.option-chips li.default { background: var(--brand-bg); border-color: #C8DAFC; color: var(--brand); font-weight: 700; }
+
+/* 예시 링크 카드 */
+.example-links { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; width: fit-content; }
+.example-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.example-link:hover { border-color: var(--brand); background: var(--brand-bg); transform: translateX(3px); }
+.example-link-icon { font-size: 18px; flex-shrink: 0; }
+.example-link-label { font-size: 15px; font-weight: 700; color: var(--brand); }
+.example-link-desc { font-size: 15px; color: var(--text2); }
+.example-link-arrow { margin-left: auto; font-size: 13px; color: var(--text3); padding-left: 16px; }
+
+/* 테이블 */
+.guide-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+.guide-table th {
+  background: var(--bg);
+  font-size: 13px; font-weight: 700;
+  color: var(--text2);
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.guide-table td {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  font-size: 16px; color: var(--text);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.guide-table tr:nth-child(even) td { background: #FAFAFA; }
+
+/* 주의사항 */
+.caution {
+  background: var(--brand-bg);
+  border-left: 3px solid var(--brand);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 12px 16px;
+  font-size: 16px; color: #1F4090;
+  line-height: 1.7;
+  margin: 14px 0;
+}
+.caution strong { font-weight: 700; }
+
+/* 코드 */
+code {
+  background: #F0F0F0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  color: #3A6BC8;
+}
+
+/* 체크리스트 */
+.checklist { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.check-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background .12s;
+  user-select: none;
+}
+.check-item:hover { background: var(--bg); }
+.check-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+.check-item label { font-size: 16px; color: var(--text); cursor: pointer; line-height: 1.6; }
+.check-item label span { font-size: 14px; color: var(--text3); display: block; margin-top: 1px; }
+</style>
+</head>
+<body>
+<div class="guide-wrap">
+
+  <!-- 사이드바 -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <div class="sb-logo">ALADIN</div>
+      <div class="sb-title">이벤트 빌더 가이드</div>
+      <div class="sb-ver">v3.0</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-group">시작하기</div>
+      <a href="#quick-start">빠른 시작</a>
+
+      <div class="sb-group">모듈 제작</div>
+      <a href="#hero">이벤트 상단 디자인</a>
+      <a href="#slide">도서 슬라이딩</a>
+      <a href="#comment">댓글 이벤트</a>
+      <a href="#coupon">쿠폰 / 적립금</a>
+      <a href="#author">작가 소개</a>
+      <a href="#banner">배너 링크</a>
+      <a href="#booklist">도서 리스트</a>
+      <a href="#spacer">여백 삽입</a>
+
+      <div class="sb-group">이벤트 제작</div>
+      <a href="#newbook">신간알림 풀세트</a>
+
+      <div class="sb-group">업무 도구</div>
+      <a href="#banner-req">배너 요청 목록</a>
+      <a href="#ai-prompt">AI 배경 프롬프트</a>
+
+    </nav>
+    <div class="sb-footer">
+      <a href="aladin_event_builder_v3.0.html" class="open-btn" target="_blank">빌더 열기</a>
+    </div>
+  </aside>
+
+  <!-- 본문 -->
+  <main class="content">
+
+    <!-- 히어로 -->
+    <div class="content-hero">
+      <h1>알라딘 이벤트 빌더 가이드</h1>
+      <p>이벤트 페이지 코드를 클릭과 입력만으로 만드는 방법을 안내함.<br>디자이너와 MD 모두를 위한 가이드.</p>
+    </div>
+
+    <!-- 빠른 시작 -->
+    <div class="section" id="quick-start">
+      <h2>빠른 시작</h2>
+      <p>클릭과 입력만으로 이벤트 페이지 코드를 생성하는 도구. 개발 지식 없이 이벤트 상단 디자인, 도서 슬라이딩, 쿠폰 버튼 등을 조합해 완성 코드를 뽑아낼 수 있음.</p>
+
+      <div class="info-label">기본 흐름</div>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-num">1</div>모듈 선택</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step"><div class="flow-num">2</div>정보 입력</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step"><div class="flow-num">3</div>미리보기 확인</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step"><div class="flow-num">4</div>코드 추가</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step"><div class="flow-num">5</div>반복</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step"><div class="flow-num">6</div>코드 완료 & 복사</div>
+      </div>
+
+      <div class="caution">
+        <strong>💡 미리보기 / 코드 탭</strong> — 우측 패널 상단의 <span class="step-tag">미리보기</span> · <span class="step-tag">코드</span> 탭을 전환해 실시간 화면 확인과 생성된 코드를 오가며 확인 가능.<br><br>
+        <strong>💡 기본 헤더 포함</strong> — <span class="step-tag">기본 헤더 포함</span> 체크 시 공통 헤더 코드(CSS·JS 링크 포함)가 자동 삽입됨. 최종 <code>.ascx</code> 파일 작성 시 필요.<br><br>
+        <strong>💡 복사하기</strong> — 우측 상단 복사하기 버튼을 누르면 현재까지 추가된 코드를 즉시 복사할 수 있음.<br><br>
+        <strong>💡 코드완료</strong> — 모든 모듈 추가 후 반드시 <span class="step-tag">코드완료</span> 버튼을 눌러야 <code>&lt;/article&gt;</code> 닫기 태그가 포함된 최종 코드가 완성됨.<br><br>
+        <strong>💡 줄바꿈 표기</strong> — 타이틀 입력 시 <code>/br2</code>를 삽입하면 PC에서는 줄바꿈, 모바일에서는 한 줄로 처리됨. 반대로 <code>/br</code>은 모바일 줄바꿈, PC 한 줄.
+      </div>
+
+      <div class="info-label">미리보기에서 수정하기</div>
+      <div class="step-box">
+        <ul class="step-list">
+          <li>코드 추가 후 미리보기 패널에서 각 모듈 영역에 마우스를 올리면 수정 컨트롤이 나타납니다.</li>
+          <li><strong>상단이미지 · 신간알림 상단</strong> — 내용 수정만 가능. 위아래 순서 이동은 지원하지 않습니다. <span class="step-tag">수정</span> 버튼 클릭 → 입력 내용 변경 후 다시 코드 생성.</li>
+          <li><strong>일반 모듈</strong> (도서 슬라이딩, 쿠폰, 댓글 등) — <span class="step-tag">↑</span> <span class="step-tag">↓</span> 버튼으로 순서 조정, <span class="step-tag">수정</span> 버튼으로 내용 편집, <span class="step-tag">🗑</span> 버튼으로 즉시 삭제.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 이벤트 상단 디자인 -->
+    <div class="section" id="hero">
+      <div class="section-title-row"><h2>이벤트 상단 디자인</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#hero" target="_blank">화면 보기 ↗</a></div>
+      <p>이벤트 페이지 최상단 배너 영역.</p>
+
+      <div class="info-label">종류</div>
+
+      <!-- 모바일 only 블록 -->
+      <div class="type-block">
+        <div class="type-item">
+          <div class="type-item-name">모바일 only 전용</div>
+          <div class="type-item-desc">모바일 only 템플릿 상단 이미지 수정. 타이틀 위치 조정 가능.</div>
+        </div>
+        <div class="type-block-label">제작 순서</div>
+        <ol class="step-list">
+          <li>PC 배경 이미지 준비 — <strong>가로 1400px × 세로 440px</strong>. 좌우가 자연스럽게 보이도록 그라데이션 페이드 적용 가능.</li>
+          <li>이미지 URL 입력 후 <span class="step-tag">이미지에서 추출</span> 클릭 → 배경 이미지와 어울리는 배경색 자동 추출.</li>
+          <li><span class="step-tag">그라데이션 적용</span> 체크 시 배경 좌우로 색상이 자연스럽게 페이드 처리됨.</li>
+          <li><span class="step-tag">다음</span> 클릭 → 이벤트 타이틀 입력.</li>
+          <li><div><span class="step-tag">다음</span> 클릭 → 타이틀 위치 스타일 선택.
+            <ul class="option-chips">
+              <li>텍스트 직접 노출</li>
+              <li>원형 글래스 박스</li>
+              <li>블러 라운드 박스</li>
+              <li class="default">이미지 아래 별도 (기본)</li>
+            </ul>
+          </div></li>
+          <li>위 3개 오버레이 스타일 선택 시 타이틀 색상 직접 변경 가능. <strong>이미지 아래 별도</strong> 선택 시 색상 설정 비활성화.</li>
+          <li>스타일 선택 후 <span class="step-tag">코드완료</span> 클릭 → 코드 생성 완료.</li>
+        </ol>
+      </div>
+
+      <!-- 신간알림 블록 -->
+      <div class="type-block">
+        <div class="type-item">
+          <div class="type-item-name">신간알림 이벤트 스타일</div>
+          <div class="type-item-desc">신간 소개 이벤트 템플릿에 최적화된 상단 디자인 스타일.</div>
+        </div>
+        <div class="type-block-label">제작 순서</div>
+        <ol class="step-list">
+          <li>소개할 책이 단권이면 <strong>단일 표지</strong>, 2권 이상이면 <strong>여러 권</strong> 선택 — 최대 4권까지 가능.</li>
+          <li>생성된 배경 이미지 주소 입력.</li>
+          <li><span class="step-tag">다크 오버레이 적용</span> 체크 시 타이틀 가독성 향상 — 배경 이미지 밝기에 따라 선택.</li>
+          <li><span class="step-tag">다음</span> 클릭 → 타이틀 텍스트 및 색상 변경 후 완료.</li>
+        </ol>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>모바일 배경 이미지 URL</li>
+        <li>PC 배경 이미지 URL <strong>(신간알림 스타일)</strong></li>
+        <li>상단 배경색 — 이미지 위아래 여백 컬러</li>
+        <li>제목·부제목 텍스트 <strong>(선택)</strong></li>
+      </ul>
+
+      <div class="caution">
+        <strong>이미지 경로 형식</strong><br>
+        <code>//image.aladin.co.kr/img/events/book/연도/분기/파일명.jpg</code><br>
+        분기: 1~3월=01, 4~6월=02, 7~9월=03, 10~12월=04
+      </div>
+    </div>
+
+    <!-- 도서 슬라이딩 -->
+    <div class="section" id="slide">
+      <div class="section-title-row"><h2>도서 슬라이딩</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#slide" target="_blank">화면 보기 ↗</a></div>
+      <p>Swiper 기반 도서 가로 슬라이드 섹션. V1~V5 총 5가지 스타일.</p>
+
+      <table class="guide-table">
+        <thead>
+          <tr><th>버전</th><th>특징</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>V1</strong></td><td>무한 자동 스크롤. 표지 이미지 URL 직접 입력</td></tr>
+          <tr><td><strong>V2</strong></td><td>중앙 포커스 + 하단 도서 정보 카드. ItemID 입력</td></tr>
+          <tr><td><strong>V3</strong></td><td>세로형 표지 + 진행 바. 표지 이미지 URL 직접 입력</td></tr>
+          <tr><td><strong>V4</strong></td><td>전체화면 슬라이드 + 설명 텍스트. 표지 이미지 URL 직접 입력</td></tr>
+          <tr><td><strong>V5</strong></td><td>무한 자동 스크롤 + ItemID 입력형</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>섹션 제목</li>
+        <li>도서 표지 이미지 URL 또는 도서 ItemID — <strong>버전에 따라 다름</strong></li>
+        <li>도서 제목·저자·설명 텍스트 — <strong>V2·V5만 해당</strong></li>
+      </ul>
+    </div>
+
+    <!-- 댓글 이벤트 -->
+    <div class="section" id="comment">
+      <div class="section-title-row"><h2>댓글 이벤트</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#comment" target="_blank">화면 보기 ↗</a></div>
+      <p>알라딘 댓글 서버 컨트롤 삽입 섹션. 이벤트 목적에 따라 4가지 타입 중 원하는 옵션을 골라 사용할 수 있습니다.</p>
+
+      <div class="info-label">댓글 타입</div>
+      <div class="comment-type-list">
+        <div class="comment-type-item">
+          <div class="comment-type-item-name">일반 댓글</div>
+          <div class="comment-type-item-desc">기본 댓글 작성 폼. 자유롭게 의견을 남기는 일반적인 이벤트에 사용</div>
+        </div>
+        <div class="comment-type-item">
+          <div class="comment-type-item-name">상품 선택형</div>
+          <div class="comment-type-item-desc">댓글 작성 시 응모할 상품을 직접 선택하는 옵션 포함. 경품 선택 이벤트에 적합</div>
+        </div>
+        <div class="comment-type-item">
+          <div class="comment-type-item-name">저자 추천형</div>
+          <div class="comment-type-item-desc">추천 저자를 선택하거나 입력하는 옵션 포함. 저자 관련 이벤트·투표에 적합</div>
+        </div>
+        <div class="comment-type-item">
+          <div class="comment-type-item-name">이미지 첨부형</div>
+          <div class="comment-type-item-desc">댓글에 이미지를 첨부할 수 있는 옵션 포함. 사진 인증 이벤트에 적합</div>
+        </div>
+      </div>
+
+      <div class="info-label">제작 순서</div>
+      <ol class="step-list">
+        <li>원하는 <strong>댓글 타입</strong>을 선택합니다 — 일반 / 상품 선택 / 저자 추천 / 이미지 첨부 중 하나</li>
+        <li><strong>이벤트 아이디(eventID)</strong>를 입력합니다 — 알라딘 이벤트 등록 후 발급되는 고유 아이디</li>
+        <li><strong>섹션 제목</strong>을 입력합니다</li>
+        <li><strong>댓글 작성 안내 문구</strong>를 입력합니다 <span class="step-tag">선택</span></li>
+        <li><span class="step-tag">코드 추가</span> 버튼을 누르면 댓글 모듈 코드가 삽입됩니다</li>
+      </ol>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>이벤트 아이디 <strong>(eventID)</strong></li>
+        <li>섹션 제목</li>
+        <li>댓글 작성 안내 문구 <strong>(선택)</strong></li>
+      </ul>
+    </div>
+
+    <!-- 쿠폰 / 적립금 -->
+    <div class="section" id="coupon">
+      <div class="section-title-row"><h2>쿠폰 / 적립금</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#coupon" target="_blank">화면 보기 ↗</a></div>
+      <p>쿠폰 다운로드 또는 적립금 지급 버튼 섹션.</p>
+
+      <div class="info-label">종류</div>
+      <div class="type-list">
+        <div class="type-item">
+          <div class="type-item-name">단일 쿠폰</div>
+          <div class="type-item-desc">쿠폰 1개 다운로드 버튼</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">다중 쿠폰</div>
+          <div class="type-item-desc">쿠폰 여러 개를 나열</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">적립금</div>
+          <div class="type-item-desc">적립금 지급 버튼</div>
+        </div>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>쿠폰 번호 <strong>(CouponID)</strong></li>
+        <li>버튼 텍스트</li>
+        <li>섹션 타이틀 <strong>(선택)</strong></li>
+      </ul>
+    </div>
+
+    <!-- 작가 소개 -->
+    <div class="section" id="author">
+      <div class="section-title-row"><h2>작가 소개</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#author" target="_blank">화면 보기 ↗</a></div>
+      <p>이벤트에 작가를 소개하거나, 신간알림 버튼·저자파일 버튼을 추가할 때 사용합니다. 작가 프로필 없이 신간알림 버튼만 단독으로 추가하는 것도 가능합니다.</p>
+
+      <div class="info-label">구성 요소</div>
+      <div class="type-list">
+        <div class="type-item">
+          <div class="type-item-name">작가 프로필</div>
+          <div class="type-item-desc">역할 태그(글 / 그림 / 번역 등), 이름, 프로필 사진, 소개 글로 구성</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">신간알림 버튼</div>
+          <div class="type-item-desc">독자가 해당 저자의 신간을 알림 신청할 수 있는 버튼. 단독 추가도 가능</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">저자파일 버튼</div>
+          <div class="type-item-desc">알라딘 저자파일 페이지로 연결되는 버튼. 작가 ID 필요</div>
+        </div>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>역할 태그 <strong>(글 / 그림 / 번역 등)</strong></li>
+        <li>작가 이름</li>
+        <li>작가 ID — 저자파일·신간알리미 연결에 사용</li>
+        <li>프로필 사진 URL <strong>(선택)</strong></li>
+        <li>작가 소개 글</li>
+      </ul>
+
+      <div class="caution">
+        <strong>작가 ID란?</strong><br>
+        알라딘 저자파일 URL의 숫자 ID. 여러 작가 추가 가능.
+      </div>
+    </div>
+
+    <!-- 배너 링크 -->
+    <div class="section" id="banner">
+      <div class="section-title-row"><h2>배너 링크</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#banner" target="_blank">화면 보기 ↗</a></div>
+      <p>이미지 또는 텍스트 형태의 링크 배너 섹션.</p>
+
+      <div class="info-label">종류</div>
+      <div class="type-list">
+        <div class="type-item">
+          <div class="type-item-name">기본 배너</div>
+          <div class="type-item-desc">텍스트 기반 베이직 디자인.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">종합이벤트 배너</div>
+          <div class="type-item-desc">종합이벤트에서 주로 사용.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">카드형 배너</div>
+          <div class="type-item-desc">도서 표지 이미지 활용. 가로형.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">사은품 배너</div>
+          <div class="type-item-desc">사은품 소개에 최적. 세로형. PC 기준 한 줄에 최대 3개 나열 가능.</div>
+        </div>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>표지 이미지 URL</li>
+        <li>링크 URL</li>
+        <li>태그·제목·부제목·버튼 텍스트</li>
+        <li>카드 배경색·버튼 색상</li>
+      </ul>
+    </div>
+
+    <!-- 도서 리스트 -->
+    <div class="section" id="booklist">
+      <div class="section-title-row"><h2>도서 리스트</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#booklist" target="_blank">화면 보기 ↗</a></div>
+      <p>CID·ItemID 기반 도서 목록 출력 섹션.</p>
+
+      <div class="info-label">종류</div>
+      <div class="type-list">
+        <div class="type-item">
+          <div class="type-item-name">단일 리스트형</div>
+          <div class="type-item-desc">탭 1개.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">다중 도서 리스트</div>
+          <div class="type-item-desc">탭 여러 개. 앵커탭 방식으로 한 화면에 모두 노출.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">직접 도서 선택</div>
+          <div class="type-item-desc">ItemID로 도서를 직접 나열.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">랜덤 탭</div>
+          <div class="type-item-desc">탭 별도 구성. 페이지 진입 시 탭 랜덤 노출.</div>
+        </div>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>섹션 제목</li>
+        <li>도서 CID 또는 ItemID</li>
+        <li>탭 이름 <strong>(탭형일 때)</strong></li>
+      </ul>
+    </div>
+
+    <!-- 여백 삽입 -->
+    <div class="section" id="spacer">
+      <div class="section-title-row"><h2>여백 삽입</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#spacer" target="_blank">화면 보기 ↗</a></div>
+      <p>모듈 사이 상하 여백 추가. 모바일·PC 각각 설정 가능.</p>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>모바일 여백 <strong>(px)</strong></li>
+        <li>PC 여백 <strong>(px)</strong></li>
+      </ul>
+    </div>
+
+    <!-- 신간알림 풀세트 -->
+    <div class="section" id="newbook">
+      <div class="section-title-row"><h2>신간알림 풀세트</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#newbook-full" target="_blank">화면 보기 ↗</a></div>
+      <p>신간 단행본 이벤트 페이지를 위자드 방식으로 한 번에 완성하는 모듈. 단계별로 안내에 따라 입력하면 이벤트 전체 코드가 자동 생성됩니다.</p>
+
+      <div class="info-label">제작 순서</div>
+      <ol class="step-list">
+        <li><strong>책 표지 이미지</strong> URL을 입력합니다. 단일 표지 또는 여러 권 선택 가능 <span class="step-tag">최대 4권</span></li>
+        <li><strong>상단 디자인(히어로)</strong>을 설정합니다 — 모바일·PC 배경 이미지 URL, 배경색, 타이틀 입력</li>
+        <li><strong>책 소개</strong> 텍스트를 입력합니다</li>
+        <li><div>아래 섹션은 체크박스로 포함 여부를 선택할 수 있습니다
+          <ul class="step-sub">
+            <li><strong>추천의 말</strong> — 추천 문구·추천인·직함 입력</li>
+            <li><strong>만든 사람들</strong> — 저자·역할 태그·소개 입력</li>
+            <li><strong>이벤트 안내</strong> — 이벤트 안내 문구 입력</li>
+            <li><strong>댓글</strong> — 댓글 이벤트 아이디(eventID) 입력</li>
+          </ul>
+        </div></li>
+        <li><span class="step-tag">코드완료</span>를 누르면 전체 이벤트 코드가 완성됩니다</li>
+      </ol>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>책 표지 이미지 URL — 단일 또는 여러 권</li>
+        <li>히어로 배경 이미지 — 모바일·PC 각각</li>
+        <li>책 소개 텍스트</li>
+        <li>추천의 말 — 추천인·직함 포함 <strong>(선택)</strong></li>
+        <li>작가 정보 — 이름·ID·프로필·소개 <strong>(선택)</strong></li>
+        <li>이벤트 안내 문구 <strong>(선택)</strong></li>
+        <li>댓글 이벤트 아이디 eventID <strong>(선택)</strong></li>
+      </ul>
+    </div>
+
+    <!-- 배너 요청 목록 -->
+    <div class="section" id="banner-req">
+      <div class="section-title-row"><h2>이벤트 배너 요청 목록</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#banner-request" target="_blank">화면 보기 ↗</a></div>
+      <p>이벤트명 입력 시 전체 배너 파일명·URL 자동 생성. 디자이너 요청 시 목록 그대로 복사해서 전달.</p>
+
+      <div class="info-label">종류</div>
+      <div class="type-list">
+        <div class="type-item">
+          <div class="type-item-name">이벤트 배너</div>
+          <div class="type-item-desc">일반 도서 이벤트.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">북펀드</div>
+          <div class="type-item-desc">북펀드 관련 배너 목록.</div>
+        </div>
+        <div class="type-item">
+          <div class="type-item-name">종합이벤트</div>
+          <div class="type-item-desc">매월 종합이벤트 기준. 거의 모든 배너 항목 포함.</div>
+        </div>
+      </div>
+
+      <div class="info-label">필요한 정보</div>
+      <ul class="info-list">
+        <li>연도·분기 — <strong>자동 입력됨</strong></li>
+        <li>카테고리 선택</li>
+        <li>이벤트 파일명 — 예: <code>260615_natsu</code></li>
+        <li>배경색 <strong>(선택)</strong></li>
+      </ul>
+    </div>
+
+    <!-- AI 프롬프트 -->
+    <div class="section" id="ai-prompt">
+      <div class="section-title-row"><h2>AI 배경 이미지 프롬프트 생성</h2><a class="builder-link" href="aladin_event_builder_v3.0.html#ai-prompt" target="_blank">화면 보기 ↗</a></div>
+      <p>AI 이미지 생성 툴을 사용할 때 프롬프트를 뭐라고 적어야 할지 막연하게 느껴질 때 유용합니다. 분위기·스타일·컬러를 선택하면 Midjourney·ChatGPT·Gemini에 바로 붙여넣을 수 있는 프롬프트가 자동으로 완성됩니다.</p>
+
+      <div class="info-label">일반 모드 사용 방법</div>
+      <ol class="step-list">
+        <li>메인 컨셉·배경 스타일·분위기·컬러를 선택합니다</li>
+        <li><strong>주요 오브젝트 위치</strong>를 선택합니다 — 좌측·우측·좌우 양 끝·중앙 등 원하는 배치 지정 가능 <span class="step-tag">선택</span></li>
+        <li><div><span class="step-tag" style="background:#F5F5F5; color:var(--text2); border-color:var(--border);">고급 설정</span>을 열면 더 상세한 연출을 직접 입력할 수 있습니다 <span class="step-tag">선택</span>
+          <ul class="step-sub" style="margin-top:8px;">
+            <li><strong>추가 요청</strong> — 원하는 분위기·연출을 자유롭게 기술</li>
+            <li><strong>금지 요소</strong> — 기본값이 자동 입력되어 있으며, 추가로 제외하고 싶은 요소가 있으면 직접 작성</li>
+          </ul>
+        </div></li>
+        <li>원하는 <strong>이미지 사이즈</strong>를 선택하고 <strong>프롬프트 복사하기</strong>를 클릭합니다</li>
+        <li>ChatGPT·Gemini 등 이미지 생성 검색창에 프롬프트를 붙여넣으면 완성됩니다</li>
+      </ol>
+
+      <div class="info-label" style="margin-top:32px;">참조 모드 사용 방법</div>
+      <ol class="step-list">
+        <li>상단의 <strong>참조 모드 토글</strong>을 켭니다 — 참고할 이미지의 분위기를 살려 배경을 생성할 때 사용</li>
+        <li><div><strong>레이아웃</strong>을 선택합니다
+          <ul class="option-chips" style="margin-top:10px;">
+            <li>중앙 비우기</li>
+            <li class="default">중앙 채우기</li>
+          </ul>
+        </div></li>
+        <li><strong>핵심 요청</strong>을 입력합니다 <span class="step-tag">선택</span> — 특정 이미지의 공간·패턴 등을 살려달라거나 포인트 요소만 활용해달라는 식의 구체적인 요청을 자유롭게 작성합니다</li>
+        <li>이미지 사이즈를 선택하고 <strong>프롬프트 복사하기</strong>를 클릭합니다</li>
+        <li>이미지 생성 툴에 복사한 프롬프트를 붙여넣고, 참고 이미지를 함께 첨부합니다</li>
+      </ol>
+
+      <div class="info-label" style="margin-top:32px;">프롬프트 예시 보기</div>
+      <div class="example-links">
+        <a class="example-link" href="https://nas.aladin.co.kr/drive/d/f/18tIA1D5acOTCsPStPW16iPCLktJEt1j" target="_blank">
+          <span class="example-link-icon">📄</span>
+          <span class="example-link-label">예시 1</span>
+          <span class="example-link-desc">기본 프롬프트 예시</span>
+          <span class="example-link-arrow">↗</span>
+        </a>
+        <a class="example-link" href="https://nas.aladin.co.kr/drive/d/f/18tIA8qGuRyTOLHErFimawdx0GTyZUjO" target="_blank">
+          <span class="example-link-icon">📄</span>
+          <span class="example-link-label">예시 2</span>
+          <span class="example-link-desc">모바일 only · 종합 이벤트</span>
+          <span class="example-link-arrow">↗</span>
+        </a>
+        <a class="example-link" href="https://nas.aladin.co.kr/drive/d/f/18tIA0XmxBwZbfM1UTIfcgQIQpX9A2XW" target="_blank">
+          <span class="example-link-icon">📄</span>
+          <span class="example-link-label">예시 3</span>
+          <span class="example-link-desc">별도 프롬프트 없이 생성</span>
+          <span class="example-link-arrow">↗</span>
+        </a>
+        <a class="example-link" href="https://nas.aladin.co.kr/drive/d/f/18tIA13a1lCrWbUpKUJLsnb0Zh5Ak5xS" target="_blank">
+          <span class="example-link-icon">📄</span>
+          <span class="example-link-label">예시 4</span>
+          <span class="example-link-desc">도서 표지 활용</span>
+          <span class="example-link-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// 사이드바 활성 링크 하이라이트
+const sections = document.querySelectorAll('.section[id]');
+const navLinks = document.querySelectorAll('.sb-nav a');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`.sb-nav a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// 스무스 스크롤
+navLinks.forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
