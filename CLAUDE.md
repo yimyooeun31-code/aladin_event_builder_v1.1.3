@@ -206,6 +206,8 @@
 | 8 | 위자드 스텝 전환 후 하단 버튼 미초기화 | `wizardShowStep` 호출 시 하단 버튼 onclick 미설정 | **HTML onclick 제거 + JS에서만 제어** 또는 **위자드 내부 버튼 유지** |
 | 9 | textarea vs input 혼동 | 줄바꿈 필요한 필드에 input 사용 | **`/br` 표기법 도입**으로 input 한 줄에서 해결 |
 | 10 | PC 미디어쿼리 값 하드코딩 | `930px`, `1400px` 등 고정값 | **이미지 naturalWidth 자동 감지** |
+| 11 | 서버 컨트롤 치환 시 인라인 `font-size` 추가 → mOnly.css 반응형 무력화 | `.coupon_down a span`처럼 mOnly.css가 viewport별 font-size를 제어하는 요소에 인라인으로 고정값 지정 | **치환 시 layout 관련 속성(font-size, width, height, position) 인라인 지정 금지** — mOnly.css에 규칙이 있으면 class만 유지하고 인라인은 color/font-family 등 CSS에 없는 값만 허용 |
+| 12 | 미리보기 헤드 CSS 추가 시 `color:inherit` 선택자 범위 과도 | `.event_container a:not(...)`, `.event_container span:not([class])` 등 광범위 선택자로 mOnly.css의 특정 컴포넌트(쿠폰 금액, 탭 활성 글자 등) 덮어씀 | **새 override 규칙 추가 전 mOnly.css에서 영향받는 컴포넌트 grep 확인**; 필요 시 `!important` 또는 더 구체적인 선택자로 복원 규칙 추가 |
 
 ### 4.2 디자인 오차 패턴
 

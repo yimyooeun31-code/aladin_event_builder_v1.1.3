@@ -25,7 +25,27 @@
       "Read(///192.168.15.155/Image/img/events/book/2026/**)",
       "Read(//c/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/server/**)",
       "Bash(cp \"C:/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/aladin_event_builder_v2.1.html\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/\")",
-      "Bash(cp -r \"C:/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/server\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/\")"
+      "Bash(cp -r \"C:/Users/yms31/Desktop/ai_test/aladin_event_builder_v2.0-main/server\" \"C:/Users/yms31/Desktop/ai_test/event_builder_v1.1.3/\")",
+      "Bash(git stash *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "PowerShell(\\(Get-Item \"C:\\\\Users\\\\yms31\\\\Desktop\\\\aladin_color_palette_v2.html\"\\).LastWriteTime)",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(python3 -c ' *)",
+      "mcp__visualize__show_widget",
+      "Bash(grep -v \"contentAddBtn\\\\|function\\\\|//\")",
+      "Bash(git -C \"C:\\\\Users\\\\yms31\\\\Desktop\\\\ai_test\\\\event_builder_v1.1.3\" status)",
+      "Bash(git -C \"C:\\\\Users\\\\yms31\\\\Desktop\\\\ai_test\\\\event_builder_v1.1.3\" diff --stat)",
+      "Bash(git -C \"C:\\\\Users\\\\yms31\\\\Desktop\\\\ai_test\\\\event_builder_v1.1.3\" add \"aladin_event_builder_v1.1.3.html\" \"일상업무빌더.html\")",
+      "Bash(git -C 'C:\\\\Users\\\\yms31\\\\Desktop\\\\ai_test\\\\event_builder_v1.1.3' commit -m ' *)",
+      "Bash(npm list *)",
+      "Bash(node \"C:\\\\Users\\\\yms31\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-yms31-Desktop-ai-test-event-builder-v1-1-3\\\\27e8ecd3-3d09-4740-a23b-c341e0345a61\\\\scratchpad\\\\make_report.js\")",
+      "Bash(npm root *)",
+      "Bash(NODE_PATH=\"C:\\\\Users\\\\yms31\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\" node \"C:\\\\Users\\\\yms31\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-yms31-Desktop-ai-test-event-builder-v1-1-3\\\\27e8ecd3-3d09-4740-a23b-c341e0345a61\\\\scratchpad\\\\make_report.js\")",
+      "Bash(git -C \"C:\\\\Users\\\\yms31\\\\Desktop\\\\ai_test\\\\event_builder_v1.1.3\" add aladin_event_builder_v3.0.html CLAUDE.md .claude/settings.local.json)"
     ]
   }
 }
